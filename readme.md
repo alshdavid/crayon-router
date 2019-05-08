@@ -1,19 +1,9 @@
-# Crayon.js
+# Crayon
 ## SPA, regardless of your framework
 
-_This is for usage inside the browser, use it with React, Vue, Svelte, CustomElements_
+_Use inside the browser with React, Vue, Svelte3, CustomElements, or Angular (Ivy)_
 
-This router aims to mimic ExpressJS's API. 
-
-### Get started
-
-```bash
-# For npm users
-npm install --save crayonjs
-
-# For yarn users
-yarn add crayonjs
-```
+### Example
 
 ```jsx
 import * as crayon from 'crayonjs';
@@ -25,6 +15,16 @@ app.use(crayon.React('#app'))
 app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
 
 app.load()
+```
+
+### Installation
+
+```bash
+# For npm users
+npm install --save crayonjs
+
+# For yarn users
+yarn add crayonjs
 ```
 
 ### Framework
