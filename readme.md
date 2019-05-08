@@ -1,97 +1,130 @@
-# Express JS API for the Browser!
-## Simple framework agnostic UI router for SPAs
+# Crayon.js
+## SPA, regardless of your framework
 
 _This is for usage inside the browser, use it with React, Vue, Svelte, CustomElements_
 
-This router aims to mimic ExpressJS's API in the form of a SPA router for web apps to use.
-Unopinionated, focused and simple to use.
+This router aims to mimic ExpressJS's API. 
 
-Basic example with React
+### Get started
 
-```typescript
-import * as express from 'express-browser';
-import * as views from '~/gui/views'
+```bash
+# For npm users
+npm install --save crayonjs
 
-const app = express.create()
+# For yarn users
+yarn add crayonjs
+```
 
-app.use(express.React('#app'))
+```jsx
+import * as crayon from 'crayonjs';
 
-app.path('/', (req, res) => res.redirect('/home'))
+const app = crayon.create()
 
-app.path('/home', (req, res) =>
-    res.mount(views.HomeView)
-)
+app.use(crayon.React('#app'))
+
+app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
 
 app.load()
 ```
 
-Using middleware, you can instruct the router how to mount your component
+### Framework
 
-```typescript
-app.use(express.React('#app'))
-app.use(express.Vue('#app')) // TODO
-app.use(express.Svelte('#app')) // TODO
-app.use(express.CustomElement('#app')) //TODO
-app.use(express.Angular('#app')) // TODO
+You can select your framework by using a middleware
+
+```javascript
+// React
+app.use(crayon.React('#app'))
+
+// Vue - TODO
+app.use(crayon.Vue('#app'))
+
+// Svelte 3 - TODO
+app.use(crayon.Svelte('#app'))
+
+// Native custom elements - TODO
+app.use(crayon.CustomElement('#app'))
+
+// Angular - TODO with Ivy
+app.use(crayon.Angular('#app'))
 ```
 
-You can mix/match frameworks on a per-route basis, this can help with the migration drama you experience when moving between framework versions.
-Another use case is when working on enterprise scale applications, you can split routes into lazy loaded groups.
+### Multiple Frameworks
 
-```typescript
-app.path('/react-page', (req, res) => express.React('#app'), res.mount(ReactComponent))
-app.path('/vue-page', (req, res) => express.Vue('#app'), res.mount(VueComponent))
+Apply inline middleware on the specific route to describe how it should render
+
+```javascript
+app.path('/react-page', crayon.React('#app'), (req, res) => 
+    res.mount(ReactComponent)
+)
+
+app.path('/vue-page', crayon.Vue('#app'), (req, res) => 
+    res.mount(VueComponent)
+)
 ```
 
-Groups
-```typescript
-import * as views from '~/gui/views'
+### Lazy Loading
+
+Lazy loading simply requires you to use the latest JavaScript dynamic module feature `import()`
+
+```javascript
+app.path('/', async (req, res) => {
+    const HomeView = await import('./home-view')
+    res.mount(HomeView)
+})
+```
+
+### Route Groups
+
+Groups (at least at this stage) are simply functions that take a `router` instance and register their routes.
+
+```javascript
+import { UsersView, UsersDetailView } from './views'
 
 const usersGroup = (app) => {
     app.path('/users', (req, res) =>
-        res.mount(views.UsersView)
+        res.mount(UsersView)
     )
 
     app.path('/users/:id', (req, res) =>
-        res.mount(views.UsersDetailView)
+        res.mount(UsersDetailView)
     )
 }
 ```
 
-```typescript
-import * as express from 'express-browser';
-import { usersGroup } from '~/gui/users'
+```javascript
+import * as crayon from 'crayon';
+import { usersGroup } from './users'
 
-const app = express.create()
+const app = crayon.create()
 
-app.use(express.React('#app'))
+app.use(crayon.React('#app'))
 usersGroup(app)
 
-app.path('/', (req, res) => res.redirect('/home'))
-
-app.path('/home', (req, res) =>
+app.path('/', (req, res) =>
     res.mount(views.HomeView)
 )
 
 app.load()
 ```
 
-Example passing dependenices to your routed component
+### Dealing With Dependencies
 
-```tsx
+Because this is a simple top-down model, it's easy to pass your dependencies directly into your UI library using function closures.
+
+```jsx
 export const MyView = (dep) => () => <div>{ dep.value }<div>
 ```
 
-```typescript
-import * as express from 'express-browser';
-import * as views from '~/gui/views'
+```javascript
+import * as crayon from 'crayon';
+import { MyView } from './views'
 
 const dep = { value: 'hello world' }
-const app = express.create()
+const app = crayon.create()
 
-app.use(express.React('#app'))
+app.use(crayon.React('#app'))
 
-app.path('/', (req, res) => res.mount(views.MyView(dep)))
+app.path('/', (req, res) => res.mount(MyView(dep)))
 
 app.load()
 ```
