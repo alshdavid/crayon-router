@@ -1,8 +1,19 @@
-import ReactDOM from 'react-dom'
-import { createElement } from 'react'
 import { handlerFunc } from './router'
 
-export const React = (selector: string): handlerFunc => (req, res) => {
+interface IReactDOM {
+    unmountComponentAtNode: (element: Element) =>  any
+    render: (reactElement: any, target: Element) => any
+}
+
+interface IReact {
+    createElement: (v: any) => any
+}
+
+export const ReactRouter = (
+    selector: string, 
+    React: IReact, 
+    ReactDOM: IReactDOM
+): handlerFunc => (req, res) => {
     const element = document.querySelector(selector)
     if (!element) {
         throw new Error('Outlet element not found')
@@ -10,6 +21,6 @@ export const React = (selector: string): handlerFunc => (req, res) => {
 
     res.mount = async (v: any) => {
         ReactDOM.unmountComponentAtNode(element)
-        return ReactDOM.render(createElement(v as any), element)
+        return ReactDOM.render(React.createElement(v as any), element)
     }
 }
