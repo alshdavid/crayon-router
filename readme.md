@@ -9,10 +9,11 @@ _Use inside the browser with React, Vue, Svelte3, CustomElements, or Angular (Iv
 import React from 'react'
 import ReactDOM from 'react-dom'
 import * as crayon from 'crayonjs'
+import * as react from 'crayonjs/react'
 
 const app = crayon.create()
 
-app.use(crayon.ReactRouter('#app', React, ReactDOM))
+app.use(react.Router('#app', React, ReactDOM))
 
 app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
 
@@ -35,34 +36,20 @@ You can select your framework by using a middleware
 
 ```javascript
 // React
-app.use(crayon.ReactRouter('#app', React, ReactDOM))
+app.use(react.Router('#app', React, ReactDOM))
 
 // Vue 
-app.use(crayon.VueRouter('#app', Vue))
-app.use(crayon.VueAnimate({ name: 'fade' }))
+app.use(vue.Router('#app', Vue))
+app.use(vue.Animate({ name: 'fade' }))
 
 // Svelte 3 - TODO
-app.use(crayon.SvelteRouter('#app'))
+app.use(svelte.Router('#app'))
 
 // Native custom elements - TODO
-app.use(crayon.ElementsRouter('#app'))
+app.use(elements.Router('#app'))
 
 // Angular - TODO with Ivy
-app.use(crayon.AngularRouter('#app'))
-```
-
-### Multiple Frameworks
-
-Apply inline middleware on the specific route to describe how it should render
-
-```javascript
-app.path('/react-page', crayon.ReactRouter('#app', React, ReactDOM), (req, res) => 
-    res.mount(ReactComponent)
-)
-
-app.path('/vue-page', crayon.Vue('#app', Vue), (req, res) => 
-    res.mount(VueComponent)
-)
+app.use(angular.Router('#app'))
 ```
 
 ### Lazy Loading
@@ -96,11 +83,12 @@ const usersGroup = (app) => {
 
 ```javascript
 import * as crayon from 'crayon';
+import * as react from 'crayon/react';
 import { usersGroup } from './users'
 
 const app = crayon.create()
 
-app.use(crayon.ReactRouter('#app', React, ReactDOM))
+app.use(react.Router('#app', React, ReactDOM))
 usersGroup(app)
 
 app.path('/', (req, res) =>
@@ -112,7 +100,7 @@ app.load()
 
 ### Dealing With Dependencies
 
-Because this is a simple top-down model, it's easy to pass your dependencies directly into your UI library using function closures.
+I recomend using a parameter injection model for dependency injection
 
 ```jsx
 export const MyView = (dep) => () => <div>{ dep.value }<div>
@@ -120,12 +108,13 @@ export const MyView = (dep) => () => <div>{ dep.value }<div>
 
 ```javascript
 import * as crayon from 'crayon';
+import * as react from 'crayon/react';
 import { MyView } from './views'
 
 const dep = { value: 'hello world' }
 const app = crayon.create()
 
-app.use(crayon.ReactRouter('#app', React, ReactDOM))
+app.use(react.Router('#app', React, ReactDOM))
 
 app.path('/', (req, res) => res.mount(MyView(dep)))
 
