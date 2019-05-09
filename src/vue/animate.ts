@@ -1,4 +1,4 @@
-import { handlerFunc } from "../router";
+import { handlerFunc } from "../types";
 
 export const Animate = ({ 
     name, 

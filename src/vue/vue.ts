@@ -1,10 +1,10 @@
-import { handlerFunc } from "../router";
+import { handlerFunc } from "../types";
 
 // TODO refactor this file omg
 const isFunction = (value: any) => typeof value === 'function'
 
-export const Router = (selector: string, Vue: any): handlerFunc => (req, res) => {
-    if (!req.state.vue) {
+export const Router = (selector: string, Vue: any): handlerFunc => (req, res, state) => {
+    if (!state.vue) {
         const element = document.querySelector(selector)
         if (!element) {
             throw new Error('Outlet element not found')
@@ -17,7 +17,7 @@ export const Router = (selector: string, Vue: any): handlerFunc => (req, res) =>
             animationMode = res.ctx.vueAnimation.mode
             animationChildView = res.ctx.vueAnimation.childView
         }
-        req.state.vue = {
+        state.vue = {
             app: new Vue({
                 el: selector,
                 data: {
@@ -52,28 +52,28 @@ export const Router = (selector: string, Vue: any): handlerFunc => (req, res) =>
                 }
             })
         }
-        ;(window as any).app = req.state.vue.app
+        ;(window as any).app = state.vue.app
     }
 
     res.mount = async (component: any, options?: any) => {
         if (res.ctx.vueAnimation) {
-            req.state.vue.app.animationName = res.ctx.vueAnimation.name
-            req.state.vue.app.animationMode = res.ctx.vueAnimation.mode
-            req.state.vue.app.animationChildView = res.ctx.vueAnimation.childView
+            state.vue.app.animationName = res.ctx.vueAnimation.name
+            state.vue.app.animationMode = res.ctx.vueAnimation.mode
+            state.vue.app.animationChildView = res.ctx.vueAnimation.childView
         }
         if (isFunction(component)) {
             component = await component()
         }
         await new Promise(res => {
             setTimeout(() => {
-                req.state.vue.app.current = undefined
+                state.vue.app.current = undefined
                 res()
             })
         })
         Vue.component('current-page', component)
         if (options) {
-            req.state.vue.app.deps = { ...options }
+            state.vue.app.deps = { ...options }
         }
-        req.state.vue.app.current = 'current-page'
+        state.vue.app.current = 'current-page'
     }
 }

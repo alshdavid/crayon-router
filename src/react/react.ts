@@ -1,10 +1,10 @@
-import { handlerFunc } from '../router'
+import { handlerFunc } from '../types'
 
 export const Router = (
     selector: string,
     React: any,
     ReactDOM: any
-): handlerFunc => (req, res) => {
+): handlerFunc => (req, res, state) => {
 
     const App = () => class extends React.Component {
         state: any = {
@@ -51,11 +51,11 @@ export const Router = (
         }
     }
 
-    if (!req.state.react) {
-        req.state.react = new ReactState(selector)
+    if (!state.react) {
+        state.react = new ReactState(selector)
     }
 
     res.mount = async (c: any) => {
-        return req.state.react.mount(c)
+        return state.react.mount(c)
     }
 }

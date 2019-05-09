@@ -1,3 +1,10 @@
+/*
+    Will match a url declaration with an incoming pathname
+    e.g.
+
+    /users/:id/edit
+    /users/5345/edit
+*/
 export const matchPath = (
     pattern: string, 
     pathname: string
@@ -21,6 +28,10 @@ export const matchPath = (
     return params
 }
 
+/*
+    Will take a querystring and cast 
+    it to an object
+*/
 export const deserializeQuery = (query: string = '') => {
     var pairs = query.slice(1).split('&')
     var result: any = {}

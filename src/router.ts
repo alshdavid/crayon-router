@@ -1,39 +1,14 @@
 import { matchPath, deserializeQuery } from "./url";
-
-type Context = Record<string, any>
-
-export interface Request<T = Context> {
-    hash: string
-    host: string;
-    hostname: string;
-    href: string;
-    readonly origin: string;
-    pathname: string;
-    port: string;
-    protocol: string;
-    search: string;
-    params: Record<any, any>
-    query: Record<any, any>
-    state: T
-}
-
-export interface Navigator {
-    navigate: (path: string) => void
-}
-
-export interface Response<Y = Context> {
-    mount: any
-    redirect: (path: string) => void
-    ctx?: Y
-}
-
-export type handlerFunc<T = any, Y = any> = (req: Request<T>, res: Response<Y>) => void
+import { Request } from './request'
+import { Response } from './response'
+import { handlerFunc } from './types'
 
 export class Router {
     middleware: handlerFunc[] = []
     routes: Record<string, handlerFunc[]> = {}
     state: Record<string, any> = {}
-    isRouting = false
+    req: Request | undefined
+    res: Response | undefined
 
     path(path: string, ...handlers: handlerFunc[]) {
         this.routes[path] = handlers
@@ -43,14 +18,9 @@ export class Router {
         this.middleware.push(handler)
     }
 
-    async navigate(path: string) {
-        if (this.isRouting) {
-            return
-        }
-        this.isRouting = true
+    navigate(path: string) {
         window.history.pushState(null, document.title, path)
-        await this.load()
-        this.isRouting = false
+        return this.load()
     }
 
     reload() {
@@ -58,44 +28,59 @@ export class Router {
     }
 
     async load() {
-        const req: Request = {
-            hash: window.location.hash,
-            host: window.location.host,
-            hostname: window.location.hostname,
-            href: window.location.href,
-            origin: window.location.origin,
-            pathname: window.location.pathname,
-            port: window.location.port,
-            protocol: window.location.protocol,
-            search: window.location.search,
-            params: {},
-            query: {},
-            state: this.state
+        if (this.req) {
+            return
         }
-        const res: Response = {
-            mount: console.log,
-            redirect: (path: string) => this.navigate(path),
-            ctx: {}
+        this.req = new Request()
+        this.res = new Response()
+        this.res.redirect = (path: string) => {
+            this.req = undefined
+            this.navigate(path)
         }
+        const cleanup = () => {
+            this.res && this.res.unmount()
+            this.req = undefined
+            this.res = undefined
+        }
+
+        // Run middleware
         for (const middleware of this.middleware) {
-            await middleware(req, res)
+            if (this.res.hasCompleted) {
+                cleanup()
+                return
+            }
+            await middleware(this.req, this.res, this.state)
         }
+
+        // Match and populate handlers
         let handlers: handlerFunc[] = []
         for (const key in this.routes) {
-            const params = matchPath(key, req.pathname)
+            const params = matchPath(key, this.req.pathname)
             if (!params) {
                 continue
             }
             handlers = this.routes[key]
-            req.params = { ...params }
+            this.req.params = { ...params }
+            this.req.routePattern = key
+            break;
         }
         if (handlers.length === 0) {
-            console.error(`No handler for route: ${req.pathname}`)
+            console.error(`No handlers found for route: ${this.req.pathname}`)
         }
-        req.query = { ...deserializeQuery(window.location.search) }
+
+        // Cast query string to object
+        this.req.query = { ...deserializeQuery(window.location.search) }
+
+        // Run handlers
         for (const handler of handlers) {
-            await handler(req, res)
+            if (this.res.hasCompleted) {
+                cleanup()
+                return
+            }
+            await handler(this.req, this.res, this.state)
         }
+
+        cleanup()
     }
 }
 
