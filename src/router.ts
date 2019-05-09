@@ -1,27 +1,30 @@
 import { matchPath, deserializeQuery } from "./url";
 
-export interface Request extends Location {
+type Context = Record<string, any>
+
+export interface Request<T = Context> extends Location {
     params: Record<any, any>
     query: Record<any, any>
-    state: Record<any, any>
+    state: T
 }
 
 export interface Navigator {
     navigate: (path: string) => void
 }
 
-export interface Response {
+export interface Response<Y = Context> {
     mount: any
     redirect: (path: string) => void
-    ctx?: any
+    ctx?: Y
 }
 
-export type handlerFunc = (req: Request, res: Response) => void
+export type handlerFunc<T = any, Y = any> = (req: Request<T>, res: Response<Y>) => void
 
 export class Router {
     middleware: handlerFunc[] = []
     routes: Record<string, handlerFunc[]> = {}
     state: Record<string, any> = {}
+    isRouting = false
 
     path(path: string, ...handlers: handlerFunc[]) {
         this.routes[path] = handlers
@@ -31,9 +34,15 @@ export class Router {
         this.middleware.push(handler)
     }
 
-    navigate(path: string) {
+    async navigate(path: string) {
+        if (this.isRouting) {
+            console.log('boucned')
+            return
+        }
+        this.isRouting = true
         window.history.pushState(null, document.title, path)
-        this.load()
+        await this.load()
+        this.isRouting = false
     }
 
     reload() {
