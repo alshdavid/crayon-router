@@ -2,7 +2,16 @@ import { matchPath, deserializeQuery } from "./url";
 
 type Context = Record<string, any>
 
-export interface Request<T = Context> extends Location {
+export interface Request<T = Context> {
+    hash: string
+    host: string;
+    hostname: string;
+    href: string;
+    readonly origin: string;
+    pathname: string;
+    port: string;
+    protocol: string;
+    search: string;
     params: Record<any, any>
     query: Record<any, any>
     state: T
@@ -36,7 +45,6 @@ export class Router {
 
     async navigate(path: string) {
         if (this.isRouting) {
-            console.log('boucned')
             return
         }
         this.isRouting = true
@@ -51,7 +59,15 @@ export class Router {
 
     async load() {
         const req: Request = {
-            ...window.location,
+            hash: window.location.hash,
+            host: window.location.host,
+            hostname: window.location.hostname,
+            href: window.location.href,
+            origin: window.location.origin,
+            pathname: window.location.pathname,
+            port: window.location.port,
+            protocol: window.location.protocol,
+            search: window.location.search,
             params: {},
             query: {},
             state: this.state

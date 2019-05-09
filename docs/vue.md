@@ -7,8 +7,8 @@ _Simply used the supplied middleware_
 
 ```javascript
 const app = crayon.create()
-app.use(crayon.VueRouter('#app', Vue))
-app.use(crayon.VueAnimate({ name: 'fade', mode: 'out-in', childView: 'child-view' }))
+app.use(vue.Router('#app', Vue))
+app.use(vue.Animate({ name: 'fade', mode: 'out-in', childView: 'child-view' }))
 ```
 
 ### Example using object-based components
@@ -16,6 +16,7 @@ app.use(crayon.VueAnimate({ name: 'fade', mode: 'out-in', childView: 'child-view
 ```javascript
 import Vue from 'vue'
 import * as crayon from 'crayonjs'
+import * as vue from 'crayonjs/vue'
 import 'styles.css'
 
 const HomeAndAbout = (router, req, someService) => ({
@@ -41,7 +42,7 @@ const someService = {
 }
 const app = crayon.create()
 
-app.use(VueRouter('#app', Vue))
+app.use(vue.Router('#app', Vue))
 
 app.path('/', (req, res) => 
     res.redirect('/home')
@@ -87,11 +88,12 @@ export default {
 ```javascript
 import Vue from 'vue'
 import * as crayon from 'crayonjs'
+import * as vue from 'crayonjs/vue'
 import HelloWorld from './HomeAndAbout.vue';
 
 const app = crayon.create()
 
-app.use(crayon.VueRouter('#app', Vue))
+app.use(vue.Router('#app', Vue))
 
 app.path('/', (req, res) => 
     res.redirect('/home')
@@ -142,11 +144,12 @@ export default class HomeAndAbout extends Vue {
 ```typescript
 import Vue from 'vue'
 import * as crayon from 'crayonjs'
+import * as vue from 'crayonjs/vue'
 import HelloWorld from './HomeAndAbout.vue';
 
 const app = crayon.create()
 
-app.use(crayon.VueRouter('#app', Vue))
+app.use(vue.Router('#app', Vue))
 
 app.path('/', (req, res) => 
     res.redirect('/home')
@@ -172,10 +175,11 @@ Just use the `import` statement with Webpack+Babel or Typescript
 ```typescript
 import Vue from 'vue'
 import * as crayon from 'crayonjs'
+import * as vue from 'crayonjs/vue'
 
 const app = crayon.create()
 
-app.use(crayon.VueRouter('#app', Vue))
+app.use(vue.Router('#app', Vue))
 
 app.path('/home', async (req, res) => {
     const HelloWorld = await import('./HomeAndAbout.vue')
@@ -190,7 +194,7 @@ r.load()
 Use the animations middleware to add animations
 
 ```javascript
-app.use(crayon.VueAnimate({ 
+app.use(vue.Animate({ 
     name: 'fade', 
     mode: 'out-in', 
     childView: 'child-view' 

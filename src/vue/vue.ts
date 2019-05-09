@@ -1,25 +1,9 @@
-import { handlerFunc } from "./router";
+import { handlerFunc } from "../router";
 
 // TODO refactor this file omg
 const isFunction = (value: any) => typeof value === 'function'
 
-export const VueAnimate = ({ 
-    name, 
-    mode,
-    childView
-}: { 
-    name: string, 
-    mode?: string
-    childView?: string
-}): handlerFunc => (req, res) => {
-    res.ctx.vueAnimation = {
-        name,
-        mode,
-        childView
-    }
-}
-
-export const VueRouter = (selector: string, Vue: any): handlerFunc => (req, res) => {
+export const Router = (selector: string, Vue: any): handlerFunc => (req, res) => {
     if (!req.state.vue) {
         const element = document.querySelector(selector)
         if (!element) {

@@ -1,6 +1,6 @@
 {
   "name": "crayonjs",
-  "version": "1.1.19",
+  "version": "1.1.22",
   "description": "",
   "main": "dist/index.js",
   "mainDir": "dist",
@@ -9,7 +9,8 @@
     "url": "https://github.com/alshdavid/crayon"
   },
   "scripts": {
-    "build": "npx tsc"
+    "build": "npx tsc && mv dist/vue vue && mv dist/react react",
+    "clean": "rm -rf dist vue react"
   },
   "author": "",
   "license": "ISC",
