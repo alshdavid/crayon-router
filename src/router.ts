@@ -1,6 +1,6 @@
 import { matchPath, deserializeQuery } from "./url";
 
-export interface request extends Location {
+export interface Request extends Location {
     params: Record<any, any>
     query: Record<any, any>
     state: Record<any, any>
@@ -10,13 +10,13 @@ export interface Navigator {
     navigate: (path: string) => void
 }
 
-export interface response {
+export interface Response {
     mount: any
     redirect: (path: string) => void
     ctx?: any
 }
 
-export type handlerFunc = (req: request, res: response) => void
+export type handlerFunc = (req: Request, res: Response) => void
 
 export class Router {
     middleware: handlerFunc[] = []
@@ -41,13 +41,13 @@ export class Router {
     }
 
     async load() {
-        const req: request = {
+        const req: Request = {
             ...window.location,
             params: {},
             query: {},
             state: this.state
         }
-        const res: response = {
+        const res: Response = {
             mount: console.log,
             redirect: (path: string) => this.navigate(path),
             ctx: {}

@@ -3,10 +3,19 @@ import { handlerFunc } from "./router";
 // TODO refactor this file omg
 const isFunction = (value: any) => typeof value === 'function'
 
-export const VueAnimate = ({ name, mode }: { name: string, mode?: string }): handlerFunc => (req, res) => {
+export const VueAnimate = ({ 
+    name, 
+    mode,
+    childView
+}: { 
+    name: string, 
+    mode?: string
+    childView?: string
+}): handlerFunc => (req, res) => {
     res.ctx.vueAnimation = {
         name,
-        mode
+        mode,
+        childView
     }
 }
 
@@ -16,11 +25,13 @@ export const VueRouter = (selector: string, Vue: any): handlerFunc => (req, res)
         if (!element) {
             throw new Error('Outlet element not found')
         }
-        let animationName
-        let animationMode
+        let animationName: string = ''
+        let animationMode: string = ''
+        let animationChildView: string = ''
         if (res.ctx.vueAnimation) {
             animationName = res.ctx.vueAnimation.name
             animationMode = res.ctx.vueAnimation.mode
+            animationChildView = res.ctx.vueAnimation.childView
         }
         req.state.vue = {
             app: new Vue({
@@ -28,33 +39,57 @@ export const VueRouter = (selector: string, Vue: any): handlerFunc => (req, res)
                 data: {
                     current: undefined,
                     animationName,
-                    animationMode
+                    animationMode,
+                    animationChildView,
+                    deps: {}
                 },
                 render(h: any) {
+                    if (!this.current) {
+                        return
+                    }
                     if (!this.animationName) {
-                        return h(this.current, {})
+                        return h(this.current, {
+                            props: { ...this.deps }
+                        })
                     }
                     return h(
-                        'transition', { props: {
+                        'transition', 
+                        { props: {
                             name: this.animationName,
                             mode: this.animationMode
                         }}, 
-                        [ h(this.current) ])
+                        [ 
+                            h(this.current, {
+                                props: { ...this.deps },
+                                class: { [this.animationChildView || 'child-view']: true }
+                            })
+                        ]
+                    )
                 }
             })
         }
+        ;(window as any).app = req.state.vue.app
     }
 
-    res.mount = async (component: any) => {
-        if (isFunction(component)) {
-            component = await component()
-        }
-        req.state.vue.app.current = ''
-        Vue.component('current-page', component)
-        req.state.vue.app.current = 'current-page'
+    res.mount = async (component: any, options?: any) => {
         if (res.ctx.vueAnimation) {
             req.state.vue.app.animationName = res.ctx.vueAnimation.name
             req.state.vue.app.animationMode = res.ctx.vueAnimation.mode
+            req.state.vue.app.animationChildView = res.ctx.vueAnimation.childView
         }
+        if (isFunction(component)) {
+            component = await component()
+        }
+        await new Promise(res => {
+            setTimeout(() => {
+                req.state.vue.app.current = undefined
+                res()
+            })
+        })
+        Vue.component('current-page', component)
+        if (options) {
+            req.state.vue.app.deps = { ...options }
+        }
+        req.state.vue.app.current = 'current-page'
     }
 }
