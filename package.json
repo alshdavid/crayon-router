@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "npx tsc && mv dist/vue vue && mv dist/react react",
-    "clean": "rm -rf dist vue react"
+    "clean": "rm -rf dist vue react && rm -rf *.tgz"
   },
   "author": "",
   "license": "ISC",

@@ -1,6 +1,8 @@
 dist
 node_modules
 yarn.lock
+react
+vue
 
 # Compiled source #
 ###################
@@ -23,6 +25,7 @@ yarn.lock
 *.rar
 *.tar
 *.zip
+*.tgz
 
 # Logs and databases #
 ######################
