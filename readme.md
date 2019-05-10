@@ -1,19 +1,21 @@
-# Crayon
+<img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
+
 ## SPA, regardless of your framework
 
-_Use inside the browser with React, Vue, Svelte3, CustomElements, or Angular (Ivy)_
+The goal of this project is to provide a universal web UI router with a familiar API. It's to feature simple but powerful animation support, and an esay-to-extend middleware model.
+
+It's based on Express and currently support React and Vue. I'm looking to add support for Svelte and Custom Elements. Angular would be nice, but it won't be possible until Ivy is released.
 
 ### Example
 
 ```jsx
 import React from 'react'
-import ReactDOM from 'react-dom'
 import * as crayon from 'crayonjs'
 import * as react from 'crayonjs/react'
 
 const app = crayon.create()
 
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.Router())
 
 app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
 
@@ -36,20 +38,31 @@ You can select your framework by using a middleware
 
 ```javascript
 // React
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.Router()
 
 // Vue 
-app.use(vue.Router('#app', Vue))
-app.use(vue.Animate({ name: 'fade' }))
+app.use(vue.Router())
 
 // Svelte 3 - TODO
-app.use(svelte.Router('#app'))
+app.use(svelte.Router())
 
 // Native custom elements - TODO
-app.use(elements.Router('#app'))
+app.use(elements.Router())
 
 // Angular - TODO with Ivy
-app.use(angular.Router('#app'))
+app.use(angular.Router())
+
+// Route animations on all frameworks use the same middleware
+// This declares "fade" is the default animation
+// But going to and from /help will have custom animations
+app.use(crayon.Animate({
+    name: 'fade',
+    duration: 5000,
+    routes: [
+         { from: '/**', to: '/help', name: 'push' },
+         { from: '/help', to: '/**', name: 'pop' }
+    ]
+})
 ```
 
 ### Lazy Loading
@@ -88,7 +101,7 @@ import { usersGroup } from './users'
 
 const app = crayon.create()
 
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.Router())
 usersGroup(app)
 
 app.path('/', (req, res) =>
@@ -114,7 +127,7 @@ import { MyView } from './views'
 const dep = { value: 'hello world' }
 const app = crayon.create()
 
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.Router())
 
 app.path('/', (req, res) => res.mount(MyView(dep)))
 
