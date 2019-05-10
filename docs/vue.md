@@ -37,8 +37,8 @@ export default {
 `main.js`
 
 ```javascript
-import crayon from 'crayonjs'
-import vue from 'crayonjs/vue'
+import crayon from 'crayon'
+import vue from 'crayon/vue'
 import HelloWorld from './HomeAndAbout.vue';
 
 const app = crayon.create()
@@ -63,8 +63,8 @@ r.load()
 ### Example using object-based components
 
 ```javascript
-import crayon from 'crayonjs'
-import vue from 'crayonjs/vue'
+import crayon from 'crayon'
+import vue from 'crayon/vue'
 import './styles.css'
 
 const HomeAndAbout = (router, req, someService) => ({
@@ -126,7 +126,7 @@ app.load()
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import crayon from 'crayonjs'
+import crayon from 'crayon'
 
 @Component
 export default class HomeAndAbout extends Vue {
@@ -141,8 +141,8 @@ export default class HomeAndAbout extends Vue {
 `main.ts`
 
 ```typescript
-import * as crayon from 'crayonjs'
-import * as vue from 'crayonjs/vue'
+import * as crayon from 'crayon'
+import * as vue from 'crayon/vue'
 import HelloWorld from './HomeAndAbout.vue';
 
 const app = crayon.create()
@@ -171,8 +171,8 @@ Just use the `import` statement with Webpack+Babel or Typescript
 `main.ts`
 
 ```typescript
-import * as crayon from 'crayonjs'
-import * as vue from 'crayonjs/vue'
+import * as crayon from 'crayon'
+import * as vue from 'crayon/vue'
 
 const app = crayon.create()
 
@@ -213,8 +213,8 @@ export default {
 ```
 
 ```javascript
-import * as crayon from 'crayonjs';
-import * as vue from 'crayonjs/vue';
+import crayon from 'crayon'
+import vue from 'crayon/vue'
 import MyPage from './MyPage'
 
 const dep = { value: 'hello world' }
@@ -234,9 +234,9 @@ These are just preset css classes/styles.
 Check out the transitions docs to learn how you can make your own.
 
 ```javascript
-import crayon from 'crayonjs';
-import vue from 'crayonjs/vue';
-import transition from 'crayonjs/transition';
+import crayon from 'crayon';
+import vue from 'crayon/vue';
+import transition from 'crayon/transition';
 
 const app = crayon.create()
 

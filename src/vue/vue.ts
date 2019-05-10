@@ -1,5 +1,5 @@
 import { handlerFunc } from "../types";
-import { animatedMount } from '../mount'
+import { mount } from '../mount'
 import { VueMounter } from "./mounter";
 
 export const router = (): handlerFunc => (req, res, state) => {
@@ -12,7 +12,7 @@ export const router = (): handlerFunc => (req, res, state) => {
     res.mount = async (component: any, props?: any) => {
         const mounter = state.vue.mounter
         const instance = await mounter.createInstance(component, props)
-        return animatedMount(
+        return mount(
             instance,
             mounter,
             res.ctx.animation.name,

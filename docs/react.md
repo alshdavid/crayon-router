@@ -5,9 +5,8 @@
 
 ```jsx
 import React from 'react'
-import ReactDOM from 'react-dom'
-import * as crayon from 'crayonjs'
-import * as react from 'crayonjs/react'
+import crayon from 'crayon'
+import react from 'crayon/react'
 
 const app = crayon.create()
 
@@ -48,8 +47,8 @@ const usersGroup = (app) => {
 ```
 
 ```javascript
-import * as crayon from 'crayonjs';
-import * as react from 'crayonjs/react';
+import crayon from 'crayon'
+import react from 'crayon/react'
 import { usersGroup } from './users'
 
 const app = crayon.create()
@@ -73,8 +72,8 @@ export const MyView = (dep) => () => <div>{ dep.value }<div>
 ```
 
 ```javascript
-import * as crayon from 'crayonjs';
-import * as react from 'crayonjs/react';
+import crayon from 'crayon'
+import react from 'crayon/react'
 import { MyView } from './views'
 
 const dep = { value: 'hello world' }
@@ -94,9 +93,9 @@ These are just preset css classes/styles.
 Check out the transitions docs to learn how you can make your own.
 
 ```javascript
-import crayon from 'crayonjs';
-import react from 'crayonjs/react';
-import transition from 'crayonjs/transition';
+import crayon from 'crayon';
+import react from 'crayon/react';
+import transition from 'crayon/transition';
 
 const app = crayon.create()
 

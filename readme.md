@@ -14,8 +14,8 @@
 
 ```jsx
 import React from 'react'
-import crayon from 'crayonjs'
-import react from 'crayonjs/react'
+import crayon from 'crayon'
+import react from 'crayon/react'
 
 const app = crayon.create()
 
@@ -30,10 +30,10 @@ app.load()
 
 ```bash
 # For npm users
-npm install --save crayonjs
+npm install --save crayon
 
 # For yarn users
-yarn add crayonjs
+yarn add crayon
 ```
 
 ### Framework
@@ -117,8 +117,8 @@ const usersGroup = (app) => {
 ```
 
 ```javascript
-import crayon from 'crayonjs';
-import react from 'crayonjs/react';
+import crayon from 'crayon';
+import react from 'crayon/react';
 import { usersGroup } from './users'
 
 const app = crayon.create()
@@ -142,8 +142,8 @@ export const MyView = (dep) => () => <div>{ dep.value }<div>
 ```
 
 ```javascript
-import * as crayon from 'crayonjs';
-import * as react from 'crayonjs/react';
+import * as crayon from 'crayon';
+import * as react from 'crayon/react';
 import { MyView } from './views'
 
 const dep = { value: 'hello world' }
