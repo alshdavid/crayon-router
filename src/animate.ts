@@ -74,8 +74,6 @@ export const animate = (options: AnimationOptions): handlerFunc => (
         name,
         duration
     }
-
-    console.log(res.ctx.animation)
 }
 
 

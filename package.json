@@ -9,8 +9,8 @@
     "url": "https://github.com/alshdavid/crayon"
   },
   "scripts": {
-    "build": "npx tsc && mv dist/vue vue && mv dist/react react",
-    "clean": "rm -rf dist vue react && rm -rf *.tgz"
+    "build": "npx tsc && mv dist/vue vue && mv dist/react react && mv dist/transition transition",
+    "clean": "rm -rf dist vue react transition && rm -rf *.tgz"
   },
   "author": "",
   "license": "ISC",
