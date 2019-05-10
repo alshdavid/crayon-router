@@ -1,61 +1,101 @@
 import { handlerFunc } from '../types'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-export const Router = (
-    selector: string,
-    React: any,
-    ReactDOM: any
-): handlerFunc => (req, res, state) => {
-
-    const App = () => class extends React.Component {
-        state: any = {
-            page: undefined
+export const Router = (): handlerFunc => (req, res, state) => {
+    res.unmount = () => {
+        // return reactState.unmount()
+    }
+    
+    res.mount = (incoming: any): Promise<any> => {
+        if (state.animation) {
+            return animatedMount(incoming)
         }
-
-        paint(C: any) {
-            this.setState({ 
-                page: C 
-            })
+        if (!state.outlet) {
+            state.outlet = document.createElement('div')
+            document.body.appendChild(state.outlet)
         }
+        return Promise.resolve(mountC(incoming, state.outlet))
+    }
 
-        render() {
-            if (!this.state.page) {
-                return React.createElement('div')
+    const animatedMount = (incoming: any) => {
+        
+        return new Promise(resolve => {
+            const { commit, el } = pushC(incoming)
+            const states = {
+                hostView: 'host-view',
+                base: res.ctx.animation.name,
+                firstEnter: `${res.ctx.animation.name}-enter-first`,
+                enter: `${res.ctx.animation.name}-enter`,
+                enterDone: `${res.ctx.animation.name}-enter-done`,
+                exit: `${res.ctx.animation.name}-exit`
             }
-            return React.createElement(this.state.page)
-        }
-    }
-
-    class ReactState {
-        app: any
-        animationName: string = ''
-        animationDuration: number = 0
-
-        constructor(selector: string) {
-            const element = document.querySelector(selector)
-            if (!element) {
-                throw new Error('Outlet element not found')
+            
+            const outlets = getOutlets()
+            el.classList.add(states.base)
+            el.style.transitionDuration = `${state.animation.duration}ms`
+            commit()
+            if (outlets.length === 1) {
+                setTimeout(() => {
+                    outlets[0].classList.add(states.firstEnter)
+                    outlets[0].classList.add(states.enter)
+                }, 1)
+                setTimeout(() => {
+                    outlets[0].classList.remove(states.firstEnter)
+                    outlets[0].classList.remove(states.enter)
+                    outlets[0].classList.add(states.enterDone)
+                    resolve()
+                }, state.animation.duration) 
+                return
             }
 
-            ReactDOM.render(
-                React.createElement(
-                    App(), 
-                    { ref: (c: any) => this.app = c}
-                ), 
-                element
-            )
-            this.app.state.elementRef = element
-        }
-
-        mount(c: any) {
-            return this.app.paint(c)
-        }
+            const outgoingEl = outlets[0]
+            const incomingEl = outlets[1]
+            outgoingEl.className = ''
+            outgoingEl.classList.add(outletSelector)
+            outgoingEl.classList.add(states.base)
+            setTimeout(() => {
+                outgoingEl.classList.remove(states.firstEnter)
+                outgoingEl.classList.remove(states.enterDone)
+                outgoingEl.classList.add(states.exit)
+                incomingEl.classList.add(states.enter)
+            }, 1)
+            
+            setTimeout(() => {
+                popC()
+                incomingEl.classList.remove(states.enter)
+                incomingEl.classList.add(states.enterDone)
+                resolve()
+            }, state.animation.duration) 
+        })
     }
+}
 
-    if (!state.react) {
-        state.react = new ReactState(selector)
-    }
+const outletSelector = 'router-view'
+const getOutlets = (): HTMLElement[] => (document.body.getElementsByClassName(outletSelector) as any)
 
-    res.mount = async (c: any) => {
-        return state.react.mount(c)
+const mountC = (C: any, target: HTMLElement) => {
+    ReactDOM.render(
+        React.createElement(C), 
+        target
+    )
+}
+
+const pushC = (C: any) => {
+    const incoming = document.createElement('div')
+    incoming.classList.add(outletSelector)
+    ReactDOM.render(
+        React.createElement(C), 
+        incoming
+    )
+    return {
+        el: incoming,
+        commit: () => document.body.appendChild(incoming)
     }
+}
+
+const popC = () => {
+    const outgoing = getOutlets()[0]
+    ReactDOM.unmountComponentAtNode(outgoing)
+    document.body.removeChild(outgoing)
 }

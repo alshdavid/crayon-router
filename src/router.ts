@@ -7,8 +7,16 @@ export class Router {
     middleware: handlerFunc[] = []
     routes: Record<string, handlerFunc[]> = {}
     state: Record<string, any> = {}
+    history: string[] = ['']
     req: Request | undefined
     res: Response | undefined
+    isLoading = false
+
+    constructor() {
+        window.addEventListener('popstate', () => {
+            this.load()
+        })
+    }
 
     path(path: string, ...handlers: handlerFunc[]) {
         this.routes[path] = handlers
@@ -18,39 +26,35 @@ export class Router {
         this.middleware.push(handler)
     }
 
-    navigate(path: string) {
+    async navigate(path: string) {
+        if (this.isLoading) {
+            return
+        }
+        this.isLoading = true
         window.history.pushState(null, document.title, path)
-        return this.load()
+        await this.load()
+        this.isLoading = false
     }
 
     reload() {
-        return this.load()
-    }
-
-    async load() {
         if (this.req) {
             return
         }
+        return this.load()
+    }
+
+    back() {
+        window.history.back()
+    }
+
+    async load() {
         this.req = new Request()
         this.res = new Response()
-        this.res.redirect = (path: string) => {
-            this.req = undefined
-            this.navigate(path)
-        }
-        const cleanup = () => {
-            this.res && this.res.unmount()
-            this.req = undefined
-            this.res = undefined
-        }
 
-        // Run middleware
-        for (const middleware of this.middleware) {
-            if (this.res.hasCompleted) {
-                cleanup()
-                return
-            }
-            await middleware(this.req, this.res, this.state)
-        }
+        this.res.redirect = (path: string) => {
+            window.history.pushState(null, document.title, path)
+            this.load()
+        }     
 
         // Match and populate handlers
         let handlers: handlerFunc[] = []
@@ -59,6 +63,7 @@ export class Router {
             if (!params) {
                 continue
             }
+            this.history.push(key)
             handlers = this.routes[key]
             this.req.params = { ...params }
             this.req.routePattern = key
@@ -67,20 +72,23 @@ export class Router {
         if (handlers.length === 0) {
             console.error(`No handlers found for route: ${this.req.pathname}`)
         }
-
         // Cast query string to object
         this.req.query = { ...deserializeQuery(window.location.search) }
 
+        // Run middleware
+        for (const middleware of this.middleware) {
+            if (this.res.hasCompleted) {
+                return
+            }
+            await middleware(this.req, this.res, this.state, this.history)
+        }
         // Run handlers
         for (const handler of handlers) {
             if (this.res.hasCompleted) {
-                cleanup()
                 return
             }
-            await handler(this.req, this.res, this.state)
+            await handler(this.req, this.res, this.state, this.history)
         }
-
-        cleanup()
     }
 }
 
