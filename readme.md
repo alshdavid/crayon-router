@@ -54,7 +54,8 @@ app.use(elements.Router())
 // Angular - TODO with Ivy
 app.use(angular.Router())
 
-// Route animations on all frameworks use the same middleware
+// Route Animations 
+// All frameworks use the same middleware
 // This declares "fade" is the default animation
 // But going to and from /help will have custom animations
 app.use(crayon.Animate({
