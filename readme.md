@@ -2,9 +2,11 @@
 
 ## SPA, regardless of your framework
 
-The goal of this project is to provide a universal web UI router with a familiar API. It's to feature simple but powerful animation support, and an esay-to-extend middleware model.
-
-It's based on Express and currently support React and Vue. I'm looking to add support for Svelte and Custom Elements. Angular would be nice, but it won't be possible until Ivy is released.
+> Browser UI SPA router
+> ExpressJS - like syntax
+> Supports all major frameworks
+> Route animations under one API
+> Easy-to-write middleware
 
 ### Example
 
