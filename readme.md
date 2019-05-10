@@ -4,7 +4,7 @@
 
 ## SPA, Regardless of your Framework
 
-- SPA UI router for the Browser
+- UI router for the browser
 - ExpressJS like syntax
 - Supports all major frameworks
 - Route animations under one API
