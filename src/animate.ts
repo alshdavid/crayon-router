@@ -1,6 +1,6 @@
 import { handlerFunc, AnimationState, AnimationRoute } from './types'
 
-interface AnimationOptions {
+export interface AnimationOptions {
     name?: string
     duration?: number
     overrideDuration?: boolean
