@@ -1,3 +1,10 @@
 export * from './vue'
-export * from './animate'
 export * from './mounter'
+
+import {
+    router
+} from './vue'
+
+export default {
+    router
+}

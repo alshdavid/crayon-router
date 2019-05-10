@@ -14,12 +14,12 @@
 
 ```jsx
 import React from 'react'
-import * as crayon from 'crayonjs'
-import * as react from 'crayonjs/react'
+import crayon from 'crayonjs'
+import react from 'crayonjs/react'
 
 const app = crayon.create()
 
-app.use(react.Router())
+app.use(react.router())
 
 app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
 
@@ -42,25 +42,30 @@ You can select your framework by using a middleware
 
 ```javascript
 // React
-app.use(react.Router()
+app.use(react.router()
 
 // Vue 
-app.use(vue.Router())
+app.use(vue.router())
 
 // Svelte 3 - TODO
-app.use(svelte.Router())
+app.use(svelte.router())
 
 // Native custom elements - TODO
-app.use(elements.Router())
+app.use(elements.router())
 
 // Angular - TODO with Ivy
-app.use(angular.Router())
+app.use(angular.router())
+```
 
-// Route Animations 
-// All frameworks use the same middleware
+### Route Transitions
+
+#### Work on all frameworks using the same API and middleware
+
+```javascript
+// Route Transitions 
 // This declares "fade" is the default animation
-// But going to and from /help will have custom animations
-app.use(crayon.Animate({
+// But going to and from /help will have custom transitions
+app.use(crayon.animate({
     name: 'fade',
     duration: 5000,
     routes: [
@@ -68,6 +73,18 @@ app.use(crayon.Animate({
          { from: '/help', to: '/**', name: 'pop' }
     ]
 })
+
+// Included route transitions are available 
+// If you don't want to write CSS
+app.use(transition.loader())
+app.use(crayon.animate({
+    name: transition.fade,
+    duration: 300,
+    routes: [
+        { from: '/**', to: '/more', name: transition.slideLeft },
+        { from: '/more', to: '/**', name: transition.slideRight }
+    ]
+}))
 ```
 
 ### Lazy Loading
@@ -100,8 +117,8 @@ const usersGroup = (app) => {
 ```
 
 ```javascript
-import * as crayon from 'crayon';
-import * as react from 'crayon/react';
+import crayon from 'crayonjs';
+import react from 'crayonjs/react';
 import { usersGroup } from './users'
 
 const app = crayon.create()
@@ -125,8 +142,8 @@ export const MyView = (dep) => () => <div>{ dep.value }<div>
 ```
 
 ```javascript
-import * as crayon from 'crayon';
-import * as react from 'crayon/react';
+import * as crayon from 'crayonjs';
+import * as react from 'crayonjs/react';
 import { MyView } from './views'
 
 const dep = { value: 'hello world' }

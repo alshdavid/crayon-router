@@ -5,6 +5,7 @@
     /users/:id/edit
     /users/5345/edit
 */
+// TODO match "/**" paths
 export const matchPath = (
     pattern: string, 
     pathname: string

@@ -11,7 +11,7 @@ import * as react from 'crayonjs/react'
 
 const app = crayon.create()
 
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.router())
 
 app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
 
@@ -48,13 +48,13 @@ const usersGroup = (app) => {
 ```
 
 ```javascript
-import * as crayon from 'crayon';
-import * as react from 'crayon/react';
+import * as crayon from 'crayonjs';
+import * as react from 'crayonjs/react';
 import { usersGroup } from './users'
 
 const app = crayon.create()
 
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.router())
 usersGroup(app)
 
 app.path('/', (req, res) =>
@@ -73,16 +73,41 @@ export const MyView = (dep) => () => <div>{ dep.value }<div>
 ```
 
 ```javascript
-import * as crayon from 'crayon';
-import * as react from 'crayon/react';
+import * as crayon from 'crayonjs';
+import * as react from 'crayonjs/react';
 import { MyView } from './views'
 
 const dep = { value: 'hello world' }
 const app = crayon.create()
 
-app.use(react.Router('#app', React, ReactDOM))
+app.use(react.router())
 
 app.path('/', (req, res) => res.mount(MyView(dep)))
 
 app.load()
+```
+
+### Transitions
+
+Use the standard animations middleware to add animations
+These are just preset css classes/styles.
+Check out the transitions docs to learn how you can make your own.
+
+```javascript
+import crayon from 'crayonjs';
+import react from 'crayonjs/react';
+import transition from 'crayonjs/transition';
+
+const app = crayon.create()
+
+app.use(react.router())
+app.use(transition.loader())
+app.use(crayon.animate({
+    name: transition.fade,
+    duration: 300,
+    routes: [
+        { from: '/**', to: '/more', name: transition.slideLeft },
+        { from: '/more', to: '/**', name: transition.slideRight }
+    ]
+}))
 ```

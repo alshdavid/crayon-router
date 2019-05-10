@@ -13,6 +13,7 @@ export class Router {
     isLoading = true
 
     constructor() {
+        // TODO destroy method
         window.addEventListener('popstate', () => {
             this.load()
         })
@@ -22,6 +23,7 @@ export class Router {
         this.routes[path] = handlers
     }
 
+    // TODO consider adding "app" as last param
     use(handler: handlerFunc) {
         this.middleware.push(handler)
     }
@@ -41,6 +43,8 @@ export class Router {
         return this.load()
     }
 
+    // TODO figure out how to not kill the router
+    // is back is spammed while in a transition
     back() {
         if (this.isLoading) {
             return

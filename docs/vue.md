@@ -7,56 +7,7 @@ _Simply used the supplied middleware_
 
 ```javascript
 const app = crayon.create()
-app.use(vue.Router('#app', Vue))
-app.use(vue.Animate({ name: 'fade', mode: 'out-in', childView: 'child-view' }))
-```
-
-### Example using object-based components
-
-```javascript
-import Vue from 'vue'
-import * as crayon from 'crayonjs'
-import * as vue from 'crayonjs/vue'
-import 'styles.css'
-
-const HomeAndAbout = (router, req, someService) => ({
-    data: () => ({
-        req,
-        router,
-        someService
-    }),
-    template:  
-    /* html */
-    `<div>
-        <h1>{{ req.pathname }}</h1>
-        <nav>
-            <a @click="router.navigate('/home')">Home</a>
-            <a @click="router.navigate('/about')">About</a>
-        </nav>
-        <p>{{ someService.getData() }}</p>
-    </div>`
-})
-
-const someService = {
-    getData: () => 'Some data or something from your service'
-}
-const app = crayon.create()
-
-app.use(vue.Router('#app', Vue))
-
-app.path('/', (req, res) => 
-    res.redirect('/home')
-)
-
-app.path('/home', (req, res) => {
-    res.mount(HomeAndAbout(app, req, someService))
-})
-
-app.path('/about', (req, res) => { 
-    res.mount(HomeAndAbout(app, req, someService))
-})
-
-app.load()
+app.use(vue.router())
 ```
 
 ### Example using Vue file components
@@ -86,14 +37,13 @@ export default {
 `main.js`
 
 ```javascript
-import Vue from 'vue'
-import * as crayon from 'crayonjs'
-import * as vue from 'crayonjs/vue'
+import crayon from 'crayonjs'
+import vue from 'crayonjs/vue'
 import HelloWorld from './HomeAndAbout.vue';
 
 const app = crayon.create()
 
-app.use(vue.Router('#app', Vue))
+app.use(vue.router())
 
 app.path('/', (req, res) => 
     res.redirect('/home')
@@ -109,6 +59,55 @@ app.path('/about', (req, res) => {
 
 r.load()
 ```
+
+### Example using object-based components
+
+```javascript
+import crayon from 'crayonjs'
+import vue from 'crayonjs/vue'
+import './styles.css'
+
+const HomeAndAbout = (router, req, someService) => ({
+    data: () => ({
+        req,
+        router,
+        someService
+    }),
+    template:  
+    /* html */
+    `<div>
+        <h1>{{ req.pathname }}</h1>
+        <nav>
+            <a @click="router.navigate('/home')">Home</a>
+            <a @click="router.navigate('/about')">About</a>
+        </nav>
+        <p>{{ someService.getData() }}</p>
+    </div>`
+})
+
+const someService = {
+    getData: () => 'Some data or something from your service'
+}
+const app = crayon.create()
+
+app.use(vue.router())
+
+app.path('/', (req, res) => 
+    res.redirect('/home')
+)
+
+app.path('/home', (req, res) => {
+    res.mount(HomeAndAbout(app, req, someService))
+})
+
+app.path('/about', (req, res) => { 
+    res.mount(HomeAndAbout(app, req, someService))
+})
+
+app.load()
+```
+
+
 
 ### Example using Vue file components with TypeScript
 
@@ -127,7 +126,7 @@ r.load()
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import * as crayon from 'crayonjs'
+import crayon from 'crayonjs'
 
 @Component
 export default class HomeAndAbout extends Vue {
@@ -142,14 +141,13 @@ export default class HomeAndAbout extends Vue {
 `main.ts`
 
 ```typescript
-import Vue from 'vue'
 import * as crayon from 'crayonjs'
 import * as vue from 'crayonjs/vue'
 import HelloWorld from './HomeAndAbout.vue';
 
 const app = crayon.create()
 
-app.use(vue.Router('#app', Vue))
+app.use(vue.router())
 
 app.path('/', (req, res) => 
     res.redirect('/home')
@@ -173,13 +171,12 @@ Just use the `import` statement with Webpack+Babel or Typescript
 `main.ts`
 
 ```typescript
-import Vue from 'vue'
 import * as crayon from 'crayonjs'
 import * as vue from 'crayonjs/vue'
 
 const app = crayon.create()
 
-app.use(vue.Router('#app', Vue))
+app.use(vue.router())
 
 app.path('/home', async (req, res) => {
     const HelloWorld = await import('./HomeAndAbout.vue')
@@ -189,29 +186,68 @@ app.path('/home', async (req, res) => {
 r.load()
 ```
 
-### Animations
+### Dealing With Dependencies
 
-Use the animations middleware to add animations
+I recomend using a parameter injection model for dependency injection.
+Generally I'll use object components because I can wrap them in functions allowing me
+to pass in dependencies.
 
-```javascript
-app.use(vue.Animate({ 
-    name: 'fade', 
-    mode: 'out-in', 
-    childView: 'child-view' 
-}))
+In the case of vue files, the second paramter of the mount method allows you to map values
+to the component's props.
+
+```html
+<template>
+  <main>
+    {{ prop.value }}
+  </main>
+</template>
+
+<script>
+export default {
+  props: {
+    dep: null,
+  }
+}
+</script>
+
 ```
 
-Make sure to add the appropriate CSS for the animations
+```javascript
+import * as crayon from 'crayonjs';
+import * as vue from 'crayonjs/vue';
+import MyPage from './MyPage'
 
-```css
-.fade-enter-active, .fade-leave-active {
-    transition: opacity 1s ease;
-}
-.fade-enter, .fade-leave-active {
-    opacity: 0;
-}
-.child-view {
-    position: absolute;
-    transition: all 1s cubic-bezier(.55,0,.1,1);
-}
+const dep = { value: 'hello world' }
+const app = crayon.create()
+
+app.use(react.router())
+
+app.path('/', (req, res) => res.mount(MyPage, { dep }))
+
+app.load()
+```
+
+### Transitions
+
+Use the standard animations middleware to add animations
+These are just preset css classes/styles.
+Check out the transitions docs to learn how you can make your own.
+
+```javascript
+import crayon from 'crayonjs';
+import vue from 'crayonjs/vue';
+import transition from 'crayonjs/transition';
+
+const app = crayon.create()
+
+app.use(vue.router())
+app.use(transition.loader())
+app.use(crayon.animate({
+    name: transition.fade,
+    duration: 300,
+    routes: [
+        { from: '/**', to: '/more', name: transition.slideLeft },
+        { from: '/more', to: '/**', name: transition.slideRight }
+    ]
+}))
 ```

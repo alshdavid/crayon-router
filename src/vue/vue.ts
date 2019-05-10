@@ -5,7 +5,7 @@ import { VueMounter } from "./mounter";
 export const router = (): handlerFunc => (req, res, state) => {
     if (!state.vue) {
         state.vue = {
-            mounter: new VueMounter(state.vue.instances),
+            mounter: new VueMounter(),
         }
     }
 
