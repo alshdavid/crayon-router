@@ -1,2 +1,7 @@
 export * from './react'
-export * from './animate'
+
+import { router } from './react'
+
+export default {
+    router
+}

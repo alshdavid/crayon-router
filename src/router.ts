@@ -10,7 +10,7 @@ export class Router {
     history: string[] = ['']
     req: Request | undefined
     res: Response | undefined
-    isLoading = false
+    isLoading = true
 
     constructor() {
         window.addEventListener('popstate', () => {
@@ -30,10 +30,8 @@ export class Router {
         if (this.isLoading) {
             return
         }
-        this.isLoading = true
         window.history.pushState(null, document.title, path)
         await this.load()
-        this.isLoading = false
     }
 
     reload() {
@@ -44,15 +42,20 @@ export class Router {
     }
 
     back() {
+        if (this.isLoading) {
+            return
+        }
         window.history.back()
     }
 
     async load() {
+        this.isLoading = true
         this.req = new Request()
         this.res = new Response()
 
         this.res.redirect = (path: string) => {
             window.history.pushState(null, document.title, path)
+            this.isLoading = false
             this.load()
         }     
 
@@ -89,6 +92,7 @@ export class Router {
             }
             await handler(this.req, this.res, this.state, this.history)
         }
+        this.isLoading = false
     }
 }
 
