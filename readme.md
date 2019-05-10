@@ -2,11 +2,11 @@
 
 ## SPA, regardless of your framework
 
-> Browser UI SPA router
-> ExpressJS - like syntax
-> Supports all major frameworks
-> Route animations under one API
-> Easy-to-write middleware
+- SPA UI router for the Browser
+- ExpressJS - like syntax
+- Supports all major frameworks
+- Route animations under one API
+- Easy-to-write middleware
 
 ### Example
 
