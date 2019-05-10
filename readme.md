@@ -1,6 +1,6 @@
 <img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 
-## SPA, regardless of your framework
+## SPA, Regardless of your Framework
 
 - SPA UI router for the Browser
 - ExpressJS like syntax
