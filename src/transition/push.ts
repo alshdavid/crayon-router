@@ -66,6 +66,5 @@ export const push = `
 .router-view.pop-left-exit,
 .router-view.pop-right-exit {
     transition: transform .5s;
-    background-color: inherit;
     z-index: 10000;
 }`

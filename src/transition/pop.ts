@@ -31,7 +31,6 @@ export const pop = `
 .router-view.push-down,
 .router-view.push-left,
 .router-view.push-right {
-    background-color: inherit;
     position: absolute;
     top: 0;
     left: 0;

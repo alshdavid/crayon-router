@@ -5,13 +5,11 @@ import * as fromPop from "./pop";
 import * as fromPush from './push'
 import { root } from "./body";
 
-let hasLoadedCSS = false
-
 export const loader = (seletor = 'body'): handlerFunc => {
     const s = document.createElement('style')
-    s.innerHTML += root(seletor)
-    s.innerHTML += fromPop
-    s.innerHTML += fromPush
+    s.innerHTML += root
+    s.innerHTML += fromPop.pop
+    s.innerHTML += fromPush.push
     s.innerHTML += fromSlide.slide
     s.innerHTML += fromFade.fade
     document.head.appendChild(s)
@@ -26,8 +24,8 @@ export const pushUp ='push-up'
 export const pushDown ='push-down'
 export const pushLeft = 'push-left'
 export const pushRight = 'push-right'
-export const popUp ='slide-up'
-export const popDown ='slide-down'
-export const popLeft = 'slide-left'
-export const popRight = 'slide-right'
+export const popUp ='pop-up'
+export const popDown ='pop-down'
+export const popLeft = 'pop-left'
+export const popRight = 'pop-right'
 export const fade = 'fade'

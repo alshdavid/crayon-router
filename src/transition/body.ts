@@ -1,4 +1,4 @@
-export const root = (selector: string) => `
+export const root = `
 .is-animating {
     overflow: hidden;
     position: fixed;
