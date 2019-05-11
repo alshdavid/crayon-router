@@ -59,7 +59,7 @@ app.use(angular.router())
 
 ### Route Transitions
 
-#### Work on all frameworks using the same API and middleware
+#### This single API works on all frameworks
 
 ```javascript
 // Route Transitions 
