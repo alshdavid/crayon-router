@@ -1,4 +1,4 @@
-# Crayon ClientSide Router
+# Crayon Client Router
 
 <img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 
