@@ -10,19 +10,16 @@ export class VueMounter implements mountable {
         public instances: any[] = []
     ){}
 
-    push(instance: CombinedVueInstance<any,any,any,any,any>) { 
+    async push(instance: any) { 
         const incoming = document.createElement('div')
         incoming.classList.add(outletSelector)
         instance.$mount()
         incoming.appendChild(instance.$el)
         this.instances.push({instance})
-        return {
-            commit: () => this.target.appendChild(incoming), 
-            el: incoming
-        }
+        this.target.appendChild(incoming)
     }
 
-    pop() {
+    async pop() {
         const { leaving } = getOutlets(outletSelector)
         if (!leaving) {
             return
@@ -31,6 +28,7 @@ export class VueMounter implements mountable {
         this.instances.shift()
         leaving.innerHTML = ''
         this.target.removeChild(leaving)
+        return
     }
 
     async createInstance(component: any, props?: any) {

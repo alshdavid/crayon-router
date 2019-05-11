@@ -10,17 +10,13 @@ export const router = (target?: HTMLElement): handlerFunc => (req, res, state) =
     }
 
     res.mount = async (component: any, props?: any) => {
-        const animation = {
-            name: res.ctx.animation && res.ctx.animation.name,
-            duration: res.ctx.animation && res.ctx.animation.duration,
-        }
-        const mounter = state.vue.mounter
-        const instance = await mounter.createInstance(component, props)
+        const { createInstance } = state.vue.mounter
+        const instance = await createInstance(component, props)
         return mount(
             instance,
-            mounter,
-            animation.name,
-            animation.duration
+            state.vue.mounter,
+            res.ctx.animation && res.ctx.animation.name,
+            res.ctx.animation && res.ctx.animation.duration
         )
     }
 }

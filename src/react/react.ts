@@ -10,15 +10,11 @@ export const router = (target?: HTMLElement): handlerFunc => (req, res, state) =
     }
 
     res.mount = (Component: any): Promise<any> => {
-        const animation = {
-            name: res.ctx.animation && res.ctx.animation.name,
-            duration: res.ctx.animation && res.ctx.animation.duration,
-        }
         return mount(
             Component,
             state.react.mounter,
-            animation.name,
-            animation.duration
+            res.ctx.animation && res.ctx.animation.name,
+            res.ctx.animation && res.ctx.animation.duration
         )
     }
 }

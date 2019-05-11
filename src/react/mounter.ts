@@ -7,20 +7,17 @@ export class ReactMounter implements mountable {
         public target = document.body
     ) {}
 
-    push(C: any) { 
+    async push(C: any) { 
         const incoming = document.createElement('div')
         addClass(incoming, outletSelector)
         ReactDOM.render(
             React.createElement(C), 
             incoming
         )
-        return {
-            el: incoming,
-            commit: () => this.target.appendChild(incoming)
-        }
+        this.target.appendChild(incoming)
     }
 
-    pop() {
+    async pop() {
         const { leaving } = getOutlets(outletSelector)
         if (!leaving) {
             return

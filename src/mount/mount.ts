@@ -5,12 +5,12 @@ export const outletSelector = 'router-view'
 
 export interface mountable {
     target: HTMLElement
-    push: (C: any) => { commit: () => void, el: HTMLElement }
-    pop: () => void
+    push: (C: any) => Promise<void>
+    pop: () => Promise<void>
 }
 
 // The secret sauce
-export const mount = (
+export const mount = async (
     incoming: any,
     mounter: mountable,
     name: string,
@@ -20,13 +20,12 @@ export const mount = (
     const root = mounter.target
     const states = makeClassNames(name)
     const hasTransition = hasAnimation(states.noAnimation, name, duration)
-    const { commit } = mounter.push(incoming)
     
     // Add initial classes
     addClass(root, states.isAnimating)
     
-    // Add incoming element to DOM
-    commit()
+    // Push incoming to dom
+    await mounter.push(incoming)
 
     // Get elements
     const { leaving, entering } = getOutlets(states.outlet)

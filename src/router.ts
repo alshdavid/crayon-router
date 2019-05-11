@@ -28,6 +28,7 @@ export class Router {
         this.middleware.push(handler)
     }
 
+    // TODO block navigation if already on destination
     async navigate(path: string) {
         if (this.isLoading) {
             return
@@ -44,7 +45,7 @@ export class Router {
     }
 
     // TODO figure out how to not kill the router
-    // is back is spammed while in a transition
+    // is back is press while inside a transition
     back() {
         if (this.isLoading) {
             return
@@ -62,6 +63,8 @@ export class Router {
             this.isLoading = false
             this.load()
         }     
+    
+        // TODO match "/**" and "/something/**" routes
 
         // Match and populate handlers
         let handlers: handlerFunc[] = []
