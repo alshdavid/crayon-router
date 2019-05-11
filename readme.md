@@ -4,7 +4,7 @@
 
 ## SPA, Regardless of your Framework
 
-- UI router for the browser
+- Clientside UI Router
 - ExpressJS like syntax
 - Supports all major frameworks
 - Route animations under one API
@@ -47,13 +47,13 @@ app.use(react.router()
 // Vue 
 app.use(vue.router())
 
-// Svelte 3 - TODO
+// Svelte 3
 app.use(svelte.router())
 
 // Native custom elements - TODO
 app.use(elements.router())
 
-// Angular - TODO with Ivy
+// Angular - TODO (Waiting on Ivy)
 app.use(angular.router())
 ```
 
@@ -89,7 +89,8 @@ app.use(crayon.animate({
 
 ### Lazy Loading
 
-Lazy loading simply requires you to use the latest JavaScript dynamic module feature `import()`
+Just use the dynamic `import()` feature.
+It's baked into modern browsers and available through module bundlers.
 
 ```javascript
 app.path('/', async (req, res) => {

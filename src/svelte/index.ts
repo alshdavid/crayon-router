@@ -1,6 +1,6 @@
-export * from './react'
+export * from './svelte'
 
-import { router } from './react'
+import { router } from './svelte'
 
 export default {
     router

@@ -166,7 +166,8 @@ r.load()
 
 ### Lazy Loading a route
 
-Just use the `import` statement with Webpack+Babel or Typescript
+Just use the dynamic `import()` feature.
+It's baked into modern browsers and available through module bundlers.
 
 `main.ts`
 

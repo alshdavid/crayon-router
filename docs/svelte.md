@@ -1,18 +1,17 @@
 # Crayon
-## React middleware
+## Svelte middleware
 
 ### Getting started
 
-```jsx
-import React from 'react'
+```javascript
 import crayon from 'crayon'
-import react from 'crayon/react'
+import svelte from 'crayon/svelte'
+import Page from './Page.svelte'
 
 const app = crayon.create()
+app.use(svelte.router())
 
-app.use(react.router())
-
-app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
+app.path('/', (req, res) => res.mount(Page)
 
 app.load()
 ```
@@ -24,8 +23,8 @@ It's baked into modern browsers and available through module bundlers.
 
 ```javascript
 app.path('/', async (req, res) => {
-    const HomeView = await import('./home-view')
-    res.mount(HomeView)
+    const Home = await import('./Home.svelte')
+    res.mount(Home)
 })
 ```
 
@@ -34,27 +33,28 @@ app.path('/', async (req, res) => {
 Groups (at least at this stage) are simply functions that take a `router` instance and register their routes.
 
 ```javascript
-import { UsersView, UsersDetailView } from './views'
+import Users from './views/Users.svelte'
+import UsersDetail from './views/UsersDetail.svelte'
 
 const usersGroup = (app) => {
     app.path('/users', (req, res) =>
-        res.mount(UsersView)
+        res.mount(Users)
     )
 
     app.path('/users/:id', (req, res) =>
-        res.mount(UsersDetailView)
+        res.mount(UsersDetail)
     )
 }
 ```
 
 ```javascript
 import crayon from 'crayon'
-import react from 'crayon/react'
+import svelte from 'crayon/svelte'
 import { usersGroup } from './users'
 
 const app = crayon.create()
 
-app.use(react.router())
+app.use(svelte.router())
 usersGroup(app)
 
 app.path('/', (req, res) =>
@@ -68,21 +68,22 @@ app.load()
 
 I recomend using a parameter injection model for dependency injection
 
-```jsx
-export const MyView = (dep) => () => <div>{ dep.value }<div>
+```html
+<script>
+	export let dep
+</script>
+<h1>{ dep.value }</h1>
 ```
 
 ```javascript
 import crayon from 'crayon'
-import react from 'crayon/react'
-import { MyView } from './views'
+import svelte from 'crayon/svelte'
+import MyView from './MyView.svelte'
 
-const dep = { value: 'hello world' }
 const app = crayon.create()
+app.use(svelte.router())
 
-app.use(react.router())
-
-app.path('/', (req, res) => res.mount(MyView(dep)))
+app.path('/', (req, res) => res.mount(MyView, { dep }))
 
 app.load()
 ```
@@ -95,12 +96,12 @@ Check out the transitions docs to learn how you can make your own.
 
 ```javascript
 import crayon from 'crayon';
-import react from 'crayon/react';
+import svelte from 'crayon/svelte';
 import transition from 'crayon/transition';
 
 const app = crayon.create()
 
-app.use(react.router())
+app.use(svelte.router())
 app.use(transition.loader())
 app.use(crayon.animate({
     name: transition.fade,
