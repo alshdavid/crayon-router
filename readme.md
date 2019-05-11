@@ -2,7 +2,7 @@
 
 <img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 
-## SPA, Regardless of your Framework
+## Client-Side Router, for all Frameworks
 
 - Clientside UI Router
 - ExpressJS like syntax
@@ -59,7 +59,7 @@ app.use(angular.router())
 
 ### Route Transitions
 
-#### Work on all frameworks using the same API and middleware
+#### This single API works on all frameworks
 
 ```javascript
 // Route Transitions 
