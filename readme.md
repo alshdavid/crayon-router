@@ -2,7 +2,7 @@
 
 <img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 
-## Client-Side Router, For All Frameworks
+## Client-Side Router, for all Frameworks
 
 - Clientside UI Router
 - ExpressJS like syntax
