@@ -21,9 +21,6 @@ export const mount = async (
     const states = makeClassNames(name)
     const hasTransition = hasAnimation(states.noAnimation, name, duration)
     
-    // Add initial classes
-    addClass(root, states.isAnimating)
-    
     // Push incoming to dom
     await mounter.push(incoming)
 
@@ -32,6 +29,7 @@ export const mount = async (
     
     // Add classes to entering element
     if (hasTransition) {
+        addClass(root, states.isAnimating)
         addClass(entering, states.base)
         addStyles(entering, { transitionDuration: `${duration}ms` })
         waitForElements(entering)
@@ -42,7 +40,6 @@ export const mount = async (
     if (leaving === undefined) {
         if (!hasTransition) {
             addClass(entering, states.enterDone)
-            removeClass(root, states.isAnimating)
             return Promise.resolve()
         }
         addClass(entering, states.firstEnter)
@@ -81,6 +78,7 @@ export const mount = async (
     }, duration)
 }
 
+// TODO remove name
 const makeClassNames = (name: string) => ({
     outlet: outletSelector,
     isAnimating: 'is-animating',
