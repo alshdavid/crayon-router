@@ -1,5 +1,5 @@
 export const root = (selector: string) => `
-${selector}.is-animating {
+.is-animating {
     overflow: hidden;
     position: fixed;
     width: 100%;
