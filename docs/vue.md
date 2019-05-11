@@ -49,13 +49,13 @@ app.path('/', (req, res) =>
     res.redirect('/home')
 )
 
-app.path('/home', (req, res) => {
+app.path('/home', (req, res) => 
     res.mount(() => HelloWorld, { nav: r, req })
-})
+)
 
-app.path('/about', (req, res) => {
+app.path('/about', (req, res) => 
   res.mount(() => HelloWorld, { nav: r, req })
-})
+)
 
 r.load()
 ```
@@ -96,13 +96,13 @@ app.path('/', (req, res) =>
     res.redirect('/home')
 )
 
-app.path('/home', (req, res) => {
+app.path('/home', (req, res) => 
     res.mount(HomeAndAbout(app, req, someService))
-})
+)
 
-app.path('/about', (req, res) => { 
+app.path('/about', (req, res) => 
     res.mount(HomeAndAbout(app, req, someService))
-})
+)
 
 app.load()
 ```
@@ -153,13 +153,13 @@ app.path('/', (req, res) =>
     res.redirect('/home')
 )
 
-app.path('/home', (req, res) => {
+app.path('/home', (req, res) => 
     res.mount(() => HelloWorld, { nav: r, req })
-})
+)
 
-app.path('/about', (req, res) => {
+app.path('/about', (req, res) => 
   res.mount(() => HelloWorld, { nav: r, req })
-})
+)
 
 r.load()
 ```
@@ -179,10 +179,10 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/home', async (req, res) => {
+app.path('/home', async (req, res) => 
     const HelloWorld = await import('./HomeAndAbout.vue')
     res.mount(() => HelloWorld, { nav: r, req })
-})
+)
 
 r.load()
 ```
