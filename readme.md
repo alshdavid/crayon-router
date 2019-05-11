@@ -1,8 +1,8 @@
-# Crayon Client Router
+# Crayon
 
 <img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 
-## Single Page App, Regardless of your Framework
+## Client-Side Router, For All Frameworks
 
 - Clientside UI Router
 - ExpressJS like syntax
