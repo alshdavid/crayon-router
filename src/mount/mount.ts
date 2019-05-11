@@ -1,20 +1,89 @@
 import { go } from "./timeout";
+import { addClass, addStyles, removeClass, clearClasses, waitForElements, getOutlets } from "./element";
 
 export const outletSelector = 'router-view'
-export const getOutlets = (): HTMLElement[] => (document.body.getElementsByClassName(outletSelector) as any)
-export const waitForElements = (...e: HTMLElement[]) => e.forEach(el => el.getBoundingClientRect())
 
 export interface mountable {
+    target: HTMLElement
     push: (C: any) => { commit: () => void, el: HTMLElement }
     pop: () => void
 }
 
-const addClass = (
-    el: HTMLElement, 
-    name: string
-) => el && el.classList && el.classList.add && el.classList.add(name)
+// The secret sauce
+export const mount = (
+    incoming: any,
+    mounter: mountable,
+    name: string,
+    duration: number
+) => {
+    // Get actors
+    const root = mounter.target
+    const states = makeClassNames(name)
+    const hasTransition = hasAnimation(states.noAnimation, name, duration)
+    const { commit } = mounter.push(incoming)
+    
+    // Add initial classes
+    addClass(root, states.isAnimating)
+    
+    // Add incoming element to DOM
+    commit()
+
+    // Get elements
+    const { leaving, entering } = getOutlets(states.outlet)
+    
+    // Add classes to entering element
+    if (hasTransition) {
+        addClass(entering, states.base)
+        addStyles(entering, { transitionDuration: `${duration}ms` })
+        waitForElements(entering)
+    }
+
+    // First load
+    // Special action
+    if (leaving === undefined) {
+        if (!hasTransition) {
+            addClass(entering, states.enterDone)
+            removeClass(root, states.isAnimating)
+            return Promise.resolve()
+        }
+        addClass(entering, states.firstEnter)
+        addClass(entering, states.enter)
+        waitForElements(entering)
+        return go(() => {
+            removeClass(entering, states.firstEnter)
+            removeClass(entering, states.enter)
+            addClass(entering, states.enterDone)
+            removeClass(root, states.isAnimating)
+        }, duration)
+    }
+
+    // If route has no animation skip
+    if (!hasTransition) {
+        mounter.pop()
+        return Promise.resolve()
+    }
+
+    // Start route animation
+    clearClasses(leaving)
+    addStyles(leaving, { transitionDuration: `${duration}ms` })
+    addStyles(entering, { transitionDuration: `${duration}ms` })
+    addClass(leaving, states.outlet)
+    addClass(leaving, states.base)
+    addClass(leaving, states.exit)
+    addClass(entering, states.enter)   
+    waitForElements(leaving, entering)
+
+    // Remove classes once duration is complete
+    return go(() => {
+        mounter.pop()
+        removeClass(entering, states.enter)
+        addClass(entering, states.enterDone)
+        removeClass(root, states.isAnimating)
+    }, duration)
+}
 
 const makeClassNames = (name: string) => ({
+    outlet: outletSelector,
     isAnimating: 'is-animating',
     noAnimation: 'no-animation',
     hostView: 'host-view',
@@ -25,53 +94,18 @@ const makeClassNames = (name: string) => ({
     exit: `${name}-exit`
 })
 
-// The secret sauce
-export const mount = (
-    incoming: any,
-    mounter: mountable,
-    name: string,
-    duration: number
+const hasAnimation = (
+    noAnimation: string, 
+    name?: string, 
+    duration?: number
 ) => {
-    const states = makeClassNames(name)
-    document.body.classList.add(states.isAnimating)
-    const { commit, el } = mounter.push(incoming)
-    
-    const outlets = getOutlets()
-    addClass(el, states.base)
-    el.style.transitionDuration = `${duration}ms`
-    commit()
-    if (outlets.length === 1) {
-        waitForElements(outlets[0])
-        outlets[0].classList.add(states.firstEnter)
-        outlets[0].classList.add(states.enter)
-        return go(() => {
-            outlets[0].classList.remove(states.firstEnter)
-            outlets[0].classList.remove(states.enter)
-            outlets[0].classList.add(states.enterDone)
-            document.body.classList.remove(states.isAnimating)
-        })
+    if (
+        !name || 
+        !duration ||
+        name === noAnimation || 
+        duration === 0
+    ) {
+        return false
     }
-    if (name === states.noAnimation || duration === 0) {
-        mounter.pop()
-        return Promise.resolve()
-        return
-    }
-
-    const outgoingEl = outlets[0]
-    const incomingEl = outlets[1]
-    outgoingEl.style.transitionDuration = `${duration}ms`
-    incomingEl.style.transitionDuration = `${duration}ms`
-    outgoingEl.className = ''
-    outgoingEl.classList.add(outletSelector)
-    outgoingEl.classList.add(states.base)
-    waitForElements(outgoingEl, incomingEl)
-    outgoingEl.classList.add(states.exit)
-    incomingEl.classList.add(states.enter)
-    
-    return go(() => {
-        mounter.pop()
-        incomingEl.classList.remove(states.enter)
-        incomingEl.classList.add(states.enterDone)
-        document.body.classList.remove(states.isAnimating)
-    })
+    return true
 }

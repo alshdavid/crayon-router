@@ -1,6 +1,8 @@
-export const body = `
-body.is-animating {
+export const root = (selector: string) => `
+${selector}.is-animating {
     overflow: hidden;
-    position: relative;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 `
