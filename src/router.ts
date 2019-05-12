@@ -1,7 +1,9 @@
-import { matchPath, deserializeQuery } from "./url";
+import * as url from "./url";
 import { Request } from './request'
 import { Response } from './response'
 import { handlerFunc } from './types'
+import { Group } from "./group";
+import { Subject } from "rxjs";
 
 export class Router {
     middleware: handlerFunc[] = []
@@ -11,20 +13,52 @@ export class Router {
     req: Request | undefined
     res: Response | undefined
     isLoading = true
+    
+    get events(): Subject<any> {
+        const state = (window as any).crayon
+        return state.events 
+    }
+
+    onPopState = () => this.load()
 
     constructor() {
-        // TODO destroy method
-        window.addEventListener('popstate', () => {
-            this.load()
-        })
+        window.addEventListener('popstate', this.onPopState)
+    }
+
+    destroy() {
+        window.removeEventListener('popstate', this.onPopState)
     }
 
     path(path: string, ...handlers: handlerFunc[]) {
         this.routes[path] = handlers
+        // this.load()
     }
 
-    // TODO consider adding "app" as last param
-    use(handler: handlerFunc) {
+    use(target: handlerFunc | Group) {
+        if (target instanceof Group) {
+            this.useGroup(target)
+        } else {
+            this.useHandler(target)
+        }
+        // this.load()
+    }
+
+    useGroup(group: Group) {
+        const routes: Record<string, handlerFunc[]> = {}
+        for (const route in group.routes) {
+            const path = group.base + route
+            routes[path] = [ 
+                ...group.middleware, 
+                ...group.routes[route] 
+            ]
+        }
+        this.routes = {
+            ...routes,
+            ...this.routes
+        }
+    }
+
+    useHandler(handler: handlerFunc) {
         this.middleware.push(handler)
     }
 
@@ -33,6 +67,7 @@ export class Router {
         if (this.isLoading) {
             return
         }
+        path = url.normalise(path)
         window.history.pushState(null, document.title, path)
         await this.load()
     }
@@ -53,12 +88,27 @@ export class Router {
         window.history.back()
     }
 
+    emit(value: any) {
+        const state = (window as any).crayon
+        if (!state) {
+            return
+        }
+        state.events.next(value)
+    }
+
     async load() {
         this.isLoading = true
         this.req = new Request()
         this.res = new Response()
+        this.emit({ name: 'ROUTING_START', ctx: { ...this.req} })
+
+        const path = url.normalise(this.req.pathname)
+        if (path !== this.req.pathname) {
+            window.history.replaceState(null, document.title, path)
+        }
 
         this.res.redirect = (path: string) => {
+            path = url.normalise(path)
             window.history.pushState(null, document.title, path)
             this.isLoading = false
             this.load()
@@ -69,39 +119,44 @@ export class Router {
         // Match and populate handlers
         let handlers: handlerFunc[] = []
         for (const key in this.routes) {
-            const params = matchPath(key, this.req.pathname)
+            const params = url.matchPath(key, this.req.pathname)
             if (!params) {
                 continue
             }
             this.history.push(key)
             handlers = this.routes[key]
             this.req.params = { ...params }
-            this.req.routePattern = key
+            this.req.routePattern = url.normalise(key)
             break;
         }
-        if (handlers.length === 0) {
-            console.error(`No handlers found for route: ${this.req.pathname}`)
-        }
         // Cast query string to object
-        this.req.query = { ...deserializeQuery(window.location.search) }
+        this.req.query = { ...url.deserializeQuery(window.location.search) }
 
         // Run middleware
         for (const middleware of this.middleware) {
             if (this.res.hasCompleted) {
                 return
             }
-            await middleware(this.req, this.res, this.state, this.history)
+            await middleware(this.req, this.res, this.state, (this as any))
         }
         // Run handlers
         for (const handler of handlers) {
             if (this.res.hasCompleted) {
                 return
             }
-            await handler(this.req, this.res, this.state, this.history)
+            await handler(this.req, this.res, this.state, (this as any))
         }
         this.isLoading = false
+        this.emit({ name: 'ROUTING_COMPLETE', ctx: { ...this.req} })
     }
 }
 
-export const create = () => new Router()
+export const create = () => {
+    if (!(window as any).crayon) {
+        ;(window as any).crayon = {
+            events: new Subject()
+        }
+    }
+    return new Router()
+}
 

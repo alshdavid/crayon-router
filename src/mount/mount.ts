@@ -1,9 +1,8 @@
 import { go } from "./timeout";
 import { addClass, addStyles, removeClass, clearClasses, waitForElements, getOutlets } from "./element";
 
-export const outletSelector = 'router-view'
-
 export interface mountable {
+    selector: string
     target: HTMLElement
     push: (C: any) => Promise<void>
     pop: () => Promise<void>
@@ -25,7 +24,7 @@ export const mount = async (
     await mounter.push(incoming)
 
     // Get elements
-    const { leaving, entering } = getOutlets(states.outlet)
+    const { leaving, entering } = getOutlets(mounter.selector)
     
     // Add classes to entering element
     if (hasTransition) {
@@ -63,7 +62,7 @@ export const mount = async (
     clearClasses(leaving)
     addStyles(leaving, { transitionDuration: `${duration}ms` })
     addStyles(entering, { transitionDuration: `${duration}ms` })
-    addClass(leaving, states.outlet)
+    addClass(leaving, mounter.selector)
     addClass(leaving, states.base)
     addClass(leaving, states.exit)
     addClass(entering, states.enter)   
@@ -80,7 +79,6 @@ export const mount = async (
 
 // TODO remove name
 const makeClassNames = (name: string) => ({
-    outlet: outletSelector,
     isAnimating: 'is-animating',
     noAnimation: 'no-animation',
     hostView: 'host-view',

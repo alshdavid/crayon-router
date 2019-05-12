@@ -5,13 +5,13 @@ import * as fromPop from "./pop";
 import * as fromPush from './push'
 import { root } from "./body";
 
-export const loader = (seletor = 'body'): handlerFunc => {
+export const loader = (seletor = '.router-view'): handlerFunc => {
     const s = document.createElement('style')
-    s.innerHTML += root
-    s.innerHTML += fromPop.pop
-    s.innerHTML += fromPush.push
-    s.innerHTML += fromSlide.slide
-    s.innerHTML += fromFade.fade
+    s.innerHTML += root(seletor)
+    s.innerHTML += fromPop.pop(seletor)
+    s.innerHTML += fromPush.push(seletor)
+    s.innerHTML += fromSlide.slide(seletor)
+    s.innerHTML += fromFade.fade(seletor)
     document.head.appendChild(s)
     return (req, res, state) => null
 } 

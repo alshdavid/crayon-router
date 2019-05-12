@@ -1,15 +1,15 @@
-export const fade = `
-.router-view.fade {
+export const fade = (selector: string) => `
+${selector}.fade {
     opacity: 0;
     transition: opacity .5s;
 }
 
-.router-view.fade-enter-first {
+${selector}.fade-enter-first {
     position: static;
     transition-duration: 0s !important;
 }
 
-.router-view.fade-enter {
+${selector}.fade-enter {
     opacity: 1;
     position: absolute;
     top: 0;
@@ -17,11 +17,11 @@ export const fade = `
     right: 0;
 }
 
-.router-view.fade-enter-done {
+${selector}.fade-enter-done {
     opacity: 1;
 }
 
-.router-view.fade-exit {
+${selector}.fade-exit {
     opacity: 0;
 }
 `

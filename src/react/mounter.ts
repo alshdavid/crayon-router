@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mountable,getOutlets, outletSelector, addClass } from '../mount'
+import { mountable,getOutlets, addClass } from '../mount'
 
 export class ReactMounter implements mountable {
     constructor(
-        public target = document.body
+        public target = document.body,
+        public selector = 'router-view'
     ) {}
 
     async push(C: any) { 
         const incoming = document.createElement('div')
-        addClass(incoming, outletSelector)
+        addClass(incoming, this.selector)
         ReactDOM.render(
             React.createElement(C), 
             incoming
@@ -18,7 +19,7 @@ export class ReactMounter implements mountable {
     }
 
     async pop() {
-        const { leaving } = getOutlets(outletSelector)
+        const { leaving } = getOutlets(this.selector)
         if (!leaving) {
             return
         }

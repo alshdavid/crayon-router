@@ -1,18 +1,18 @@
 import Vue, { VueConstructor } from 'vue';
-import { mountable, outletSelector, getOutlets } from '../mount'
-import { CombinedVueInstance } from 'vue/types/vue';
+import { mountable, getOutlets } from '../mount'
 
 const isFunction = (value: any) => typeof value === 'function'
 
 export class VueMounter implements mountable {
     constructor(
         public target = document.body,
+        public selector = 'router-view',
         public instances: any[] = []
     ){}
 
     async push(instance: any) { 
         const incoming = document.createElement('div')
-        incoming.classList.add(outletSelector)
+        incoming.classList.add(this.selector)
         instance.$mount()
         incoming.appendChild(instance.$el)
         this.instances.push({instance})
@@ -20,7 +20,7 @@ export class VueMounter implements mountable {
     }
 
     async pop() {
-        const { leaving } = getOutlets(outletSelector)
+        const { leaving } = getOutlets(this.selector)
         if (!leaving) {
             return
         }

@@ -2,10 +2,10 @@ import { handlerFunc } from '../types'
 import { mount } from '../mount';
 import { ReactMounter } from './mounter';
 
-export const router = (target?: HTMLElement): handlerFunc => (req, res, state) => {   
+export const router = (target?: HTMLElement, className?: string): handlerFunc => (req, res, state) => {  
     if (!state.react) {
         state.react = {
-            mounter: new ReactMounter(target),
+            mounter: new ReactMounter(target, className),
         }
     }
 

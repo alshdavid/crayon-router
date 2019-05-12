@@ -1,36 +1,36 @@
-export const pop = `
-.router-view.push-up {
+export const pop = (selector: string) => `
+${selector}.push-up {
     transform: translate3d(0, 100%, 0);
 }
-.router-view.push-up-enter {
+${selector}.push-up-enter {
     transform: translate3d(0, 0%, 0);
 }
 
-.router-view.push-down {
+${selector}.push-down {
     transform: translate3d(0, -100%, 0);
 }
-.router-view.push-down-enter {
+${selector}.push-down-enter {
     transform: translate3d(0, 0%, 0);
 }
 
-.router-view.push-left {
+${selector}.push-left {
     transform: translate3d(100%, 0, 0);
 }
-.router-view.push-left-enter {
+${selector}.push-left-enter {
     transform: translate3d(0, 0, 0);
 }
 
-.router-view.push-right {
+${selector}.push-right {
     transform: translate3d(-100%, 0, 0);
 }
-.router-view.push-right-enter {
+${selector}.push-right-enter {
     transform: translate3d(0, 0, 0);
 }
 
-.router-view.push-up,
-.router-view.push-down,
-.router-view.push-left,
-.router-view.push-right {
+${selector}.push-up,
+${selector}.push-down,
+${selector}.push-left,
+${selector}.push-right {
     position: absolute;
     top: 0;
     left: 0;
@@ -38,33 +38,33 @@ export const pop = `
     bottom: 0;
 }
 
-.router-view.push-up-enter-first,
-.router-view.push-down-enter-first,
-.router-view.push-left-enter-first,
-.router-view.push-right-enter-first {
+${selector}.push-up-enter-first,
+${selector}.push-down-enter-first,
+${selector}.push-left-enter-first,
+${selector}.push-right-enter-first {
     position: static;
     transition-duration: 0s !important;
 }
 
-.router-view.push-up-enter-done,
-.router-view.push-down-enter-done,
-.router-view.push-left-enter-done,
-.router-view.push-right-enter-done {
+${selector}.push-up-enter-done,
+${selector}.push-down-enter-done,
+${selector}.push-left-enter-done,
+${selector}.push-right-enter-done {
     transform: none;
 }
 
-.router-view.push-up-exit,
-.router-view.push-down-exit,
-.router-view.push-left-exit,
-.router-view.push-right-exit {
+${selector}.push-up-exit,
+${selector}.push-down-exit,
+${selector}.push-left-exit,
+${selector}.push-right-exit {
     z-index: 1000;
     transform: none
 }
 
-.router-view.push-up-enter,
-.router-view.push-down-enter,
-.router-view.push-left-enter,
-.router-view.push-right-enter {
+${selector}.push-up-enter,
+${selector}.push-down-enter,
+${selector}.push-left-enter,
+${selector}.push-right-enter {
     z-index: 10000;
     transition: transform .5s;
 }`

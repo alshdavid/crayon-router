@@ -1,14 +1,15 @@
-import { mountable, getOutlets, outletSelector, addClass } from '../mount'
+import { mountable, getOutlets, addClass } from '../mount'
 
 export class SvelteMounter implements mountable {
     constructor(
         public target = document.body,
+        public selector = 'router-view',
         public instances: any[] = []
     ) { }
 
     async push(builder: any) { 
         const container = document.createElement('div')
-        addClass(container, outletSelector)
+        addClass(container, this.selector)
         this.target.appendChild(container)
         const instance = builder(container)
         this.instances.push({
@@ -18,7 +19,7 @@ export class SvelteMounter implements mountable {
     }
 
     async pop() {
-        const { leaving } = getOutlets(outletSelector)
+        const { leaving } = getOutlets(this.selector)
         if (!leaving) {
             return
         }
