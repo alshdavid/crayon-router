@@ -13,6 +13,7 @@
     "svelte": "^3.0.0"
   },
   "scripts": {
+    "serve": "npx http-server public",
     "build": "rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
