@@ -1,6 +1,17 @@
-# Crayon
-
+<img align="left" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 <img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/crayon.gif">
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## Client-Side Router, for all Frameworks
 
@@ -28,7 +39,6 @@ app.load()
 
 ### Installation
 
-<img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
 
 ```bash
 # For npm users
