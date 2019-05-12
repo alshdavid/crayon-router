@@ -13,12 +13,11 @@
     "svelte": "^3.0.0"
   },
   "scripts": {
-    "serve": "npx http-server public",
     "build": "rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "run-p start:dev autobuild",
-    "start": "sirv public",
-    "start:dev": "sirv public --dev"
+    "start": "sirv -s public",
+    "start:dev": "sirv public -s --dev"
   },
   "dependencies": {
     "crayon": "^1.1.0"
