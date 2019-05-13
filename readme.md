@@ -123,12 +123,12 @@ event.
 You specify the "name" off the CSS class and the middleware
 will add/remove the following classes:
 
-```javascript
-.{name}
-.{name}-exit
-.{name}-enter
-.{name}-enter-done
-.{name}-enter-first
+```css
+.name
+.name-exit
+.name-enter
+.name-enter-done
+.name-enter-first
 ```
 
 The middleware can be placed on the global level, on a group or inline on the route itself.
@@ -205,6 +205,43 @@ app.path('/c',
     ]),
     (req, res) => res.mount(() => <div>Animated</div>) 
 )
+```
+
+#### Animations package
+
+For those who don't want to spend time writing animations, Crayon comes bundled with a bunch.
+
+
+Just use the middleware
+```javascript
+import * as transition from 'crayon/transition';
+
+app.use(transition.loader())
+app.use(crayon.animate({
+    name: transition.pushLeft,
+    duration: 350
+}))
+```
+
+#### Available bundled animations
+
+```javascript
+transition.fade
+
+transition.pushUp
+transition.pushDown
+transition.pushLeft
+transition.pushRight
+
+transition.popUp
+transition.popDown
+transition.popLeft
+transition.popRight
+
+transition.slideUp
+transition.slideDown
+transition.slideLeft
+transition.slideRight
 ```
 
 
