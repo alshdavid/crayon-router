@@ -5,6 +5,8 @@
 
 _Simply used the supplied middleware_
 
+Pass Vue components to the `mount` functions inside your handlers. The second argument will provide props to your components.
+
 ```javascript
 const app = crayon.create()
 app.use(vue.router())
@@ -164,28 +166,6 @@ app.path('/about', (req, res) =>
 r.load()
 ```
 
-### Lazy Loading a route
-
-Just use the dynamic `import()` feature.
-It's baked into modern browsers and available through module bundlers.
-
-`main.ts`
-
-```typescript
-import * as crayon from 'crayon'
-import * as vue from 'crayon/vue'
-
-const app = crayon.create()
-
-app.use(vue.router())
-
-app.path('/home', async (req, res) => 
-    const HelloWorld = await import('./HomeAndAbout.vue')
-    res.mount(() => HelloWorld, { nav: r, req })
-)
-
-r.load()
-```
 
 ### Dealing With Dependencies
 
@@ -226,29 +206,4 @@ app.use(react.router())
 app.path('/', (req, res) => res.mount(MyPage, { dep }))
 
 app.load()
-```
-
-### Transitions
-
-Use the standard animations middleware to add animations
-These are just preset css classes/styles.
-Check out the transitions docs to learn how you can make your own.
-
-```javascript
-import crayon from 'crayon';
-import vue from 'crayon/vue';
-import transition from 'crayon/transition';
-
-const app = crayon.create()
-
-app.use(vue.router())
-app.use(transition.loader())
-app.use(crayon.animate({
-    name: transition.fade,
-    duration: 300,
-    routes: [
-        { from: '/**', to: '/more', name: transition.slideLeft },
-        { from: '/more', to: '/**', name: transition.slideRight }
-    ]
-}))
 ```

@@ -120,7 +120,7 @@ Route Transitions are done using a middleware that
 applies/removes CSS styles over the course of a routing
 event.
 
-You specify the "name" off the CSS class and the middleware
+You specify the "name" of the CSS class and the middleware
 will add/remove the following classes:
 
 ```css
@@ -266,7 +266,7 @@ First create a group in a file
 
 ```javascript
 // my-group.js
-export crayon.group('/my-group', myGroup => {
+export const myGroup = crayon.group('/my-group', myGroup => {
     myGroup.path('/', 
         (req, res) => res.mount(MyView)
     )

@@ -1,7 +1,7 @@
 # Crayon
 ## React middleware
 
-### Getting started
+Simply load the react middleware, then pass React components to the `mount` functions inside your handlers
 
 ```jsx
 import React from 'react'
@@ -13,53 +13,6 @@ const app = crayon.create()
 app.use(react.router())
 
 app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
-
-app.load()
-```
-
-### Lazy Loading
-
-Just use the dynamic `import()` feature.
-It's baked into modern browsers and available through module bundlers.
-
-```javascript
-app.path('/', async (req, res) => {
-    const HomeView = await import('./home-view')
-    res.mount(HomeView)
-})
-```
-
-### Route Groups
-
-Groups (at least at this stage) are simply functions that take a `router` instance and register their routes.
-
-```javascript
-import { UsersView, UsersDetailView } from './views'
-
-const usersGroup = (app) => {
-    app.path('/users', (req, res) =>
-        res.mount(UsersView)
-    )
-
-    app.path('/users/:id', (req, res) =>
-        res.mount(UsersDetailView)
-    )
-}
-```
-
-```javascript
-import crayon from 'crayon'
-import react from 'crayon/react'
-import { usersGroup } from './users'
-
-const app = crayon.create()
-
-app.use(react.router())
-usersGroup(app)
-
-app.path('/', (req, res) =>
-    res.mount(views.HomeView)
-)
 
 app.load()
 ```
@@ -85,29 +38,4 @@ app.use(react.router())
 app.path('/', (req, res) => res.mount(MyView(dep)))
 
 app.load()
-```
-
-### Transitions
-
-Use the standard animations middleware to add animations
-These are just preset css classes/styles.
-Check out the transitions docs to learn how you can make your own.
-
-```javascript
-import crayon from 'crayon';
-import react from 'crayon/react';
-import transition from 'crayon/transition';
-
-const app = crayon.create()
-
-app.use(react.router())
-app.use(transition.loader())
-app.use(crayon.animate({
-    name: transition.fade,
-    duration: 300,
-    routes: [
-        { from: '/**', to: '/more', name: transition.slideLeft },
-        { from: '/more', to: '/**', name: transition.slideRight }
-    ]
-}))
 ```
