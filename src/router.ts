@@ -1,9 +1,9 @@
+import * as observe from './observe'
 import * as url from "./url";
 import { Request } from './request'
 import { Response } from './response'
 import { handlerFunc } from './types'
 import { Group } from "./group";
-import { Subject } from "rxjs";
 
 export class Router {
     middleware: handlerFunc[] = []
@@ -13,10 +13,10 @@ export class Router {
     req: Request | undefined
     res: Response | undefined
     isLoading = true
-    
-    get events(): Subject<any> {
+
+    get events(): observe.Subject<any> {
         const state = (window as any).crayon
-        return state.events 
+        return state.events
     }
 
     onPopState = () => this.load()
@@ -47,9 +47,9 @@ export class Router {
         const routes: Record<string, handlerFunc[]> = {}
         for (const route in group.routes) {
             const path = group.base + route
-            routes[path] = [ 
-                ...group.middleware, 
-                ...group.routes[route] 
+            routes[path] = [
+                ...group.middleware,
+                ...group.routes[route]
             ]
         }
         this.routes = {
@@ -112,8 +112,8 @@ export class Router {
             window.history.pushState(null, document.title, path)
             this.isLoading = false
             this.load()
-        }     
-    
+        }
+
         // TODO match "/**" and "/something/**" routes
 
         // Match and populate handlers
@@ -154,7 +154,7 @@ export class Router {
 export const create = () => {
     if (!(window as any).crayon) {
         ;(window as any).crayon = {
-            events: new Subject()
+            events: observe.createSubject()
         }
     }
     return new Router()

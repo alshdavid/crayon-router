@@ -1,4 +1,4 @@
-import check from 'check-types'
+import * as types from './check-types'
 import { handlerFunc, AnimationState, AnimationRoute } from './types'
 import * as url from './url'
 
@@ -11,7 +11,7 @@ export interface AnimationOptions {
 }
 
 export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFunc => (
-    req, 
+    req,
     res,
     state,
     app
@@ -20,7 +20,7 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
         state.animation = new AnimationState()
         ;(window as any).animations = state.animation
     }
-    if (!check.array(options)) {
+    if (!types.isArray(options)) {
         if (options.name !== undefined) {
             state.animation.name = options.name
         }
@@ -62,7 +62,7 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
     for (const route of state.animation.routes as AnimationRoute[]) {
         const routeFrom = route.from
         const routeTo = route.to
-        
+
         if (routeFrom === '/**' && routeTo === '/**') {
             if (route.name) {
                 name = route.name
@@ -90,8 +90,8 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
     }
 
     for (const route of state.animation.routes as AnimationRoute[]) {
-        const routeFrom = route.from 
-        const routeTo = route.to 
+        const routeFrom = route.from
+        const routeTo = route.to
 
         if (routeFrom === from && routeTo === to) {
             if (route.name) {
@@ -101,7 +101,7 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
                 duration = route.duration
             }
         }
-    }    
+    }
 
     res.ctx.animation = {
         name,
@@ -110,19 +110,19 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
 }
 
 
-export const animation = (name: string) => ({ 
+export const animation = (name: string) => ({
     from: (from: string) => ({
-        to: (to: string) => ({ name, from, to }) 
+        to: (to: string) => ({ name, from, to })
     })
 })
 
 export const findRoute = (
-    routes: AnimationRoute[], 
+    routes: AnimationRoute[],
     newRoute: AnimationRoute
 ) => {
     for (const route of routes) {
         if (
-            route.to == newRoute.to && 
+            route.to == newRoute.to &&
             route.from == newRoute.from
         ) {
             return true
@@ -130,19 +130,19 @@ export const findRoute = (
     }
     return false
 }
-  
+
 export const updateRoute = (
-    routes: AnimationRoute[], 
+    routes: AnimationRoute[],
     newRoute: AnimationRoute
 ) => {
     const newRoutes = []
     for (const route of routes) {
         if (
-            route.to == newRoute.to && 
+            route.to == newRoute.to &&
             route.from == newRoute.from
         ) {
             newRoutes.push(newRoute)
-            continue 
+            continue
         }
         newRoutes.push(route)
     }
@@ -150,7 +150,7 @@ export const updateRoute = (
 }
 
 export const putRoute = (
-    routes: AnimationRoute[], 
+    routes: AnimationRoute[],
     newRoute: AnimationRoute
 ) => {
     newRoute.from = url.normalise(newRoute.from)
@@ -165,7 +165,7 @@ export const putRoute = (
 }
 
 export const putRoutes = (
-    routes: AnimationRoute[], 
+    routes: AnimationRoute[],
     incoming: AnimationRoute[]
 ) => {
     let newRoutes: AnimationRoute[] = [...routes]
