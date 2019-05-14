@@ -28,22 +28,25 @@ export const hasTrailingSlash = (path: string) => {
     /users/5345/edit
 */
 export const matchPath = (
-    pattern: string, 
+    pattern: string,
     pathname: string
 ): Record<string, string> | undefined => {
-    pathname = removeTrailingSlash(pathname)
-    pattern = removeTrailingSlash(pattern)
-    const params: any = {}
+    pathname = normalise(pathname)
+    pattern = normalise(pattern)
+    const params: Record<string, string> = {}
     const source = pattern.split('/')
     const test = pathname.split('/')
-    if (source.length !== test.length) {
+    if (source.length !== test.length && !pattern.includes('**')) {
         return
     }
     for (const i in source) {
         if (source[i].startsWith(':')) {
             const paramName = source[i].slice(1)
-            params[paramName] = test[i]
-            break
+            params[paramName] = test[i].toString()
+            continue
+        }
+        if (source[i].startsWith('**')) {
+          return params
         }
         if (source[i] !== test[i]) {
             return
@@ -53,7 +56,7 @@ export const matchPath = (
 }
 
 /*
-    Will take a querystring and cast 
+    Will take a querystring and cast
     it to an object
 */
 export const deserializeQuery = (query: string = '') => {

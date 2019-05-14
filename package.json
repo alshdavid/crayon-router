@@ -1,6 +1,6 @@
 {
   "name": "crayon",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -9,21 +9,26 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "npx jest"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/check-types": "^7.3.1",
+    "@types/jest": "^24.0.13",
+    "@types/lodash": "^4.14.126",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
+    "check-types": "^8.0.2",
+    "jest": "^24.8.0",
+    "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "rxjs": "^6.5.2",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.4.5",
-    "vue": "^2.6.10",
-    "check-types": "^8.0.2",
-    "rxjs": "^6.5.2"
+    "vue": "^2.6.10"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
