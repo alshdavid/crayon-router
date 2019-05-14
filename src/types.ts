@@ -1,18 +1,18 @@
 import { Request } from './request'
 import { Response } from './response'
 import { Router } from './router';
-import { Subject } from 'rxjs';
+import * as observe from './observe'
 
 export interface Navigator {
     navigate: (path: string) => void
     back: () => void
-    events: Subject<any>
+    events: observe.Subject<any>
 }
 
 export type handlerFunc = (
-    req: Request, 
-    res: Response, 
-    state: Record<string, any>, 
+    req: Request,
+    res: Response,
+    state: Record<string, any>,
     app: Router
 ) => void
 

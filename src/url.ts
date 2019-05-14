@@ -60,6 +60,9 @@ export const matchPath = (
     it to an object
 */
 export const deserializeQuery = (query: string = '') => {
+    if (!query.startsWith('?')) {
+        return {}
+    }
     var pairs = query.slice(1).split('&')
     var result: any = {}
     for (const pair of pairs) {

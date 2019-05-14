@@ -1,4 +1,17 @@
-import { matchPath, normalise } from './url'
+import { matchPath, normalise, deserializeQuery } from './url'
+
+it('Should match incoming paths to correct param objects', () => {
+    expect(deserializeQuery('without=string')).toEqual({})
+    expect(deserializeQuery('?test=value')).toEqual({ test: 'value' })
+    expect(deserializeQuery('?test')).toEqual({ test: '' })
+    expect(deserializeQuery('?test&anotherone=hi')).toEqual({ test: '', anotherone: 'hi' })
+    expect(deserializeQuery('?&&')).toEqual({})
+    expect(deserializeQuery('?test=value&another=value')).toEqual({ test: 'value', another: 'value' })
+    expect(deserializeQuery('')).toEqual({})
+    expect(deserializeQuery()).toEqual({})
+    expect(deserializeQuery('/')).toEqual({})
+})
+
 
 it('Should normalise a path', () => {
     for (const test of incomingPaths) {
@@ -6,6 +19,7 @@ it('Should normalise a path', () => {
         expect(result).toEqual(test.normalise)
     }
 })
+
 
 it('Should match incoming paths to correct param objects', () => {
     for (const test of incomingPaths) {

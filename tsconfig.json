@@ -6,12 +6,12 @@
         "outDir": "./dist",
         "strict": true,
         "moduleResolution": "node",
+        "inlineSourceMap": true,
         "baseUrl": "./",
         "lib": [
             "dom",
             "es2017"
         ],
-        "sourceMap": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "paths": {
@@ -19,5 +19,5 @@
         }
     },
     "include": ["src"],
-    "exclude": ["node_modules", "**/__tests__/*"]
+    "exclude": ["node_modules", "**.tests.ts"]
 }

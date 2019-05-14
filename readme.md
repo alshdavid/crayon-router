@@ -13,13 +13,20 @@
 <br>
 <br>
 
+
 ## Client-Side Router, for all Frameworks
+
+![version](https://img.shields.io/badge/version-1.4.0-blue.svg?cacheSeconds=2592000)
+![coverage](https://img.shields.io/badge/coverage-16.33%25-yellowgreen.svg?cacheSeconds=2592000)
+![coverage](https://img.shields.io/badge/license-MIT-green.svg?cacheSeconds=2592000)
+![dependencies](https://img.shields.io/badge/dependencies-0-orange.svg?cacheSeconds=2592000)
 
 - Clientside UI Router
 - ExpressJS like syntax
 - Supports all major frameworks
 - Route animations under one API
 - Easy-to-write middleware
+- No dependencies
 
 ### Example
 
@@ -56,7 +63,7 @@ You can select your framework by using a middleware
 // React (Supports Preact and Solid.js)
 app.use(react.router()
 
-// Vue 
+// Vue
 app.use(vue.router())
 
 // Svelte 3
@@ -116,7 +123,7 @@ app.load()
 
 #### This single API works on all frameworks
 
-Route Transitions are done using a middleware that 
+Route Transitions are done using a middleware that
 applies/removes CSS styles over the course of a routing
 event.
 
@@ -140,7 +147,7 @@ group.use(crayon.animate(animation))
 
 app.path('/your-path',
     crayon.animate(animation),
-    (req, res) => res.mount(() => <div>Animated</div>) 
+    (req, res) => res.mount(() => <div>Animated</div>)
 )
 ```
 
@@ -203,7 +210,7 @@ app.path('/c',
         { from: '/**', name: 'slide-right' },
         { to:   '/**', name: 'slide-left' }
     ]),
-    (req, res) => res.mount(() => <div>Animated</div>) 
+    (req, res) => res.mount(() => <div>Animated</div>)
 )
 ```
 
@@ -267,7 +274,7 @@ First create a group in a file
 ```javascript
 // my-group.js
 export const myGroup = crayon.group('/my-group', myGroup => {
-    myGroup.path('/', 
+    myGroup.path('/',
         (req, res) => res.mount(MyView)
     )
 })

@@ -2,7 +2,7 @@
 export type callback<T = any> = (value: T) => void
 
 export interface Subject<T> {
-  subscribe: callback<T>
+  subscribe: (value: callback<T>) => { unsubscribe: () => void }
   next: (value: T) => void
 }
 
