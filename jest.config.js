@@ -7,6 +7,7 @@ module.exports = {
     "src/**/**.{ts,js}",
     "!**/node_modules/**",
     "!**/vendor/**",
-    "!**/index.{ts,js}"
+    "!**/index.{ts,js}",
+    "!**/examples/**"
   ]
 };
