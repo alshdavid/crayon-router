@@ -31,7 +31,7 @@ COVERAGE=$(cat ./coverage/src/index.html| grep "class=\"strong\"")
 COVERAGE=$(node -e "console.log(\`${COVERAGE}\`.split('<span class=\"strong\">')[1].replace('% </span>', '').trim())")
 VERSION=$(node -e "console.log(require('./package.json').version)")
 
-cp src/readme.src.md readme.md
+cp docs/readme.src.md readme.md
 sed -i '' -e "s/{{test-coverage}}/${COVERAGE}/g" readme.md
 sed -i '' -e "s/{{version}}/${VERSION}/g" readme.md
 
