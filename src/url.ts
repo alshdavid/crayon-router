@@ -1,6 +1,6 @@
 export const normalise = (path?: string) => {
-    if (!path) {
-        return ''
+    if (!path || path === '/') {
+        return '/'
     }
     return removeTrailingSlash(path).toLowerCase()
 }
@@ -40,7 +40,7 @@ export const matchPath = (
         return
     }
     for (const i in source) {
-        if (source[i].startsWith(':')) {
+        if (source[i].startsWith(':') && pathname !== '/') {
             const paramName = source[i].slice(1)
             params[paramName] = test[i].toString()
             continue

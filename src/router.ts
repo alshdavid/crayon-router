@@ -6,11 +6,18 @@ import { handlerFunc } from './types'
 import { Group } from "./group";
 
 export interface Router {
+    middleware: handlerFunc[]
+    routes: Record<string, handlerFunc[]>
+    state: Record<string, any>
+    history: string[]
+    isLoading: boolean
     path: (path: string, ...handlers: handlerFunc[]) => void
     use: (target: handlerFunc | Group) => void
     navigate: (path: string) => Promise<void>
     reload: () => Promise<void>
     back: () => Promise<void>
+    load: () => Promise<void>
+    destroy: () => void
 }
 
 export const create = (): Router => {
@@ -25,8 +32,6 @@ export const create = (): Router => {
         routes: <Record<string, handlerFunc[]>>{},
         state: <Record<string, any>>{},
         history: <string[]>[''],
-        req: <Request | undefined> undefined,
-        res: <Response | undefined> undefined,
         isLoading: true
     }
 
@@ -92,57 +97,59 @@ export const create = (): Router => {
 
     const load = async () => {
         state.isLoading = true
-        state.req = new Request()
-        state.res = new Response()
-        emit({ name: 'ROUTING_START', ctx: { ...state.req} })
+        const req = new Request()
+        const res = new Response()
+        emit({ name: 'ROUTING_START', ctx: { ...req} })
 
-        const path = url.normalise(state.req.pathname)
-        if (path !== state.req.pathname) {
+        const path = url.normalise(req.pathname)
+        if (path !== req.pathname) {
             window.history.replaceState(null, document.title, path)
         }
 
-        state.res.redirect = (path: string) => {
+        res.redirect = (path: string) => {
             path = url.normalise(path)
             window.history.pushState(null, document.title, path)
             state.isLoading = false
             load()
         }
 
-        // TODO match "/**" and "/something/**" routes
-
         // Match and populate handlers
         let handlers: handlerFunc[] = []
         for (const key in state.routes) {
-            const params = url.matchPath(key, state.req.pathname)
+            const params = url.matchPath(key, req.pathname)
             if (!params) {
                 continue
             }
             state.history.push(key)
             handlers = state.routes[key]
-            state.req.params = { ...params }
-            state.req.routePattern = url.normalise(key)
+            req.params = { ...params }
+            req.routePattern = url.normalise(key)
             break;
         }
         // Cast query string to object
-        state.req.query = { ...url.deserializeQuery(window.location.search) }
+        req.query = { ...url.deserializeQuery(window.location.search) }
 
         // Run middleware
         for (const middleware of state.middleware) {
-            if (state.res.hasCompleted) {
+            if (res.hasCompleted) {
                 return
             }
-            await middleware(state.req, state.res, state.state, (state as any))
+            await middleware(req, res, state.state, (state as any))
         }
         // Run handlers
         for (const handler of handlers) {
-            if (state.res.hasCompleted) {
+            if (res.hasCompleted) {
                 return
             }
-            await handler(state.req, state.res, state.state, (state as any))
+            await handler(req, res, state.state, (state as any))
         }
         state.isLoading = false
-        emit({ name: 'ROUTING_COMPLETE', ctx: { ...state.req} })
+        emit({ name: 'ROUTING_COMPLETE', ctx: { ...req} })
     }
+
+    window.addEventListener('popstate', load)
+
+    const destroy = () => window.removeEventListener('popstate', load)
 
     return {
         ...state,
@@ -150,7 +157,9 @@ export const create = (): Router => {
         use,
         navigate,
         reload,
-        back
+        back,
+        load,
+        destroy
     }
 }
 
