@@ -4,6 +4,7 @@ import { Request } from './request'
 import { Response } from './response'
 import { handlerFunc } from './types'
 import { Group } from "./group";
+import { History } from './history';
 
 export interface Router {
     middleware: handlerFunc[]
@@ -21,12 +22,7 @@ export interface Router {
 }
 
 export const create = (): Router => {
-    if (!(window as any).crayon) {
-        ;(window as any).crayon = {
-            events: observe.createSubject()
-        }
-    }
-
+    const history = new History()
     const state = {
         middleware: <handlerFunc[]>[],
         routes: <Record<string, handlerFunc[]>>{},
@@ -47,17 +43,12 @@ export const create = (): Router => {
     }
 
     const useGroup = (group: Group) => {
-        const routes: Record<string, handlerFunc[]> = {}
         for (const route in group.routes) {
-            const path = group.base + route
-            routes[path] = [
+            const path = url.normalise(group.base + route)
+            state.routes[path] = [
                 ...group.middleware,
                 ...group.routes[route]
             ]
-        }
-        state.routes = {
-            ...routes,
-            ...state.routes
         }
     }
 
@@ -69,7 +60,7 @@ export const create = (): Router => {
             return
         }
         path = url.normalise(path)
-        window.history.pushState(null, document.title, path)
+        history.push(path)
         await load()
     }
 
@@ -84,7 +75,7 @@ export const create = (): Router => {
         if (state.isLoading) {
             return
         }
-        window.history.back()
+        history.pop()
     }
 
     const emit = (value: any) => {
@@ -103,12 +94,12 @@ export const create = (): Router => {
 
         const path = url.normalise(req.pathname)
         if (path !== req.pathname) {
-            window.history.replaceState(null, document.title, path)
+            history.replace(path)
         }
 
         res.redirect = (path: string) => {
             path = url.normalise(path)
-            window.history.pushState(null, document.title, path)
+            history.push(path)
             state.isLoading = false
             load()
         }
