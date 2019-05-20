@@ -1,5 +1,5 @@
-import { handlerFunc } from '../types'
-import { mount } from '../mount';
+import { handlerFunc } from '../router/types'
+import { mount } from '../platform/mount';
 import { ReactMounter } from './mounter';
 
 export const router = (target?: HTMLElement, className?: string): handlerFunc => (req, res, state) => {  

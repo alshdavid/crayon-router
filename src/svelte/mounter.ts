@@ -1,4 +1,4 @@
-import { mountable, getOutlets, addClass } from '../mount'
+import { mountable, getOutlets, addClass } from '../platform/mount'
 
 export class SvelteMounter implements mountable {
     constructor(

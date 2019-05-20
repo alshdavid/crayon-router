@@ -8,6 +8,9 @@ module.exports = {
     "!**/node_modules/**",
     "!**/vendor/**",
     "!**/index.{ts,js}",
-    "!**/examples/**"
+    "!**/examples/**",
+    "!src/react/**",
+    "!src/svelte/**",
+    "!src/vue/**"
   ]
 };

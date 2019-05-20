@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mountable,getOutlets, addClass } from '../mount'
+import { mountable,getOutlets, addClass } from '../platform/mount'
 
 export class ReactMounter implements mountable {
     constructor(

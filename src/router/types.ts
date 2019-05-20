@@ -1,7 +1,7 @@
+import * as observe from '../platform/observe'
 import { Request } from './request'
 import { Response } from './response'
 import { Router } from './router';
-import * as observe from './observe'
 
 export interface Navigator {
     navigate: (path: string) => void

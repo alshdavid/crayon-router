@@ -1,4 +1,4 @@
-import * as observe from './observe'
+import * as observe from '../platform/observe'
 
 export enum HistoryType {
     push = 'PUSH',

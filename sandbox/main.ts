@@ -5,14 +5,8 @@ const app = crayon.create()
 
 app.path('/', (req, res) => console.log('Home'))
 app.path('/a', (req, res) => console.log('A'))
-app.path('/b', (req, res) => console.log('B'))
-app.path('/c', (req, res) => console.log('C'))
-
-
-
-// app.path('/**', (req, res) => {
-//     return console.log('Not home')
-// })
+app.path('/b', (req, res) => console.log('B')) 
+app.path('/c', (req, res) => console.log('C')) 
 
 app.load()
 

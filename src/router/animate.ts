@@ -1,4 +1,4 @@
-import * as types from './check-types'
+import * as types from '../platform/check-types'
 import { handlerFunc, AnimationState, AnimationRoute } from './types'
 import * as url from './url'
 

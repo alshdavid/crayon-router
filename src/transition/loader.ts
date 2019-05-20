@@ -1,4 +1,4 @@
-import { handlerFunc } from "../types";
+import { handlerFunc } from "../router/types";
 import * as fromSlide from "./slide";
 import * as fromFade from "./fade";
 import * as fromPop from "./pop";

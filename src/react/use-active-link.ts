@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Navigator } from '../types'
+import { Navigator } from '../router/types'
 
 export const useActiveLink = (path: string, nav: Navigator) => {
     const [ isActive, setIsActive ] = useState('')
