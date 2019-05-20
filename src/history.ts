@@ -45,6 +45,10 @@ export class History {
         window.addEventListener('popstate', this.onPop)
     }
 
+    destroy() {
+        window.removeEventListener('popstate', this.onPop)
+    }
+
     push(path: string) {
         const event = { type: HistoryType.push, from: this.currentRoute, to: path }
         this.entries.push(path)
