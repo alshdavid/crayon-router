@@ -27,8 +27,8 @@ npx jest
 continueIfSuccessful
 
 # Generate Readme Badges
-COVERAGE=$(cat ./coverage/src/index.html| grep "class=\"strong\"")
-COVERAGE=$(node -e "console.log(\`${COVERAGE}\`.split('<span class=\"strong\">')[1].replace('% </span>', '').trim())")
+# COVERAGE=$(cat ./coverage/src/index.html| grep "class=\"strong\"")
+# COVERAGE=$(node -e "console.log(\`${COVERAGE}\`.split('<span class=\"strong\">')[1].replace('% </span>', '').trim())")
 VERSION=$(node -e "console.log(require('./package.json').version)")
 
 cp docs/readme.src.md readme.md

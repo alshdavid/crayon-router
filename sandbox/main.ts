@@ -4,11 +4,15 @@ import * as crayon from '../src/router/index'
 const app = crayon.create()
 
 app.path('/', (req, res) => console.log('/', req))
-app.path('/a', (req, res) => console.log('/a', req))
 
-app.path('/b/:id', (req, res) => {
-    console.log('Hi')
-    res.onUnmount(() => console.log('Bye'))
+
+app.path('/a', (req, res) => {
+    console.log('/a', req)
+})
+
+app.path('/b', (req, res) => {
+    console.log('Entered')
+    res.onLeave(() => console.log('Leaving'))
 })
 
 app.load()
