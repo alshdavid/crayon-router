@@ -17,6 +17,10 @@ export class Router {
     $history: observe.Subscription
     $reqs: observe.Subscription[] = []
 
+    get events() {
+        return this.history.onEvent
+    }
+
     constructor(
         public sharedState: SharedState,
         public id: string,
@@ -93,15 +97,16 @@ export class Router {
         let handlers: handlerFunc[] = []
         for (const key in this.routes) {
             const params = url.matchPath(key, req.pathname)
-            if (!params) {
+            if (params === undefined) {
                 continue
             }
+
             // Don't run this route if you're already on it. Consumers should 
             // rely on the history event stream to render changes
             if (url.matchPath(key, this.history.lastRoute)) {
-                this.isLoading = false
-                return
+                continue
             }
+
             handlers = this.routes[key]
             req.routePattern = key
             req.params = { ...params }
@@ -109,7 +114,7 @@ export class Router {
 
             // Watch for update and mutate the request untill you navigate
             // elsewhere. This adds a new subscirption and removes the previous
-            this.$reqs.push(this.onRequestUpdate(req, key))
+            this.$reqs.push(this.onRequestUpdate(req, res, key))
             break;
         }
 
@@ -129,11 +134,12 @@ export class Router {
         }
     }
 
-    private onRequestUpdate(req: Request, key: string) {
+    private onRequestUpdate(req: Request, res: Response, key: string) {
         return this.history.onEvent.subscribe(event => {
             if (url.matchPath(key, event.to) === undefined) {
                 this.$reqs[0].unsubscribe()
                 this.$reqs.shift()
+                res.unmountAction && res.unmountAction()
                 return
             }
             Object.assign(req, new Request())

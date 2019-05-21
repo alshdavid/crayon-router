@@ -1,6 +1,11 @@
 export class Response {
     ctx: Record<string, any> = {}
     hasCompleted = false
+    unmountAction: (() => void) | undefined
+    
+    onUnmount(cb: (() => void) | undefined) {
+        this.unmountAction = cb
+    }
 
     end() {
         this.hasCompleted = true

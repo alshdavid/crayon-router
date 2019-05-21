@@ -1,3 +1,4 @@
+import * as genString from "../gen-string" 
 
 export type callback<T = any> = (value: T) => void
 
@@ -10,20 +11,20 @@ export interface Subscription {
   unsubscribe: () => void 
 }
 
-export const createSubject = <T = any>() => {
-    const subscribers: callback<T>[] = []
+export const createSubject = <T = any>(): Subject<T> => {
+    const subscribers: Record<string, callback<T>> = {}
 
     const subscribe = (cb: callback<T>): Subscription => {
-      const i = subscribers.length - 1
-      subscribers.push(cb)
+      const key = genString.ofLength(5)
+      subscribers[key] = cb
       return {
-        unsubscribe: () => subscribers.splice(i, 1)
+        unsubscribe: () => delete subscribers[key]
       }
     }
 
     const next = (value: T) => {
-      for (const subscriber of subscribers) {
-        subscriber(value)
+      for (const key in subscribers) {
+        subscribers[key](value)
       }
     }
 
