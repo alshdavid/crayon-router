@@ -1,6 +1,28 @@
 import * as types from '../platform/check-types'
-import { handlerFunc, AnimationState, AnimationRoute } from './types'
-import * as url from './url'
+import * as url from '../platform/url'
+import { handlerFunc } from '../router'
+
+export class AnimationRoute {
+    from?: string = ''
+    to?: string = ''
+    name?: string
+    duration?: number
+}
+
+export class AnimationState {
+    routes: AnimationRoute[] = []
+
+    constructor(
+        public name = 'no-animation',
+        public duration = 0,
+        public overrideDuration = false,
+        public animationOnFirst = true
+    ) {
+        if (name === '') {
+            throw new Error('Invalid animation name')
+        }
+    }
+}
 
 export interface AnimationOptions {
     name?: string

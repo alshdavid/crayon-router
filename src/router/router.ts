@@ -1,8 +1,8 @@
 import * as observe from '../platform/observe'
-import * as url from "./url";
+import * as url from "../platform/url";
+import { handlerFunc } from './types'
 import { Request } from './request'
 import { Response } from './response'
-import { handlerFunc } from './types'
 import { Group } from "./group";
 import { History } from './history';
 
@@ -153,4 +153,3 @@ export const create = (): Router => {
         destroy
     }
 }
-
