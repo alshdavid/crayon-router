@@ -5,12 +5,10 @@ const app = crayon.create()
 
 app.path('/', (req, res) => console.log('/', req))
 app.path('/a', (req, res) => console.log('/a', req))
-app.path('/b/:id', (req, res) => {
-    const sub = app.events.subscribe(console.log)
-    
-    res.onUnmount(() => sub.unsubscribe())
 
-    console.log('fresh', app.history.currentRoute)
+app.path('/b/:id', (req, res) => {
+    console.log('Hi')
+    res.onUnmount(() => console.log('Bye'))
 })
 
 app.load()

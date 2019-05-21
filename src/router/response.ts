@@ -1,10 +1,10 @@
 export class Response {
     ctx: Record<string, any> = {}
     hasCompleted = false
-    unmountAction: (() => void) | undefined
+    leaveAction: (() => void) | undefined
     
-    onUnmount(cb: (() => void) | undefined) {
-        this.unmountAction = cb
+    onLeave(cb: (() => void) | undefined) {
+        this.leaveAction = cb
     }
 
     end() {

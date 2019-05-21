@@ -139,7 +139,7 @@ export class Router {
             if (url.matchPath(key, event.to) === undefined) {
                 this.$reqs[0].unsubscribe()
                 this.$reqs.shift()
-                res.unmountAction && res.unmountAction()
+                res.leaveAction && res.leaveAction()
                 return
             }
             Object.assign(req, new Request())
