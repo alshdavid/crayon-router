@@ -76,8 +76,8 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
         )
     }
 
-    const from = url.normalise(app.history[app.history.length - 2])
-    const to = url.normalise(app.history[app.history.length - 1])
+    const from = ''// url.normalise(app.history[app.history.length - 2])
+    const to = ''//url.normalise(app.history[app.history.length - 1])
     let name = state.animation.name
     let duration = state.animation.duration
 

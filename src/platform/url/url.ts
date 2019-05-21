@@ -2,6 +2,9 @@ export const normalise = (path?: string) => {
     if (!path || path === '/') {
         return '/'
     }
+    if (!path.startsWith('/')) {
+        path = '/' + path
+    }
     return removeTrailingSlash(path).toLowerCase()
 }
 
@@ -31,7 +34,7 @@ export const matchPath = (
     pattern: string,
     pathname: string
 ): Record<string, string> | undefined => {
-    pathname = normalise(pathname)
+    pathname = normalise(pathname).split('?')[0]
     pattern = normalise(pattern)
     const params: Record<string, string> = {}
     const source = pattern.split('/')

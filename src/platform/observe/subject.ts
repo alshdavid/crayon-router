@@ -2,14 +2,18 @@
 export type callback<T = any> = (value: T) => void
 
 export interface Subject<T> {
-  subscribe: (value: callback<T>) => { unsubscribe: () => void }
+  subscribe: (value: callback<T>) => Subscription
   next: (value: T) => void
+}
+
+export interface Subscription {
+  unsubscribe: () => void 
 }
 
 export const createSubject = <T = any>() => {
     const subscribers: callback<T>[] = []
 
-    const subscribe = (cb: callback<T>) => {
+    const subscribe = (cb: callback<T>): Subscription => {
       const i = subscribers.length - 1
       subscribers.push(cb)
       return {

@@ -1,4 +1,5 @@
 import * as observe from '../platform/observe'
+import * as url from '../platform/url'
 
 export enum HistoryType {
     push = 'PUSH',
@@ -50,11 +51,12 @@ export class History {
     }
 
     push(path: string) {
+        path = url.normalise(path)
+        window.history.pushState(null, document.title, path)
         const event = { type: HistoryType.push, from: this.currentRoute, to: path }
         this.entries.push(path)
         this.events.push(event)
         this.onEvent.next(event)
-        window.history.pushState(null, document.title, path)
     }
 
     pop() {
@@ -62,8 +64,9 @@ export class History {
     }
 
     replace(path: string) {
+        path = url.normalise(path)
+        window.history.replaceState(null, document.title, path)
         this.entries[this.entries.length - 1] = path
         this.onEvent.next({ type: HistoryType.replace, from: this.currentRoute, to: path })
-        window.history.replaceState(null, document.title, path)
     }
 }
