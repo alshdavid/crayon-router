@@ -1,3 +1,7 @@
+START_DIR=$(pwd)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd $DIR/..
+
 continueIfSuccessful() {
     rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 }
@@ -55,3 +59,5 @@ cd ..
 
 # Clean up
 rm -rf dist
+
+cd $START_DIR

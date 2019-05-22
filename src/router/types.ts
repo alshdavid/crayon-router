@@ -15,3 +15,17 @@ export type handlerFunc = (
     state: Record<string, any>,
     app: Router
 ) => void
+
+export enum RouterEventType {
+    History = 'HISTORY_EVENT',
+    ProgressStart = 'ROUTER_PROGRESS_EVENT_START',
+    ProgressEnd = 'ROUTER_PROGRESS_EVENT_END',
+    RunningHanlders = 'ROUTER_RUNNING_HANDLERS',
+    NoHanlders = 'ROUTER_NO_HANDLERS',
+
+}
+
+export interface RouterEvent {
+    type: RouterEventType,
+    data?: any
+}

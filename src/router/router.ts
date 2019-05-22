@@ -1,7 +1,7 @@
 import * as observe from '../platform/observe'
 import * as url from "../platform/url"
 import * as genString from "../platform/gen-string" 
-import { handlerFunc } from './types'
+import { handlerFunc, RouterEvent, RouterEventType } from './types'
 import { Request } from './request'
 import { Response } from './response'
 import { Group } from "./group"
@@ -16,10 +16,7 @@ export class Router {
     history: History
     $history: observe.Subscription
     $reqs: observe.Subscription[] = []
-
-    get events() {
-        return this.history.onEvent
-    }
+    events = observe.createSubject<RouterEvent>()
 
     constructor(
         public sharedState: SharedState,
@@ -27,9 +24,14 @@ export class Router {
     ) {
         sharedState.addRouter(this)
         this.history = sharedState.history
-        // The load() method is only triggered based on history events
         this.$history = this.history.onEvent
-            .subscribe(() => this.load())
+            .subscribe(event => {
+                this.events.next({ 
+                    type: RouterEventType.History, 
+                    data: { ...event } 
+                })
+                this.load()
+            })
     }
 
     destroy() {
@@ -82,6 +84,7 @@ export class Router {
     // load() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
     async load() {
+        this.events.next({ type: RouterEventType.ProgressStart })
         this.isLoading = true
         const req = new Request()
         const res = new Response()
@@ -90,6 +93,7 @@ export class Router {
         res.redirect = (path: string) => {
             this.history.push(path)
             this.isLoading = false
+            this.events.next({ type: RouterEventType.ProgressEnd })
             this.load()
         }
 
@@ -104,9 +108,10 @@ export class Router {
             // Don't run this route if you're already on it. Consumers should 
             // rely on the history event stream to render changes
             if (url.matchPath(key, this.history.lastRoute)) {
-                continue
+                this.events.next({ type: RouterEventType.ProgressEnd, data: 'SAME_ROUTE_ABORT' })
+                this.isLoading = false
+                return
             }
-
             handlers = this.routes[key]
             req.routePattern = key
             req.params = { ...params }
@@ -117,12 +122,19 @@ export class Router {
             this.$reqs.push(this.onRequestUpdate(req, res, key))
             break;
         }
+        if (handlers.length === 0) {
+            this.events.next({ type: RouterEventType.NoHanlders })
+            this.isLoading = false
+            return
+        }
 
         // Run handlers and middleware. They will skip
         // if a the res object has run 'end()'
+        this.events.next({ type: RouterEventType.RunningHanlders })
         await this.runHandlers(this.middleware, req, res)
         await this.runHandlers(handlers, req, res)
         this.isLoading = false
+        this.events.next({ type: RouterEventType.ProgressEnd })
     }
 
     private async runHandlers(handlers: handlerFunc[], req: Request, res: Response) {
