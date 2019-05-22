@@ -1,8 +1,11 @@
+import * as observe from '../platform/observe'
 import { Router } from "./router";
 import { History } from './history'
+import { RouterEvent } from './types';
 
 export class SharedState {
     routers: Record<string, Router> = {}
+    events = observe.createSubject<RouterEvent>()
     
     constructor(
         public history: History

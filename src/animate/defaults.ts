@@ -2,173 +2,27 @@ import * as types from '../platform/check-types'
 import * as url from '../platform/url'
 import { handlerFunc } from '../router'
 import { AnimationRoute, AnimationOptions } from './types';
-import { AnimationState } from './state';
+import { getAnimationState } from './state';
 
-export const defaults = (options: AnimationOptions | AnimationRoute[]): handlerFunc => (
+export const defaults = (options: AnimationOptions): handlerFunc => (
     req,
     res,
     state,
     app
 ) => {
-    if (!state.animation) {
-        state.animation = new AnimationState()
-        ;(window as any).animations = state.animation
+    const animationState = getAnimationState(state)
+    if (options.name !== undefined) {
+        animationState.name = options.name
     }
-    if (!types.isArray(options)) {
-        if (options.name !== undefined) {
-            state.animation.name = options.name
-        }
-        if (options.duration !== undefined) {
-            state.animation.duration = options.duration
-        }
-        if (options.overrideDuration !== undefined) {
-            state.animation.overrideDuration = options.overrideDuration
-        }
-        if (options.animationOnFirst !== undefined) {
-            state.animation.animationOnFirst = options.animationOnFirst
-        }
-        if (options.routes !== undefined) {
-            state.animation.routes = putRoutes(
-                state.animation.routes,
-                options.routes
-            )
-        }
-    } else {
-        for (const route of options) {
-            if (!route.from) {
-                route.from = req.routePattern
-            }
-            if (!route.to) {
-                route.to = req.routePattern
-            }
-        }
-        state.animation.routes = putRoutes(
-            state.animation.routes,
-            options
-        )
+    if (options.duration !== undefined) {
+        animationState.duration = options.duration
+    }
+    if (options.overrideDuration !== undefined) {
+        animationState.overrideDuration = options.overrideDuration
+    }
+    if (options.animationOnFirst !== undefined) {
+        animationState.animationOnFirst = options.animationOnFirst
     }
 
-    let from = ''
-    let to = ''
-    if (app.history.currentEvent) {
-        from = app.history.currentEvent.from
-        to = app.history.currentEvent.to
-    }
-    let name = state.animation.name
-    let duration = state.animation.duration
-
-    for (const route of state.animation.routes as AnimationRoute[]) {
-        const routeFrom = route.from
-        const routeTo = route.to
-
-        if (routeFrom === '/**' && routeTo === '/**') {
-            if (route.name) {
-                name = route.name
-            }
-            if (route.duration) {
-                duration = route.duration
-            }
-        }
-        if (routeFrom === '/**' && routeTo === to) {
-            if (route.name) {
-                name = route.name
-            }
-            if (route.duration) {
-                duration = route.duration
-            }
-        }
-        if (routeTo === '/**' && routeFrom === from) {
-            if (route.name) {
-                name = route.name
-            }
-            if (route.duration) {
-                duration = route.duration
-            }
-        }
-    }
-
-    for (const route of state.animation.routes as AnimationRoute[]) {
-        const routeFrom = route.from
-        const routeTo = route.to
-
-        if (routeFrom === from && routeTo === to) {
-            if (route.name) {
-                name = route.name
-            }
-            if (route.duration) {
-                duration = route.duration
-            }
-        }
-    }
-
-    res.ctx.animation = {
-        name,
-        duration
-    }
-}
-
-
-export const animation = (name: string) => ({
-    from: (from: string) => ({
-        to: (to: string) => ({ name, from, to })
-    })
-})
-
-export const findRoute = (
-    routes: AnimationRoute[],
-    newRoute: AnimationRoute
-) => {
-    for (const route of routes) {
-        if (
-            route.to == newRoute.to &&
-            route.from == newRoute.from
-        ) {
-            return true
-        }
-    }
-    return false
-}
-
-export const updateRoute = (
-    routes: AnimationRoute[],
-    newRoute: AnimationRoute
-) => {
-    const newRoutes = []
-    for (const route of routes) {
-        if (
-            route.to == newRoute.to &&
-            route.from == newRoute.from
-        ) {
-            newRoutes.push(newRoute)
-            continue
-        }
-        newRoutes.push(route)
-    }
-    return newRoutes
-}
-
-export const putRoute = (
-    routes: AnimationRoute[],
-    newRoute: AnimationRoute
-) => {
-    newRoute.from = url.normalise(newRoute.from)
-    newRoute.to = url.normalise(newRoute.to)
-    const newRoutes = [...routes]
-    const hasRoute = findRoute(newRoutes, newRoute)
-    if (!hasRoute) {
-        newRoutes.push(newRoute)
-        return newRoutes
-    }
-    return updateRoute(routes, newRoute)
-}
-
-export const putRoutes = (
-    routes: AnimationRoute[],
-    incoming: AnimationRoute[]
-) => {
-    let newRoutes: AnimationRoute[] = [...routes]
-    for (const route of incoming) {
-        newRoutes = putRoute(newRoutes, route)
-    }
-    return newRoutes
+    res.ctx.animation = animationState.calculate(app)
 }

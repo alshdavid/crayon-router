@@ -1,10 +1,5 @@
-import { handlerFunc } from "../router/types";
-import { AnimationRoute } from "./types";
+import { routes } from './routes'
 
-export const route = (
-    routes:  AnimationRoute[]
-): handlerFunc => (
-    req, res, state, app
-) => {
-    
-}
+// This is an ergonomic name for inline animation middleware
+// it just has the same logic as routes
+export const route = routes

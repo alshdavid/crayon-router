@@ -16,7 +16,10 @@ export class Router {
     history: History
     $history: observe.Subscription
     $reqs: observe.Subscription[] = []
-    events = observe.createSubject<RouterEvent>()
+
+    get events() {
+        return this.sharedState.events
+    } 
 
     constructor(
         public sharedState: SharedState,
@@ -28,6 +31,7 @@ export class Router {
             .subscribe(event => {
                 this.events.next({ 
                     type: RouterEventType.History, 
+                    id: this.id,
                     data: { ...event } 
                 })
                 this.digest()
@@ -38,6 +42,7 @@ export class Router {
         this.sharedState.removeRouter(this)
         this.$history.unsubscribe()
         this.$reqs.forEach(req => req.unsubscribe())
+        this.events.next({ type: RouterEventType.Destroyed, id: this.id })
     }
 
     path(path: string, ...handlers: handlerFunc[]) {
@@ -47,7 +52,6 @@ export class Router {
     use(target: handlerFunc | Group) {
         if (target instanceof Group) {
             this.useGroup(target)
-            this.digest()
         } else {
             this.useHandler(target)
         }
@@ -82,14 +86,14 @@ export class Router {
     }
 
     load() {
-        this.events.next({ type: RouterEventType.InitialLoad })
+        this.events.next({ type: RouterEventType.LoadTriggered, id: this.id })
         return this.digest()
     }
 
     // digest() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
     async digest() {
-        this.events.next({ type: RouterEventType.ProgressStart })
+        this.events.next({ type: RouterEventType.ProgressStart, id: this.id })
         this.isLoading = true
         const req = new Request()
         const res = new Response()
@@ -97,49 +101,82 @@ export class Router {
         // Define redirect action
         res.redirect = (path: string) => {
             this.isLoading = false
-            this.events.next({ type: RouterEventType.ProgressEnd })
+            this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
             this.history.push(path)
         }
 
-        // Find handlers for route
-        let handlers: handlerFunc[] = []
-        for (const key in this.routes) {
-            const params = url.matchPath(key, req.pathname)
-            if (params === undefined) {
-                continue
-            }
-
-            // Don't run this route if you're already on it. Consumers should 
-            // rely on the history event stream to render changes
-            if (this.history.lastRoute && url.matchPath(key, this.history.lastRoute)) {
-                this.events.next({ type: RouterEventType.SameRouteAbort })
-                this.events.next({ type: RouterEventType.ProgressEnd })
-                this.isLoading = false
-                return
-            }
-            handlers = this.routes[key]
-            req.routePattern = key
-            req.params = { ...params }
-            req.query = { ...url.deserializeQuery(window.location.search) }
-
-            // Watch for update and mutate the request untill you navigate
-            // elsewhere. This adds a new subscirption and removes the previous
-            this.$reqs.push(this.onRequestUpdate(req, res, key))
-            break;
-        }
-        if (handlers.length === 0) {
-            this.events.next({ type: RouterEventType.NoHanlders })
+        const result = this.getPattern(req.pathname)
+        if (!result) {
+            this.events.next({ type: RouterEventType.NoHanlders, id: this.id })
             this.isLoading = false
             return
         }
+        const { pattern, params } = result
+
+        // Don't run this route if you're already on it. Consumers should 
+        // rely on the history event stream to render changes        
+        if (this.history.currentEvent) {
+            // The pattern for the previous route
+            const previousPattern = this.getPattern(this.history.currentEvent.from)
+            if (pattern === (previousPattern && previousPattern.pattern)) {
+                this.events.next({ type: RouterEventType.SameRouteAbort, id: this.id })
+                this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
+                this.isLoading = false
+                return
+            }
+        }
+        const handlers = this.routes[pattern]
+        req.routePattern = pattern
+        req.params = { ...params }
+        req.query = { ...url.deserializeQuery(window.location.search) }
+
+        // Watch for update and mutate the request untill you navigate
+        // elsewhere. This adds a new subscirption and removes the previous
+        this.$reqs.push(this.onRequestUpdate(req, res, pattern))
 
         // Run handlers and middleware. They will skip
         // if a the res object has run 'end()'
-        this.events.next({ type: RouterEventType.RunningHanlders })
+        this.events.next({ type: RouterEventType.RunningHanlders, id: this.id })
         await this.runHandlers(this.middleware, req, res)
         await this.runHandlers(handlers, req, res)
         this.isLoading = false
-        this.events.next({ type: RouterEventType.ProgressEnd })
+        this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
+    }
+
+    // getPattern takes a pathname and find the corresponding key in the
+    // routing object based on some matching criteria. Competitive scenarios 
+    // eg: "/items/:id" vs "/items/add", the more specific option will be chosen
+    getPattern(pathname: string) {
+        //
+        let patterns: { key: string, params: Record<string, string>}[] = []
+        for (let key in this.routes) {
+            const params = url.matchPath(key, pathname)
+            if (params !== undefined) {
+                patterns.push({ key, params })
+            }
+        }
+        if (patterns.length === 0) {
+            return
+        }
+
+        let pattern: string | undefined
+        let params: Record<string, string> | undefined
+        for (let item of patterns) {
+            pattern = item.key
+            params = item.params
+            if (item.key === pathname) {
+                break
+            }
+        }
+        if (!pattern || !params) {
+            return
+        }
+
+        return {
+            params,
+            pattern,
+            patterns
+        }
     }
 
     private async runHandlers(handlers: handlerFunc[], req: Request, res: Response) {

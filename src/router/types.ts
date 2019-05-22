@@ -18,16 +18,17 @@ export type handlerFunc = (
 
 export enum RouterEventType {
     History = 'HISTORY_EVENT',
-    InitialLoad = 'ROUTER_INITIAL_LOAD',
+    LoadTriggered = 'ROUTER_LOAD_TRIGGERED',
     ProgressStart = 'ROUTER_START',
     ProgressEnd = 'ROUTER_END',
     RunningHanlders = 'ROUTER_RUNNING_HANDLERS',
     NoHanlders = 'ROUTER_NO_HANDLERS',
     SameRouteAbort = 'ROUTER_SAME_ROUTE_ABORT',
-
+    Destroyed = 'ROUTER_DESTROYED'
 }
 
 export interface RouterEvent {
-    type: RouterEventType,
+    type: RouterEventType
+    id: string
     data?: any
 }

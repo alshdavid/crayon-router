@@ -1,23 +1,23 @@
-import crayon from 'crayon'
-import transition from 'crayon/transition';
-import svelte from 'crayon/svelte'
+import * as crayon from 'crayon'
+import * as transition from 'crayon/transition';
+import * as animate from 'crayon/animate';
+import * as svelte from 'crayon/svelte'
 import Base from './pages/Base.svelte';
 import More from './pages/More.svelte';
 
+const outlet = document.getElementById('app')
 const app = crayon.create() 
 
-const target = document.getElementById('app')
-app.use(svelte.router(target))
-
+app.use(svelte.router(outlet))
 app.use(transition.loader())
-app.use(crayon.animate({
+app.use(animate.defaults({
     name: transition.fade,
-    duration: 300,
-    routes: [
-        { from: '/**', to: '/more', name: transition.slideLeft },
-        { from: '/more', to: '/**', name: transition.slideRight }
-    ]
+    duration: 300
 }))
+app.use(animate.routes([
+    { from: '/**',   to: '/more', name: transition.slideLeft  },
+    { from: '/more', to: '/**',   name: transition.slideRight }
+]))
 
 app.path('/', (req, res) => res.redirect('/home'))
 

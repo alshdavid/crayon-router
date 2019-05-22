@@ -1,22 +1,23 @@
-import crayon from 'crayon'
-import vue from 'crayon/vue'
-import transition from 'crayon/transition'
+import * as crayon from 'crayon'
+import * as vue from 'crayon/vue'
+import * as transition from 'crayon/transition'
+import * as animate from 'crayon/animate';
 import Route from './pages/Route.vue';
 import More from './pages/More.vue';
 import './styles.css'
 
+const outlet = document.getElementById('app')
 const app = crayon.create()
 
-app.use(vue.router())
-app.use(transition.loader()) 
-app.use(crayon.animate({
-    name: transition.fade,
-    duration: 300,
-    routes: [
-        { from: '/**', to: '/more', name: transition.slideLeft },
-        { from: '/more', to: '/**', name: transition.slideRight }
-    ]
+app.use(vue.router(outlet))
+app.use(animate.defaults({
+  name: transition.fade,
+  duration: 300
 }))
+app.use(animate.routes([
+  { from: '/**',   to: '/more', name: transition.slideLeft  },
+  { from: '/more', to: '/**',   name: transition.slideRight }
+]))
 
 app.path('/', (req, res) => 
     res.redirect('/home')

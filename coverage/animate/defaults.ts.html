@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for router/response.ts</title>
+    <title>Code coverage report for animate/defaults.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">All files</a> / <a href="index.html">router</a> response.ts
+      <a href="../index.html">All files</a> / <a href="index.html">animate</a> defaults.ts
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/11</span>
+        <span class='fraction'>0/13</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>0/8</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>0/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/11</span>
+        <span class='fraction'>0/12</span>
       </div>
     </div>
     <p class="quiet">
@@ -73,61 +73,64 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class R</span></span>esponse {
-<span class="cstat-no" title="statement not covered" >    ctx: Record&lt;string, any&gt; = {}</span>
-<span class="cstat-no" title="statement not covered" >    hasCompleted = false</span>
-    leaveAction: (() =&gt; void) | undefined
-    
-<span class="fstat-no" title="function not covered" >    onLeave(</span>cb: (() =&gt; void) | undefined) {
-<span class="cstat-no" title="statement not covered" >        this.leaveAction = cb</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as types from '../platform/check-types'
+import * as url from '../platform/url'
+import { handlerFunc } from '../router'
+import { AnimationRoute, AnimationOptions } from './types';
+<span class="cstat-no" title="statement not covered" >import { getAnimationState } from './state';</span>
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >defaults = <span class="fstat-no" title="function not covered" >(o</span>ptions: AnimationOptions): handlerFunc =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span></span>
+    req,
+    res,
+    state,
+    app
+) =&gt; {
+    const animationState = <span class="cstat-no" title="statement not covered" >getAnimationState(state)</span>
+<span class="cstat-no" title="statement not covered" >    if (options.name !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >        animationState.name = options.name</span>
+    }
+<span class="cstat-no" title="statement not covered" >    if (options.duration !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >        animationState.duration = options.duration</span>
+    }
+<span class="cstat-no" title="statement not covered" >    if (options.overrideDuration !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >        animationState.overrideDuration = options.overrideDuration</span>
+    }
+<span class="cstat-no" title="statement not covered" >    if (options.animationOnFirst !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >        animationState.animationOnFirst = options.animationOnFirst</span>
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    end(</span>) {
-<span class="cstat-no" title="statement not covered" >        this.hasCompleted = true</span>
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    unmount(</span>...args: any) {
-<span class="cstat-no" title="statement not covered" >        console.log('Unmount action is not set')</span>
-<span class="cstat-no" title="statement not covered" >        console.log(...args)</span>
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    mount(</span>...args: any) {
-<span class="cstat-no" title="statement not covered" >        console.log('Mount action is not set')</span>
-<span class="cstat-no" title="statement not covered" >        console.log(...args)</span>
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    redirect(</span>path: string) {
-<span class="cstat-no" title="statement not covered" >        console.log('Redirect action is not set')</span>
-<span class="cstat-no" title="statement not covered" >        console.log(path)</span>
-    }
-}</pre></td></tr>
+<span class="cstat-no" title="statement not covered" >    res.ctx.animation = animationState.calculate(app)</span>
+}
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
