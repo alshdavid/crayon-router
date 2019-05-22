@@ -13,7 +13,7 @@ export const useRouter = (
         if (nav || !ref) {
             return
         }
-        const router = create()
+        const router = create(name)
         router.use(react.router(ref, name))
         handlers(router, '.'+ name)
         router.load()

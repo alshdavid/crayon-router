@@ -1,6 +1,11 @@
 export class Response {
     ctx: Record<string, any> = {}
     hasCompleted = false
+    leaveAction: (() => void) | undefined
+    
+    onLeave(cb: (() => void) | undefined) {
+        this.leaveAction = cb
+    }
 
     end() {
         this.hasCompleted = true

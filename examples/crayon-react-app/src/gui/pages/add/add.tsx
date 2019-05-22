@@ -2,14 +2,12 @@ import React, { useState, useMemo } from 'react'
 import * as crayon from 'crayon'
 import * as item from '~/platform/item'
 import * as keyboard from 'mobile-keyboard-observer'
-import { Subscription } from 'rxjs';
 
 const onEnter = (e: React.KeyboardEvent, callback: () => any) => e.key === 'Enter' && callback()
 
 const focusOnInput = (nav: crayon.Navigator) => {
-    let sub: Subscription
-    sub = nav.events.subscribe(v => {
-        if (v.name === 'ROUTING_COMPLETE') {
+    const sub = nav.events.subscribe(event => {
+        if (event.type === crayon.RouterEventType.ProgressEnd && event.id === 'main') {
             sub.unsubscribe()
             ;(document.getElementsByTagName('input')[0] as any).focus()
         }

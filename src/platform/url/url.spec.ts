@@ -172,5 +172,12 @@ var incomingPaths = [
         pathname: '/somewhere/yes/path/going/on',
         params: { id: 'yes' },
         normalise: '/somewhere/yes/path/going/on'
+    },
+    {
+        pattern: '/a',
+        pathname: '/a?hi=test',
+        params: {},
+        query: { hi: 'test' },
+        normalise: '/a?hi=test'
     }
 ]

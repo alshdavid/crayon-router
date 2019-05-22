@@ -1,12 +1,12 @@
-import crayon from 'crayon'
-import svelte from 'crayon/svelte'
+import * as crayon from 'crayon'
+import * as svelte from 'crayon/svelte'
 import Base from './pages/Base.svelte';
 import More from './pages/More.svelte';
 
+const outlet = document.getElementById('app')
 const app = crayon.create() 
 
-const target = document.getElementById('app')
-app.use(svelte.router(target))
+app.use(svelte.router(outlet))
 
 app.path('/', (req, res) => res.redirect('/home'))
 

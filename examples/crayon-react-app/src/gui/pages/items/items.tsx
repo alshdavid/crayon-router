@@ -2,6 +2,7 @@ import React from 'react'
 import * as crayon from 'crayon'
 import * as react from 'crayon/react'
 import * as transition from 'crayon/transition'
+import * as animate from 'crayon/animate'
 import * as item from '~/platform/item'
 import { Toolbar } from '~/gui/components';
 import { Tab } from './tab'
@@ -23,16 +24,19 @@ export const Items = (
 
     const [ tabs, setTabs ] = react.useRouter('items-view', (tabs, selector) => {
         tabs.use(transition.loader(selector))
-        tabs.use(crayon.animate({
-            duration: 500
-        }))
+        tabs.use(animate.defaults({ duration: 500 }))
+
         tabs.path('/items/pending', 
-            crayon.animate([{ from: '/**', name: transition.slideRight }]),    
+            animate.route([{ 
+                from: '/**', name: transition.slideRight 
+            }]),    
             (req, res) => res.mount(() => <Tab store={pending} onClick={completeItem} />)
         )
 
         tabs.path('/items/complete', 
-            crayon.animate([{ from: '/**', name: transition.slideLeft }]),
+            animate.route([{ 
+                from: '/**', name: transition.slideLeft 
+            }]),
             (req, res) => res.mount(() => <Tab store={complete} onClick={uncompleteItem}/>)
         )
     })

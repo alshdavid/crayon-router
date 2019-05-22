@@ -1,3 +1,7 @@
+START_DIR=$(pwd)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd $DIR/..
+
 continueIfSuccessful() {
     rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 }
@@ -27,8 +31,8 @@ npx jest
 continueIfSuccessful
 
 # Generate Readme Badges
-COVERAGE=$(cat ./coverage/src/index.html| grep "class=\"strong\"")
-COVERAGE=$(node -e "console.log(\`${COVERAGE}\`.split('<span class=\"strong\">')[1].replace('% </span>', '').trim())")
+# COVERAGE=$(cat ./coverage/src/index.html| grep "class=\"strong\"")
+# COVERAGE=$(node -e "console.log(\`${COVERAGE}\`.split('<span class=\"strong\">')[1].replace('% </span>', '').trim())")
 VERSION=$(node -e "console.log(require('./package.json').version)")
 
 cp docs/readme.src.md readme.md
@@ -55,3 +59,5 @@ cd ..
 
 # Clean up
 rm -rf dist
+
+cd $START_DIR
