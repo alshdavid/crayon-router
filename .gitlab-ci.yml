@@ -6,5 +6,4 @@ one:
   stage: test
       
   script: 
-    - npm install
-    - make publish:dry
+    - ls
