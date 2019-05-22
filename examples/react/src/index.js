@@ -1,5 +1,5 @@
-import crayon from 'crayon';
-import react from 'crayon/react';
+import crayon from '../../dist';
+import react from '../../dist/react';
 import * as pages from './pages'
 import './index.css'
 

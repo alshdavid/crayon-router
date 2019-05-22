@@ -1,38 +1,10 @@
 import * as types from '../platform/check-types'
 import * as url from '../platform/url'
 import { handlerFunc } from '../router'
+import { AnimationRoute, AnimationOptions } from './types';
+import { AnimationState } from './state';
 
-export class AnimationRoute {
-    from?: string = ''
-    to?: string = ''
-    name?: string
-    duration?: number
-}
-
-export class AnimationState {
-    routes: AnimationRoute[] = []
-
-    constructor(
-        public name = 'no-animation',
-        public duration = 0,
-        public overrideDuration = false,
-        public animationOnFirst = true
-    ) {
-        if (name === '') {
-            throw new Error('Invalid animation name')
-        }
-    }
-}
-
-export interface AnimationOptions {
-    name?: string
-    duration?: number
-    overrideDuration?: boolean
-    animationOnFirst? : boolean,
-    routes?: AnimationRoute[]
-}
-
-export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFunc => (
+export const defaults = (options: AnimationOptions | AnimationRoute[]): handlerFunc => (
     req,
     res,
     state,
@@ -76,8 +48,12 @@ export const animate = (options: AnimationOptions | AnimationRoute[]): handlerFu
         )
     }
 
-    const from = ''// url.normalise(app.history[app.history.length - 2])
-    const to = ''//url.normalise(app.history[app.history.length - 1])
+    let from = ''
+    let to = ''
+    if (app.history.currentEvent) {
+        from = app.history.currentEvent.from
+        to = app.history.currentEvent.to
+    }
     let name = state.animation.name
     let duration = state.animation.duration
 

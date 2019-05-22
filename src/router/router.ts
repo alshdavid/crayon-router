@@ -30,7 +30,7 @@ export class Router {
                     type: RouterEventType.History, 
                     data: { ...event } 
                 })
-                this.load()
+                this.digest()
             })
     }
 
@@ -47,7 +47,7 @@ export class Router {
     use(target: handlerFunc | Group) {
         if (target instanceof Group) {
             this.useGroup(target)
-            this.load()
+            this.digest()
         } else {
             this.useHandler(target)
         }
@@ -81,9 +81,14 @@ export class Router {
         this.history.pop()
     }
 
-    // load() matches a path with patterns in the current router's routing 
+    load() {
+        this.events.next({ type: RouterEventType.InitialLoad })
+        return this.digest()
+    }
+
+    // digest() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
-    async load() {
+    async digest() {
         this.events.next({ type: RouterEventType.ProgressStart })
         this.isLoading = true
         const req = new Request()
@@ -91,10 +96,9 @@ export class Router {
 
         // Define redirect action
         res.redirect = (path: string) => {
-            this.history.push(path)
             this.isLoading = false
             this.events.next({ type: RouterEventType.ProgressEnd })
-            this.load()
+            this.history.push(path)
         }
 
         // Find handlers for route
@@ -107,8 +111,9 @@ export class Router {
 
             // Don't run this route if you're already on it. Consumers should 
             // rely on the history event stream to render changes
-            if (url.matchPath(key, this.history.lastRoute)) {
-                this.events.next({ type: RouterEventType.ProgressEnd, data: 'SAME_ROUTE_ABORT' })
+            if (this.history.lastRoute && url.matchPath(key, this.history.lastRoute)) {
+                this.events.next({ type: RouterEventType.SameRouteAbort })
+                this.events.next({ type: RouterEventType.ProgressEnd })
                 this.isLoading = false
                 return
             }

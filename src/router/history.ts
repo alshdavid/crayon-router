@@ -34,6 +34,14 @@ export class History {
         }
     }
 
+    get lastEvent() {
+        return this.events[this.events.length - 2]
+    }
+
+    get currentEvent() {
+        return this.events[this.events.length - 1]
+    }
+
     get lastRoute() {
         return this.entries[this.entries.length - 2]
     }

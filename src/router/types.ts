@@ -18,10 +18,12 @@ export type handlerFunc = (
 
 export enum RouterEventType {
     History = 'HISTORY_EVENT',
-    ProgressStart = 'ROUTER_PROGRESS_EVENT_START',
-    ProgressEnd = 'ROUTER_PROGRESS_EVENT_END',
+    InitialLoad = 'ROUTER_INITIAL_LOAD',
+    ProgressStart = 'ROUTER_START',
+    ProgressEnd = 'ROUTER_END',
     RunningHanlders = 'ROUTER_RUNNING_HANDLERS',
     NoHanlders = 'ROUTER_NO_HANDLERS',
+    SameRouteAbort = 'ROUTER_SAME_ROUTE_ABORT',
 
 }
 
