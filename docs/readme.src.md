@@ -17,7 +17,7 @@
 ## Client-Side Router, for all Frameworks
 
 ![version](https://img.shields.io/badge/version-{{version}}-blue.svg?cacheSeconds=2592000)
-![coverage](https://img.shields.io/badge/size-5kb-green.svg?cacheSeconds=2592000)
+![coverage](https://img.shields.io/badge/size-15kb-green.svg?cacheSeconds=2592000)
 ![coverage](https://img.shields.io/badge/license-MIT-green.svg?cacheSeconds=2592000)
 ![dependencies](https://img.shields.io/badge/dependencies-0-orange.svg?cacheSeconds=2592000)
 
