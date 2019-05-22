@@ -319,7 +319,7 @@ void async function main() {
 
 ### Dealing With Dependencies
 
-I recomend using a parameter injection model for dependency injection
+I recommend using a parameter injection model for dependency injection
 
 ```jsx
 export const MyView = (dep) => () => <div>{ dep.value }<div>
