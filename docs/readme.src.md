@@ -39,7 +39,9 @@ const app = crayon.create()
 
 app.use(react.router())
 
-app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
+app.path('/', (req, res) => {
+    return res.mount(() => <div>Hello World</div>)
+})
 
 app.load()
 ```
