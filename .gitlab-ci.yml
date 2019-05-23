@@ -11,15 +11,24 @@ publish:
     paths:
       - badges/**
   script:
-    - sh <(curl -sL https://alshdavid.github.io/sh/bin/alshx) --install
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - sh <(curl -sSL https://alshdavid.github.io/sh/bin/alshx) --install
     - alshx npm-version-bouncer package.json
-    - export VERSION=$(node -e "console.log(require('./package.json').version)")
-    - mkdir -p badges
-    - wget -O badges/version.svg https://img.shields.io/badge/version-$VERSION-blue.svg
     - yarn
     - yarn test:cover
+    - yarn clean
     - yarn build
-    - yarn publish
+    - mv .npmrc dist
+    - cd dist && yarn publish && cd ..
+    - export VERSION=$(node -e "console.log(require('./package.json').version)")
+    - echo $VERSION
+    - mkdir -p badges
+    - cd dist/router 
+    - mkdir -p r && cp *.js r && tar -cvzf r.tar.gz r
+    - export SIZE=$(($(wc -c r.tar.gz | awk '{print $1}')/1000))
+    - cd ../../
+    - wget -O badges/size.svg https://img.shields.io/badge/size-${SIZE}kb-green.svg
+    - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
 
 gendocs:
   image: alshdavid/aws-cli
@@ -27,6 +36,8 @@ gendocs:
   only:
     - master
   script:
+    - sh <(curl -sSL https://alshdavid.github.io/sh/bin/alshx) --install
     - aws s3 rm --recursive s3://alshdavid-public/badges/crayon
     - aws s3 cp --recursive ./badges s3://alshdavid-public/badges/crayon
     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
+    - alshx hub-purge alshdavid/crayon

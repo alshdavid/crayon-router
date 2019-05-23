@@ -17,7 +17,7 @@
 ## Client-Side Router, for all Frameworks
 
 ![version](https://cdn.davidalsh.com/badges/crayon/version.svg)
-![coverage](https://cdn.davidalsh.com/badges/crayon/size.svg)
+![size](https://cdn.davidalsh.com/badges/crayon/size.svg)
 ![coverage](https://img.shields.io/badge/license-MIT-green.svg?cacheSeconds=2592000)
 ![dependencies](https://img.shields.io/badge/dependencies-0-orange.svg?cacheSeconds=2592000)
 
@@ -41,6 +41,10 @@ app.use(react.router())
 
 app.path('/', (req, res) => {
     return res.mount(() => <div>Hello World</div>)
+})
+
+app.path('/**', (req, res) => {
+    return res.mount(() => <div>Not Found!</div>)
 })
 
 app.load()
@@ -121,6 +125,56 @@ app.use(items)
 app.load()
 ```
 
+### Route parameters and observing changes
+
+You can add paramaters in the route path and observe the changes.
+The observe method is used to prevent rerenders which can cause problems
+when dealing with nested routers and components that require preserved state
+
+For the sake of reducing external dependencies and package size, I am not using
+rxjs. This uses a portion of the rxjs API to enable dealing with event streams.
+
+In future, I intend to create a middleware that impliments rxjs, allowing you to pipe
+the stream into their operators/utilities (like .map() and .filter())
+
+```jsx
+app.path('/users/:id', (req, res) => {
+    let id = req.params.id
+
+    // subscribe to the event steam and pull out the
+    // "ProgressEnd" event 
+    const sub = app.events.subscribe(event => {
+       if (event.type === RouterEventType.ProgressEnd) {
+           id = req.params.id
+       }
+    })
+
+    // A callback the router fires when you 
+    // navigate away from this page
+    res.onLeave(() => sub.unsubscribe())
+})
+```
+
+### Nested routers
+
+They work just fine, just be sure to destroy a router before leaving a page
+
+```javascript
+const app = crayon.create('main')
+app.path('/dashboard/:tab', handler)
+
+const nested = crayon.create('tab-view')
+nested.path('/dashboard/tab-a', handler)
+nested.path('/dashboard/tab-b', handler)
+nested.destroy()
+```
+
+You would setup the nested router inside your component, targeting an element 
+reference to obtain a mount-point
+
+Take a look at the example in `/examples/crayon-react-app`. It is the demo in the
+readme gif and features a nested router as the tab view.
+
 ### Route Transitions
 
 #### This single API works on all frameworks
@@ -141,52 +195,23 @@ will add/remove the following classes:
 ```
 
 The middleware can be placed on the global level, on a group or inline on the route itself.
-
-```javascript
-app.use(crayon.animate(animation))
-
-group.use(crayon.animate(animation))
-
-app.path('/your-path',
-    crayon.animate(animation),
-    (req, res) => res.mount(() => <div>Animated</div>)
-)
-```
-
 To declare defaults, use the following:
 
 ```javascript
-crayon.animate({
-    name: 'css-class-name',
-    duration: 350
-})
-```
+import animation from 'crayon/animation'
 
-You can specify defaults but add custom rules for a few routes:
-```javascript
-crayon.animate({
-    name: 'css-class-name',
-    duration: 350,
-    routes: [
-        { from: '/a',  to: '/b',  name: 'slide-left' },
-        { from: '/b',  to: '/a',  name: 'slide-right' },
-        { from: '/**', to: '/c',  name: 'fade' },
-        { from: '/c',  to: '/**', name: 'fade' }
-    ]
-})
-```
-
-You can extend existing routing by using the middleware more than
-once
-
-```javascript
-app.use(crayon.animate({
+app.use(animate.defaults({
     name: 'css-class-name',
     duration: 350
 }))
+```
 
-// The middleware will assume an array is route definitions
-app.use(crayon.animate([
+You can specify custom rules for a few routes:
+
+```javascript
+import animation from 'crayon/animation'
+
+app.use(animate.routes([
     { from: '/a',  to: '/b',  name: 'slide-left' },
     { from: '/b',  to: '/a',  name: 'slide-right' },
     { from: '/**', to: '/c',  name: 'fade' },
@@ -197,7 +222,9 @@ app.use(crayon.animate([
 When provided inline on a route, you can omit the respecive to/from
 
 ```jsx
-app.use(crayon.animate({
+import animation from 'crayon/animation'
+
+app.use(animate.defaults({
     name: 'fade',
     duration: 350
 }))
@@ -208,11 +235,13 @@ app.path('/b', (req, res) => res.mount(() => <div>Route B</div>))
 // If you come from anywhere to /c slide-right
 // If you go to anywhere from /c slide-left
 app.path('/c',
-    crayon.animate([
+    animate.route([
         { from: '/**', name: 'slide-right' },
         { to:   '/**', name: 'slide-left' }
     ]),
-    (req, res) => res.mount(() => <div>Animated</div>)
+    (req, res) => {
+        return res.mount(() => <div>Animated</div>)
+    }
 )
 ```
 
@@ -223,10 +252,11 @@ For those who don't want to spend time writing animations, Crayon comes bundled 
 
 Just use the middleware
 ```javascript
-import * as transition from 'crayon/transition';
+import animation from 'crayon/animation'
+import transition from 'crayon/transition'
 
 app.use(transition.loader())
-app.use(crayon.animate({
+app.use(animate.defaults({
     name: transition.pushLeft,
     duration: 350
 }))

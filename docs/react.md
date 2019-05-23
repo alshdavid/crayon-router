@@ -8,11 +8,18 @@ import React from 'react'
 import crayon from 'crayon'
 import react from 'crayon/react'
 
-const app = crayon.create()
+/*
+    If no target is supplied the router will set up inside <body>
+    If no name is supplied the router will create a random one
+*/
+const target = document.getElementById('app')
+const app = crayon.create('router-name') 
 
-app.use(react.router())
+app.use(react.router(target))
 
-app.path('/', (req, res) => res.mount(() => <div>Hello World</div>))
+app.path('/', (req, res) => {
+    return res.mount(() => <div>Hello World</div>)
+})
 
 app.load()
 ```
@@ -35,7 +42,9 @@ const app = crayon.create()
 
 app.use(react.router())
 
-app.path('/', (req, res) => res.mount(MyView(dep)))
+app.path('/', (req, res) => {
+    return res.mount(MyView(dep))
+})
 
 app.load()
 ```

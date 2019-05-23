@@ -8,10 +8,18 @@ import crayon from 'crayon'
 import svelte from 'crayon/svelte'
 import Page from './Page.svelte'
 
-const app = crayon.create()
-app.use(svelte.router())
+/*
+    If no target is supplied the router will set up inside <body>
+    If no name is supplied the router will create a random one
+*/
+const target = document.getElementById('app')
+const app = crayon.create('router-name') 
 
-app.path('/', (req, res) => res.mount(Page)
+app.use(svelte.router(target))
+
+app.path('/', (req, res) => {
+	return res.mount(Page)
+})
 
 app.load()
 ```
@@ -35,7 +43,9 @@ import MyView from './MyView.svelte'
 const app = crayon.create()
 app.use(svelte.router())
 
-app.path('/', (req, res) => res.mount(MyView, { dep }))
+app.path('/', (req, res) => {
+	return res.mount(MyView, { dep }))
+})
 
 app.load()
 ```

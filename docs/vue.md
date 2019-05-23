@@ -8,8 +8,14 @@ _Simply used the supplied middleware_
 Pass Vue components to the `mount` functions inside your handlers. The second argument will provide props to your components.
 
 ```javascript
-const app = crayon.create()
-app.use(vue.router())
+/*
+    If no target is supplied the router will set up inside <body>
+    If no name is supplied the router will create a random one
+*/
+const target = document.getElementById('app')
+const app = crayon.create('router-name') 
+
+app.use(vue.router(target))
 ```
 
 ### Example using Vue file components
@@ -47,17 +53,15 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', (req, res) => 
-    res.redirect('/home')
-)
+app.path('/', (req, res) => res.redirect('/home'))
 
-app.path('/home', (req, res) => 
-    res.mount(() => HelloWorld, { nav: r, req })
-)
+app.path('/home', (req, res) => {
+  return res.mount(() => HelloWorld, { nav: r, req })
+})
 
-app.path('/about', (req, res) => 
-  res.mount(() => HelloWorld, { nav: r, req })
-)
+app.path('/about', (req, res) => {
+  return res.mount(() => HelloWorld, { nav: r, req })
+})
 
 r.load()
 ```
@@ -94,17 +98,15 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', (req, res) => 
-    res.redirect('/home')
-)
+app.path('/', (req, res) => res.redirect('/home'))
 
-app.path('/home', (req, res) => 
-    res.mount(HomeAndAbout(app, req, someService))
-)
+app.path('/home', (req, res) => {
+  return res.mount(HomeAndAbout(app, req, someService))
+})
 
-app.path('/about', (req, res) => 
-    res.mount(HomeAndAbout(app, req, someService))
-)
+app.path('/about', (req, res) => {
+  return res.mount(HomeAndAbout(app, req, someService))
+})
 
 app.load()
 ```
@@ -151,17 +153,15 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', (req, res) => 
-    res.redirect('/home')
-)
+app.path('/', (req, res) => res.redirect('/home'))
 
-app.path('/home', (req, res) => 
-    res.mount(() => HelloWorld, { nav: r, req })
-)
+app.path('/home', (req, res) => {
+  return res.mount(() => HelloWorld, { nav: r, req })
+})
 
-app.path('/about', (req, res) => 
-  res.mount(() => HelloWorld, { nav: r, req })
-)
+app.path('/about', (req, res) => {
+  return res.mount(() => HelloWorld, { nav: r, req })
+})
 
 r.load()
 ```
@@ -203,7 +203,9 @@ const app = crayon.create()
 
 app.use(react.router())
 
-app.path('/', (req, res) => res.mount(MyPage, { dep }))
+app.path('/', (req, res) => {
+  return res.mount(MyPage, { dep })
+})
 
 app.load()
 ```

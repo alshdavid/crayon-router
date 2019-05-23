@@ -1,6 +1,6 @@
 {
   "name": "crayon",
-  "version": "1.6.0",
+  "version": "1.6.5",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/alshdavid/crayon"
   },
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx tsc && cp package.json ./dist && cp -r docs ./dist && cp readme.md ./dist",
     "clean": "rm -rf dist",
     "test": "npx jest",
     "test:cover": "npx jest --coverage"
