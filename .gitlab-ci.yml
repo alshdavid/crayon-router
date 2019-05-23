@@ -20,6 +20,5 @@ deploy:
   only:
     - master
   script: 
-    - wget https://img.shields.io/badge/version-1.6.0-blue.svg
     - aws s3 rm --recursive s3://alshdavid-public/badges/crayon
     - aws s3 cp --recursive ./badges s3://alshdavid-public/badges/crayon
