@@ -1,24 +1,32 @@
 stages:
-  - build
-  - deploy
+  - publish
+  - gendocs
 
-build:
+publish:
   image: node:lts
-  stage: build
+  stage: publish
   only:
     - master
   artifacts:
     paths:
       - badges/**
   script:
-    - export NPM_VERSION=$(node -e "console.log(require('./package.json').version)")
-    - wget -O badges/version.svg https://img.shields.io/badge/version-$NPM_VERSION-blue.svg
+    - sh <(curl -sL https://alshdavid.github.io/sh/bin/alshx) --install
+    - alshx npm-version-bouncer package.json
+    - export VERSION=$(node -e "console.log(require('./package.json').version)")
+    - mkdir -p badges
+    - wget -O badges/version.svg https://img.shields.io/badge/version-$VERSION-blue.svg
+    - yarn
+    - yarn test:cover
+    - yarn build
+    - yarn publish
 
-deploy:
+gendocs:
   image: alshdavid/aws-cli
-  stage: deploy
+  stage: gendocs
   only:
     - master
-  script: 
+  script:
     - aws s3 rm --recursive s3://alshdavid-public/badges/crayon
     - aws s3 cp --recursive ./badges s3://alshdavid-public/badges/crayon
+    - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*

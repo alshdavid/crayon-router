@@ -1,6 +1,7 @@
 dist
 node_modules
 yarn.lock
+coverage
 
 # Compiled source #
 ###################
