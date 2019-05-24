@@ -14,7 +14,7 @@
 <br>
 
 
-## Client-Side Router, for all Frameworks
+## SPA Router, for all Frameworks
 
 ![version](https://cdn.davidalsh.com/badges/crayon/version.svg)
 ![size](https://cdn.davidalsh.com/badges/crayon/size.svg)
