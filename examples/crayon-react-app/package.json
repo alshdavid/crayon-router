@@ -21,7 +21,7 @@
     "@types/react-dom": "^16.8.2",
     "axios": "^0.18.0",
     "check-types": "^8.0.2",
-    "crayon": "^1.6.10"
+    "crayon": "^1.6.10",
     "css-loader": "^2.1.0",
     "dexie": "^2.0.4",
     "express-browser": "^1.0.6",
