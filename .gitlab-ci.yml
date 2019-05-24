@@ -40,4 +40,4 @@ gendocs:
     - aws s3 rm --recursive s3://alshdavid-public/badges/crayon
     - aws s3 cp --recursive ./badges s3://alshdavid-public/badges/crayon
     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
-    - alshx hub-purge alshdavid/crayon
+    - alshx hub-purge https://github.com/alshdavid/crayon
