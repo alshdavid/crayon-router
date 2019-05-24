@@ -43,6 +43,10 @@ app.path('/', (req, res) => {
     return res.mount(() => <div>Hello World</div>)
 })
 
+app.path('/users/:id', (req, res) => {
+    return res.mount(() => <div>Hi { req.params.id }</div>)
+})
+
 app.path('/**', (req, res) => {
     return res.mount(() => <div>Not Found!</div>)
 })
@@ -142,14 +146,14 @@ app.path('/users/:id', (req, res) => {
     let id = req.params.id
 
     // subscribe to the event steam and pull out the
-    // "ProgressEnd" event 
+    // "ProgressEnd" event
     const sub = app.events.subscribe(event => {
        if (event.type === RouterEventType.ProgressEnd) {
            id = req.params.id
        }
     })
 
-    // A callback the router fires when you 
+    // A callback the router fires when you
     // navigate away from this page
     res.onLeave(() => sub.unsubscribe())
 })
@@ -169,7 +173,7 @@ nested.path('/dashboard/tab-b', handler)
 nested.destroy()
 ```
 
-You would setup the nested router inside your component, targeting an element 
+You would setup the nested router inside your component, targeting an element
 reference to obtain a mount-point
 
 Take a look at the example in `/examples/crayon-react-app`. It is the demo in the
