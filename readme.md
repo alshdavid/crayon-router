@@ -41,7 +41,13 @@ const app = crayon.create()
 app.use(react.router())
 
 app.path('/', (req, res) => {
-    return res.mount(() => <div>Hello World</div>)
+    return res.mount(() => <div>
+        <h1>Hello World</h1>
+        <button 
+            onClick={() => app.navigate('/users/27')}>
+            Zoom Zoom
+        </button>
+    </div>)
 })
 
 app.path('/users/:id', (req, res) => {
@@ -71,8 +77,11 @@ yarn add crayon
 You can select your framework by using a middleware
 
 ```javascript
-// React (Supports Preact and Solid.js)
+// React
 app.use(react.router()
+
+// Preact
+app.use(preact.router()
 
 // Vue
 app.use(vue.router())
