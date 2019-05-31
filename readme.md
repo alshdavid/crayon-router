@@ -236,9 +236,9 @@ reference to obtain a mount-point
 Take a look at the example in `/examples/crayon-react-app`. It is the demo in the
 readme gif and features a nested router as the tab view.
 
-### Route Transitions
+### Animations Middleware
 
-#### This single API works on all frameworks
+#### This works on all frameworks
 
 Route Transitions are done using a middleware that
 applies/removes CSS styles over the course of a routing
@@ -258,8 +258,12 @@ will add/remove the following classes:
 The middleware can be placed on the global level, on a group or inline on the route itself.
 To declare defaults, use the following:
 
+```bash
+npm install --save crayon-animate
+```
+
 ```javascript
-import animation from 'crayon/animation'
+import animate from 'crayon-animate'
 
 app.use(animate.defaults({
     name: 'css-class-name',
@@ -270,7 +274,7 @@ app.use(animate.defaults({
 You can specify custom rules for a few routes:
 
 ```javascript
-import animation from 'crayon/animation'
+import animate from 'crayon-animate'
 
 app.use(animate.routes([
     { from: '/a',  to: '/b',  name: 'slide-left' },
@@ -283,7 +287,7 @@ app.use(animate.routes([
 When provided inline on a route, you can omit the respecive to/from
 
 ```jsx
-import animation from 'crayon/animation'
+import animate from 'crayon-animate'
 
 app.use(animate.defaults({
     name: 'fade',
@@ -310,11 +314,14 @@ app.path('/c',
 
 For those who don't want to spend time writing animations, Crayon comes bundled with a bunch.
 
+```bash
+npm install --save crayon-transition
+```
 
 Just use the middleware
 ```javascript
-import animation from 'crayon/animation'
-import transition from 'crayon/transition'
+import animate from 'crayon-animate'
+import transition from 'crayon-transition'
 
 app.use(transition.loader())
 app.use(animate.defaults({

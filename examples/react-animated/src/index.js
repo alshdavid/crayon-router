@@ -1,7 +1,7 @@
-import * as crayon from 'crayon';
-import * as react from 'crayon-react';
-import * as transition from 'crayon-transition';
-import * as animate from 'crayon-animate';
+import crayon from 'crayon';
+import react from 'crayon-react';
+import transition from 'crayon-transition';
+import animate from 'crayon-animate';
 import * as pages from './pages'
 import './index.css'
 
