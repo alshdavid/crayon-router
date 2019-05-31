@@ -1,11 +1,11 @@
-import crayon from '../../dist';
-import react from '../../dist/react';
+import crayon from 'crayon';
+import react from 'crayon-react';
 import * as pages from './pages'
 import './index.css'
 
-const outlet = document.getElementById('app')
 const app = crayon.create()
 
+const outlet = document.getElementById('app')
 app.use(react.router(outlet))
 
 app.path('/', (req, res) => res.redirect('/home'))

@@ -1,12 +1,12 @@
 import * as crayon from 'crayon';
-import * as react from 'crayon/react';
-import * as transition from 'crayon/transition';
-import * as animate from 'crayon/animate';
+import * as react from 'crayon-react';
+import * as transition from 'crayon-transition';
+import * as animate from 'crayon-animate';
 import * as pages from './pages'
 import './index.css'
 
-const outlet = document.getElementById('app')
 const app = crayon.create()
+const outlet = document.getElementById('app')
 
 app.use(react.router(outlet))
 app.use(transition.loader())

@@ -20,6 +20,7 @@
     "start:dev": "sirv public -s --dev"
   },
   "dependencies": {
-    "crayon": "^1.6.10"
+    "crayon": "^2.0.6",
+    "crayon-svelte": "^1.0.1"
   }
 }

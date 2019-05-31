@@ -1,7 +1,7 @@
-import * as crayon from 'crayon'
-import * as transition from 'crayon/transition';
-import * as animate from 'crayon/animate';
-import * as svelte from 'crayon/svelte'
+import crayon from 'crayon'
+import transition from 'crayon-transition';
+import animate from 'crayon-animate';
+import svelte from 'crayon-svelte'
 import Base from './pages/Base.svelte';
 import More from './pages/More.svelte';
 
