@@ -1,4 +1,4 @@
-import * as observe from '../../platform/observe'
+import * as observe from './platform/observe'
 import { Router } from "./router";
 import { History } from './history'
 import { RouterEvent } from './types';

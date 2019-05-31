@@ -1,4 +1,4 @@
-import * as observe from '../../platform/observe'
+import * as observe from './platform/observe'
 import { Request } from './request'
 import { Response } from './response'
 import { Router } from './router';

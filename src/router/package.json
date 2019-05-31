@@ -1,8 +1,8 @@
 {
   "name": "crayon",
-  "version": "2.0.3",
+  "version": "2.0.6",
   "description": "",
-  "main": "router/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/alshdavid/crayon"
@@ -20,5 +20,6 @@
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.4.5"
-  }
+  },
+  "dependencies": {}
 }

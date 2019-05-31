@@ -3,24 +3,26 @@
         "target": "es6",
         "module": "commonjs",
         "declaration": true,
-        "outDir": "./dist",
+        "outDir": "dist",
         "strict": true,
         "moduleResolution": "node",
         "inlineSourceMap": true,
-        "baseUrl": "./",
+        "baseUrl": "./src",
+        "rootDir": "./src",
         "lib": [
             "dom",
             "es2017"
         ],
         "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "paths": {
-            "~/*": ["src/*"],
-        }
+        "experimentalDecorators": true
     },
-    "include": ["src"],
+    "include": [
+        "src/**/*.ts",
+
+    ],
     "exclude": [
         "node_modules", 
-        "**.tests.ts"
+        "**.tests.ts",
+        "dist"
     ]
 }

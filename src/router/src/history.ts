@@ -1,5 +1,5 @@
-import * as observe from '../../platform/observe'
-import * as url from '../../platform/url'
+import * as observe from './platform/observe'
+import * as url from './platform/url'
 
 export enum HistoryType {
     push = 'PUSH',

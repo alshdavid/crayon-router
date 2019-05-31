@@ -1,17 +1,6 @@
 stages:
-  - test
   - publish
   - gendocs
-
-test-platform:
-  image: node:lts
-  stage: test
-  only:
-    - master
-  script:
-    - cd src/platform
-    - yarn
-    - yarn test:cover
 
 router:
   image: node:lts

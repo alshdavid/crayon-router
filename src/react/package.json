@@ -1,6 +1,6 @@
 {
   "name": "crayon-react",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -24,11 +24,11 @@
     "typescript": "^3.4.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "crayon": "^1.6.10"
+    "crayon": "^2.0.5"
   },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "crayon": "^1.6.10"
+    "crayon": "^2.0.5"
   }
 }

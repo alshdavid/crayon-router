@@ -1,7 +1,7 @@
-import * as observe from '../../platform/observe'
-import * as url from "../../platform/url"
-import * as genString from "../../platform/gen-string" 
-import { handlerFunc, RouterEvent, RouterEventType } from './types'
+import * as observe from './platform/observe'
+import * as url from "./platform/url"
+import * as genString from "./platform/gen-string" 
+import { handlerFunc, RouterEventType } from './types'
 import { Request } from './request'
 import { Response } from './response'
 import { Group } from "./group"
