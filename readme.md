@@ -82,6 +82,7 @@ npm install --save crayon
 
 ### Framework Middlewares
 
+<br>
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/react.png">
 <br>
 
@@ -93,7 +94,7 @@ npm install --save crayon-react
 import react from 'crayon-react'
 app.use(react.router()
 ```
-
+<br>
 <img width="190px" src="https://cdn.davidalsh.com/frameworks/preact.png">
 <br>
 
@@ -106,6 +107,7 @@ import preact from 'crayon-preact'
 app.use(preact.router()
 ```
 
+<br>
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/vue.png">
 <br>
 
@@ -118,6 +120,7 @@ import vue from 'crayon-vue'
 app.use(vue.router())
 ```
 
+<br>
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/svelte.png">
 <br>
 
@@ -133,6 +136,7 @@ app.use(svelte.router())
 
 ### Coming soon
 
+<br>
 <img width="200px" src="https://cdn.davidalsh.com/frameworks/angular.png">
 <br>
 <img width="240px" src="https://cdn.davidalsh.com/frameworks/customElements.png">
