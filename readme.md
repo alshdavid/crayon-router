@@ -74,7 +74,6 @@ This means that the front-end framework or animations you choose are a middlewar
 
 ### Installing
 
-You know the deal
 
 
 ```bash
