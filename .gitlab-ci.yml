@@ -1,8 +1,19 @@
 stages:
+  - test
   - publish
   - gendocs
 
-publish:
+test-platform:
+  image: node:lts
+  stage: test
+  only:
+    - master
+  script:
+    - cd src/platform
+    - yarn
+    - yarn test:cover
+
+router:
   image: node:lts
   stage: publish
   only:
@@ -11,24 +22,66 @@ publish:
     paths:
       - badges/**
   script:
-    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-    - sh <(curl -sSL https://alshdavid.github.io/sh/bin/alshx) --install
-    - alshx npm-version-bouncer package.json
-    - yarn
-    - yarn test:cover
-    - yarn clean
-    - yarn build
-    - mv .npmrc dist
-    - cd dist && yarn publish && cd ..
-    - export VERSION=$(node -e "console.log(require('./package.json').version)")
-    - echo $VERSION
+    - cd src/router
+    - sh ../../deploy.sh
     - mkdir -p badges
-    - cd dist/router 
-    - mkdir -p r && cp *.js r && tar -cvzf r.tar.gz r
-    - export SIZE=$(($(wc -c r.tar.gz | awk '{print $1}')/1000))
-    - cd ../../
-    - wget -O badges/size.svg https://img.shields.io/badge/size-${SIZE}kb-green.svg
+    - export VERSION=$(node -e "console.log(require('./package.json').version)")
     - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
+    - wget -O badges/size.svg https://img.shields.io/badge/size-8kb-green.svg
+
+animate:
+  image: node:lts
+  stage: publish
+  only:
+    - master
+  script:
+    - cd src/animate
+    - sh ../../deploy.sh
+
+transition:
+  image: node:lts
+  stage: publish
+  only:
+    - master
+  script:
+    - cd src/transition
+    - sh ../../deploy.sh
+
+preact:
+  image: node:lts
+  stage: publish
+  only:
+    - master
+  script:
+    - cd src/preact
+    - sh ../../deploy.sh
+
+react:
+  image: node:lts
+  stage: publish
+  only:
+    - master
+  script:
+    - cd src/react
+    - sh ../../deploy.sh
+
+svelte:
+  image: node:lts
+  stage: publish
+  only:
+    - master
+  script:
+    - cd src/svelte
+    - sh ../../deploy.sh
+
+vue:
+  image: node:lts
+  stage: publish
+  only:
+    - master
+  script:
+    - cd src/vue
+    - sh ../../deploy.sh
 
 gendocs:
   image: alshdavid/aws-cli
@@ -37,7 +90,7 @@ gendocs:
     - master
   script:
     - sh <(curl -sSL https://alshdavid.github.io/sh/bin/alshx) --install
-    - aws s3 rm --recursive s3://alshdavid-public/badges/crayon
-    - aws s3 cp --recursive ./badges s3://alshdavid-public/badges/crayon
+    - aws s3 rm --recursive s3://alshdavid-public/crayon/badges
+    - aws s3 cp --recursive ./badges s3://alshdavid-public/crayon/badges
     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
     - alshx hub-purge https://github.com/alshdavid/crayon

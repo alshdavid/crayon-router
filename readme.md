@@ -17,8 +17,8 @@
 
 ## SPA Router, for all Frameworks
 
-![version](https://cdn.davidalsh.com/badges/crayon/version.svg)
-![size](https://cdn.davidalsh.com/badges/crayon/size.svg)
+![version](https://cdn.davidalsh.com/crayon/badges/version.svg)
+![size](https://cdn.davidalsh.com/crayon/badges/size.svg)
 ![coverage](https://img.shields.io/badge/license-MIT-green.svg?cacheSeconds=2592000)
 ![dependencies](https://img.shields.io/badge/dependencies-0-orange.svg?cacheSeconds=2592000)
 

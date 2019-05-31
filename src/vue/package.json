@@ -10,8 +10,8 @@
   "scripts": {
     "build": "npx tsc && cp package.json ./dist",
     "clean": "rm -rf dist",
-    "test": "npx jest",
-    "test:cover": "npx jest --coverage"
+    "test": "npx jest --passWithNoTests",
+    "test:cover": "npx jest --coverage --passWithNoTests"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +19,9 @@
     "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "crayon": "^1.6.10",
+    "vue": "^2.6.10"
   },
   "peerDependencies": {
     "crayon": "^1.6.10",
