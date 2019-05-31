@@ -72,7 +72,8 @@ npm install --save crayon
 
 You can select your framework by using a middleware
 
-#### React
+<img width="150px" src="https://cdn.davidalsh.com/frameworks/react.png">
+<br>
 
 ```bash
 npm install --save crayon-react
@@ -83,7 +84,9 @@ import react from 'crayon-react'
 app.use(react.router()
 ```
 
-#### Preact
+<br>
+<img width="190px" src="https://cdn.davidalsh.com/frameworks/preact.png">
+<br><br>
 
 ```bash
 npm install --save crayon-preact
@@ -94,7 +97,9 @@ import preact from 'crayon-preact'
 app.use(preact.router()
 ```
 
-#### Vue
+<br>
+<img width="150px" src="https://cdn.davidalsh.com/frameworks/vue.png">
+<br><br>
 
 ```bash
 npm install --save crayon-vue
@@ -105,7 +110,9 @@ import vue from 'crayon-vue'
 app.use(vue.router())
 ```
 
-#### Svelte
+<br>
+<img width="150px" src="https://cdn.davidalsh.com/frameworks/svelte.png">
+<br><br>
 
 ```bash
 npm install --save crayon-svelte
@@ -115,14 +122,15 @@ npm install --save crayon-svelte
 import svelte from 'crayon-react'
 app.use(svelte.router())
 ```
+<br>
+### Coming soon
 
-#### Angular
+<br>
+<img width="200px" src="https://cdn.davidalsh.com/frameworks/angular.png">
+<br><br>
+<img width="240px" src="https://cdn.davidalsh.com/frameworks/customElements.png">
+<br><br>
 
-Coming soon, waiting on Ivy and module-less components
-
-#### CustomElements
-
-Coming soon
 
 ### Route Groups
 

@@ -29,7 +29,7 @@ router:
     - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
     - wget -O badges/size.svg https://img.shields.io/badge/size-8kb-green.svg
     - cd ../../
-    - cp src/router/badges .
+    - cp -r src/router/badges .
 
 animate:
   image: node:lts
