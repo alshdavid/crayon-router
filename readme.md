@@ -1,5 +1,5 @@
-<img align="left" width="350px" src="https://alshdavid.github.io/crayon/docs/logo.png">
-<img align="right" width="350px" src="https://alshdavid.github.io/crayon/docs/crayon.gif">
+<img align="left" width="350px" src="https://cdn.davidalsh.com/crayon/logo.png">
+<img align="right" width="350px" src="https://cdn.davidalsh.com/crayon/crayon.gif">
 
 <br>
 <br>
@@ -34,24 +34,18 @@
 ```jsx
 import React from 'react'
 import crayon from 'crayon'
-import react from 'crayon/react'
+import react from 'crayon-react'
 
 const app = crayon.create()
 
 app.use(react.router())
 
 app.path('/', (req, res) => {
-    return res.mount(() => <div>
-        <h1>Hello World</h1>
-        <button 
-            onClick={() => app.navigate('/users/27')}>
-            Zoom Zoom
-        </button>
-    </div>)
+    return res.mount(() => <h1>Hello World</h1>)
 })
 
 app.path('/users/:id', (req, res) => {
-    return res.mount(() => <div>Hi { req.params.id }</div>)
+    return res.mount(() => <div>Hi { req.params.id }!</div>)
 })
 
 app.path('/**', (req, res) => {
@@ -61,40 +55,74 @@ app.path('/**', (req, res) => {
 app.load()
 ```
 
+To nagivate use:
+
+```javascript
+app.navigate('/users/27')
+```
+
 ### Installation
 
 
 ```bash
-# For npm users
 npm install --save crayon
-
-# For yarn users
-yarn add crayon
 ```
 
 ### Framework
 
 You can select your framework by using a middleware
 
-```javascript
-// React
-app.use(react.router()
+#### React
 
-// Preact
-app.use(preact.router()
-
-// Vue
-app.use(vue.router())
-
-// Svelte 3
-app.use(svelte.router())
-
-// Native custom elements - TODO
-app.use(elements.router())
-
-// Angular - TODO (Waiting on Ivy)
-app.use(angular.router())
+```bash
+npm install --save crayon-react
 ```
+
+```javascript
+import react from 'crayon-react'
+app.use(react.router()
+```
+
+#### Preact
+
+```bash
+npm install --save crayon-preact
+```
+
+```javascript
+import preact from 'crayon-preact'
+app.use(preact.router()
+```
+
+#### Vue
+
+```bash
+npm install --save crayon-vue
+```
+
+```javascript
+import vue from 'crayon-vue'
+app.use(vue.router())
+```
+
+#### Svelte
+
+```bash
+npm install --save crayon-svelte
+```
+
+```javascript
+import svelte from 'crayon-react'
+app.use(svelte.router())
+```
+
+#### Angular
+
+Coming soon, waiting on Ivy and module-less components
+
+#### CustomElements
+
+Coming soon
 
 ### Route Groups
 
