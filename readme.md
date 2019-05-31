@@ -83,9 +83,6 @@ npm install --save crayon
 
 ### Framework Middlewares
 
-I have created some basic middlewares that support a bunch of frameworks.
-Pick you poision below, or maybe event pick multiple - whatever, let's get crazy.
-
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/react.png">
 <br>
 
