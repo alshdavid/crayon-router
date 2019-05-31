@@ -22,11 +22,10 @@
 ![coverage](https://img.shields.io/badge/license-MIT-green.svg?cacheSeconds=2592000)
 ![dependencies](https://img.shields.io/badge/dependencies-0-orange.svg?cacheSeconds=2592000)
 
-- Clientside UI Router
-- ExpressJS like syntax
-- Supports all major frameworks
-- Route animations under one API
-- Easy-to-write middleware
+- Clientside Router
+- Express like syntax
+- Select your framework with middleware
+- Select your animations with middleware
 - No dependencies
 
 ### Example
@@ -61,16 +60,31 @@ To nagivate use:
 app.navigate('/users/27')
 ```
 
-### Installation
+### Introduction and Explanation
+
+Crayon is a simple client-side UI router that uses a time-tested and familiar pattern to route actions based on browser paths.
+
+The routing style is seen in serverside frameworks like Express in Node and Gin in Go, so it's nothing new - but a tool I felt browser-based applications were lacking.
+
+While the router itself is only responsible for running a callback which it selects based on pattern matching the browser's path, you are able to compose behaviours using middleware.
+
+This means that the front-end framework or animations you choose are a middleware concern, not a routing concern.
+
+*The philosophy behind Crayon is to ask less of our front-end frameworks, but get more*
+
+### Installing
+
+You know the deal
 
 
 ```bash
 npm install --save crayon
 ```
 
-### Framework
+### Framework Middlewares
 
-You can select your framework by using a middleware
+I have created some basic middlewares that support a bunch of frameworks.
+Pick you poision below, or maybe event pick multiple - whatever, let's get crazy.
 
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/react.png">
 <br>
@@ -84,9 +98,8 @@ import react from 'crayon-react'
 app.use(react.router()
 ```
 
-<br>
 <img width="190px" src="https://cdn.davidalsh.com/frameworks/preact.png">
-<br><br>
+<br>
 
 ```bash
 npm install --save crayon-preact
@@ -97,9 +110,8 @@ import preact from 'crayon-preact'
 app.use(preact.router()
 ```
 
-<br>
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/vue.png">
-<br><br>
+<br>
 
 ```bash
 npm install --save crayon-vue
@@ -110,9 +122,8 @@ import vue from 'crayon-vue'
 app.use(vue.router())
 ```
 
-<br>
 <img width="150px" src="https://cdn.davidalsh.com/frameworks/svelte.png">
-<br><br>
+<br>
 
 ```bash
 npm install --save crayon-svelte
@@ -123,13 +134,13 @@ import svelte from 'crayon-react'
 app.use(svelte.router())
 ```
 <br>
+
 ### Coming soon
 
-<br>
 <img width="200px" src="https://cdn.davidalsh.com/frameworks/angular.png">
-<br><br>
+<br>
 <img width="240px" src="https://cdn.davidalsh.com/frameworks/customElements.png">
-<br><br>
+<br>
 
 
 ### Route Groups
