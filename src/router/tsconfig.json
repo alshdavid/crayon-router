@@ -7,8 +7,6 @@
         "strict": true,
         "moduleResolution": "node",
         "inlineSourceMap": true,
-        "baseUrl": "./src",
-        "rootDir": "./src",
         "lib": [
             "dom",
             "es2017"
@@ -17,7 +15,8 @@
         "experimentalDecorators": true
     },
     "include": [
-        "src/**/*.ts",
+        "src/**/*.ts", 
+        "tests/**/*.ts",
 
     ],
     "exclude": [

@@ -8,7 +8,7 @@ export class SharedState {
     events = observe.createSubject<RouterEvent>()
     
     constructor(
-        public history: History
+        public history: History,
     ) {}
 
     addRouter(router: Router) {
@@ -24,13 +24,16 @@ export class SharedState {
     }
 }
 
-export const getSharedState = (): SharedState => {
-    if ((window as any).crayon === undefined) {
-        const history = new History()
+export const getSharedState = (
+    win: Window = window,
+    doc: Document = document    
+): SharedState => {
+    if ((win as any).crayon === undefined) {
+        const history = new History(win, doc)
         const sharedState = new SharedState(
             history
         )
-        ;(window as any).crayon = sharedState
+        ;(win as any).crayon = sharedState
     }
-    return (window as any).crayon
+    return (win as any).crayon
 }

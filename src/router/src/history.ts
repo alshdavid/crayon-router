@@ -15,12 +15,12 @@ export interface HistoryEvent {
 }
 
 export class History {
-    entries: string[] = [ window.location.pathname ]
+    entries: string[] = [ this.window.location.pathname ]
     events: HistoryEvent[] = []
     onEvent = observe.createSubject<HistoryEvent>()
 
     onPop = () => {
-        const path = window.location.pathname
+        const path = this.window.location.pathname
         if (path === this.lastRoute) {
             const event = { type: HistoryType.back, from: this.currentRoute, to: this.lastRoute }
             this.entries.pop()
@@ -50,17 +50,20 @@ export class History {
         return this.entries[this.entries.length - 1]
     }
 
-    constructor() {
-        window.addEventListener('popstate', this.onPop)
+    constructor(
+        private window: Window = window,
+        private document: Document = document
+    ) {
+        this.window.addEventListener('popstate', this.onPop)
     }
 
     destroy() {
-        window.removeEventListener('popstate', this.onPop)
+        this.window.removeEventListener('popstate', this.onPop)
     }
 
     push(path: string) {
         path = url.normalise(path)
-        window.history.pushState(null, document.title, path)
+        this.window.history.pushState(null, this.document.title, path)
         const event = { type: HistoryType.push, from: this.currentRoute, to: path }
         this.entries.push(path)
         this.events.push(event)
@@ -68,12 +71,12 @@ export class History {
     }
 
     pop() {
-        window.history.back()
+        this.window.history.back()
     }
 
     replace(path: string) {
         path = url.normalise(path)
-        window.history.replaceState(null, document.title, path)
+        this.window.history.replaceState(null, this.document.title, path)
         this.entries[this.entries.length - 1] = path
         this.onEvent.next({ type: HistoryType.replace, from: this.currentRoute, to: path })
     }

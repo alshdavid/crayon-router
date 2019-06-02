@@ -24,6 +24,7 @@ export class Router {
     constructor(
         public sharedState: SharedState,
         public id: string,
+        public window: Window = window
     ) {
         sharedState.addRouter(this)
         this.history = sharedState.history
@@ -46,7 +47,7 @@ export class Router {
     }
 
     path(path: string, ...handlers: handlerFunc[]) {
-        this.routes[path] = handlers
+        this.routes[url.normalise(path)] = handlers
     }
 
     use(target: handlerFunc | Group) {
@@ -93,9 +94,9 @@ export class Router {
     // digest() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
     async digest() {
-        this.events.next({ type: RouterEventType.ProgressStart, id: this.id })
+        this.events.next({ type: RouterEventType.ProgressStart, id: this.id, data: this.window.location.pathname })
         this.isLoading = true
-        const req = new Request()
+        const req = new Request(this.window)
         const res = new Response()
 
         // Define redirect action
@@ -105,9 +106,9 @@ export class Router {
             this.history.push(path)
         }
 
-        const result = this.getPattern(req.pathname)
+        const result = this.getPattern(url.normalise(req.pathname))
         if (!result) {
-            this.events.next({ type: RouterEventType.NoHanlders, id: this.id })
+            this.events.next({ type: RouterEventType.NoHanlders, id: this.id, data: this.routes})
             this.isLoading = false
             return
         }
@@ -126,7 +127,7 @@ export class Router {
         const handlers = this.routes[pattern]
         req.routePattern = pattern
         req.params = { ...params }
-        req.query = { ...url.deserializeQuery(window.location.search) }
+        req.query = { ...url.deserializeQuery(this.window.location.search) }
 
         // Watch for update and mutate the request untill you navigate
         // elsewhere. This adds a new subscirption and removes the previous
@@ -143,9 +144,8 @@ export class Router {
 
     // getPattern takes a pathname and find the corresponding key in the
     // routing object based on some matching criteria. Competitive scenarios 
-    // eg: "/items/:id" vs "/items/add", the more specific option will be chosen
+    // eg: "/items/:id" vs "/items/add" vs "/**", the more specific option will be chosen
     getPattern(pathname: string) {
-        //
         let patterns: { key: string, params: Record<string, string>}[] = []
         for (let key in this.routes) {
             const params = url.matchPath(key, pathname)
@@ -157,13 +157,23 @@ export class Router {
             return
         }
 
+        const wildcard = patterns.filter(p => p.key.includes('**'))
+        const noWildcardPatterns = patterns.filter(p => !p.key.includes('**'))
+
         let pattern: string | undefined
         let params: Record<string, string> | undefined
-        for (let item of patterns) {
+        for (let item of noWildcardPatterns) {
             pattern = item.key
             params = item.params
             if (item.key === pathname) {
                 break
+            }
+        }
+        if (!pattern || !params && wildcard.length) {
+            return {
+                params: wildcard[0].params,
+                pattern: wildcard[0].key,
+                patterns
             }
         }
         if (!pattern || !params) {
@@ -198,7 +208,7 @@ export class Router {
             const params = url.matchPath(key, req.pathname)
             req.routePattern = key
             req.params = { ...params }
-            req.query = { ...url.deserializeQuery(window.location.search) }
+            req.query = { ...url.deserializeQuery(this.window.location.search) }
             this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
             this.isLoading = false
         })
@@ -206,11 +216,14 @@ export class Router {
 }
 
 export const create = (
-    id = genString.ofLength(10)
+    id = genString.ofLength(10),
+    win: Window = window,
+    doc: Document = document
 ) => {
-    const sharedState = getSharedState()
+    const sharedState = getSharedState(win, doc)
     return new Router(
         sharedState,
-        id
+        id,
+        win
     )
 }
