@@ -5,7 +5,7 @@ Simply load the svelte middleware, then pass Svelte components to the `mount` fu
 
 ```javascript
 import crayon from 'crayon'
-import svelte from 'crayon/svelte'
+import svelte from 'crayon-svelte'
 import Page from './Page.svelte'
 
 /*
