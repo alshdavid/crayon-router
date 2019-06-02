@@ -112,9 +112,6 @@ export class Router {
             return
         }
         const { pattern, params } = result
-        req.routePattern = pattern
-        req.params = { ...params }
-        req.query = { ...url.deserializeQuery(window.location.search) }
 
         // Don't run this route if you're already on it. Consumers should 
         // rely on the history event stream to render changes        
@@ -123,12 +120,13 @@ export class Router {
             const previousPattern = this.getPattern(this.history.currentEvent.from)
             if (pattern === (previousPattern && previousPattern.pattern)) {
                 this.events.next({ type: RouterEventType.SameRouteAbort, id: this.id })
-                this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
-                this.isLoading = false
                 return
             }
         }
         const handlers = this.routes[pattern]
+        req.routePattern = pattern
+        req.params = { ...params }
+        req.query = { ...url.deserializeQuery(window.location.search) }
 
         // Watch for update and mutate the request untill you navigate
         // elsewhere. This adds a new subscirption and removes the previous
@@ -201,6 +199,8 @@ export class Router {
             req.routePattern = key
             req.params = { ...params }
             req.query = { ...url.deserializeQuery(window.location.search) }
+            this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
+            this.isLoading = false
         })
     }
 }
