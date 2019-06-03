@@ -1,6 +1,6 @@
 {
   "name": "crayon",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "npx tsc && cp package.json ./dist",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm -rf coverage",
     "test": "npx jest --passWithNoTests",
     "test:watch": "npx jest --watch --passWithNoTests",
     "test:cover": "npx jest --coverage --passWithNoTests"

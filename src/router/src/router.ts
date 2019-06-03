@@ -17,6 +17,7 @@ export class Router {
     $history: observe.Subscription
     $reqs: observe.Subscription[] = []
     loads = 0
+    window: Window
 
     get events() {
         return this.sharedState.events
@@ -25,8 +26,9 @@ export class Router {
     constructor(
         public sharedState: SharedState,
         public id: string,
-        public window: Window = window
+        browserWindow: Window = window
     ) {
+        this.window = browserWindow
         sharedState.addRouter(this)
         this.history = sharedState.history
         this.$history = this.history.onEvent
@@ -44,6 +46,9 @@ export class Router {
         this.sharedState.removeRouter(this)
         this.$history.unsubscribe()
         this.$reqs.forEach(req => req.unsubscribe())
+        if (this.onLeave) {
+            this.onLeave()
+        }
         this.events.next({ type: RouterEventType.Destroyed, id: this.id, data: this.window.location.pathname })
     }
 

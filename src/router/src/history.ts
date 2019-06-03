@@ -15,9 +15,11 @@ export interface HistoryEvent {
 }
 
 export class History {
-    entries: string[] = [ this.window.location.pathname ]
+    entries: string[] = []
     events: HistoryEvent[] = []
     onEvent = observe.createSubject<HistoryEvent>()
+    window: Window
+    document: Document
 
     onPop = () => {
         const path = this.window.location.pathname
@@ -51,9 +53,12 @@ export class History {
     }
 
     constructor(
-        private window: Window = window,
-        private document: Document = document
+        win: Window = window,
+        doc: Document = document
     ) {
+        this.window = win
+        this.document = doc
+        this.entries.push(this.window.location.pathname)
         this.window.addEventListener('popstate', this.onPop)
     }
 

@@ -7,8 +7,8 @@ it('Should navigate to route', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/', (req, res) => {
@@ -30,8 +30,8 @@ it('Should redirect to correct route', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/', (req,res) => {
@@ -52,8 +52,8 @@ it('Should route with params', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/:id', (req,res) => {
@@ -71,8 +71,8 @@ it('Should not rerender route with params', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
     let hits = 0
     let events = 0
@@ -105,8 +105,8 @@ it('Should route to wildcard route', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/**', (req,res) => {
@@ -122,8 +122,8 @@ it('Should route to wildcard route if nothing more specific', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/test', (req,res) => {
@@ -145,8 +145,8 @@ it('Should skip wildcard route in favour of more specific params route', (done) 
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/test/:id', (req,res) => {
@@ -168,8 +168,8 @@ it('Should route to wildcard route when route with params has nested route', (do
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/test/:id', (req,res) => {
@@ -191,8 +191,8 @@ it('Should route to more specific route when overlaped with params', (done) => {
     const document = new MockDocument()
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
 
     app.path('/home', (req,res) => {
@@ -216,8 +216,8 @@ it('Should run callback in correct router', (done) => {
     // Router 1
     const app = create(
         'test-router',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
     app.path('/home', (req,res) => {
         console.error()
@@ -227,8 +227,8 @@ it('Should run callback in correct router', (done) => {
     // Router 2
     const app2 = create(
         'test-router-2',
-        window as Window,
-        document as Document
+        window as any,
+        document as any
     )
     app2.path('/not-home', (req,res) => {
         expect(req.pathname).toBe('/not-home')
@@ -241,18 +241,19 @@ it('Should run callback in correct router', (done) => {
 })
 
 it('Should run callback in correct router', (done) => {
-    const window = new MockWindow() as Window
-    const document = new MockDocument() as Document
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
     const app = create('a', window, document)
-    const events: string[] = []
-    let completeCount = 0
+    const events: string[] = [] 
 
-    const complete = () => {
-        completeCount++
-        if (completeCount !== 3) {
+    const complete = (v: string) => {
+        events.push(v)
+        if (events.length !== 5) {
             return
         }
-        expect(events).toEqual(['b', 'a', 'b'])
+        expect(events).toEqual([
+            'a1', 'b1', 'a2', 'a1', 'b1'
+        ])
         done()
     }
 
@@ -260,8 +261,7 @@ it('Should run callback in correct router', (done) => {
         const app2 = create('b', window, document)
 
         app2.path('/test/:b', (req, res) => {
-            events.push('b')
-            complete()
+            complete('b1')
         })
 
         app2.load()
@@ -269,20 +269,73 @@ it('Should run callback in correct router', (done) => {
         res.onLeave(() => {
             app2.destroy()
         })
+
+        complete('a1')
     })
 
     app.path('/test/page-on-root', (req, res) => {
-        events.push('a')
-        complete()
+        complete('a2')
     })
 
     app.load()
 
     // Navigate
-    setTimeout(() => { app.navigate('/test/page-on-nested'); console.log('1') })
-    setTimeout(() => { app.navigate('/test/page-on-root'); console.log('2') }, 10)
-    setTimeout(() => { app.navigate('/test/page-on-nested'); console.log('3') }, 20)
+    setTimeout(() => app.navigate('/test/page-on-nested'))
+    setTimeout(() => app.navigate('/test/page-on-root'), 10)
+    setTimeout(() => app.navigate('/test/page-on-nested'), 20)
+})
 
+it('Should destroy nested routers', (done) => {
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('a', window, document)
+    const events: string[] = []
 
+    const complete = (str: string) => {
+        events.push(str)
+        if (events.length !== 7) {
+            return
+        }
+        expect(events).toEqual([
+            'a1', 'b1', 'c1', 'a2', 'a1', 'b1', 'c1'
+        ])
+        done()
+    }
 
+    app.path('/:a/**', (req1, res1) => {
+        const app2 = create('b', window, document)
+
+        app2.path('/a/b/**', (req2, res2) => {
+            const app3 = create('b', window, document)
+
+            app3.path('/a/b/c', (req3, res3) => {
+                complete('c1')
+            })
+
+            app3.load()
+
+            res2.onLeave(() => {
+                app3.destroy()
+            })
+            complete('b1')
+        })
+        app2.load()
+        
+        res1.onLeave(() => {
+            app2.destroy()
+        })
+
+        complete('a1')
+    })
+
+    app.path('/a/root', (req, res) => {
+        complete('a2')
+    })
+
+    app.load()
+
+    // Navigate
+    setTimeout(() => app.navigate('/a/b/c'))
+    setTimeout(() => app.navigate('/a/root'), 10)
+    setTimeout(() => app.navigate('/a/b/c'), 20)
 })
