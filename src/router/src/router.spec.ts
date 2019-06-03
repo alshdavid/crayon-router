@@ -66,7 +66,7 @@ it('Should route with params', (done) => {
     app.navigate('/test-value')
 })
 
-fit('Should not rerender route with params', (done) => {
+it('Should not rerender route with params', (done) => {
     const window = new MockWindow()
     const document = new MockDocument()
     const app = create(
@@ -240,3 +240,49 @@ it('Should run callback in correct router', (done) => {
     app2.navigate('/not-home')
 })
 
+it('Should run callback in correct router', (done) => {
+    const window = new MockWindow() as Window
+    const document = new MockDocument() as Document
+    const app = create('a', window, document)
+    const events: string[] = []
+    let completeCount = 0
+
+    const complete = () => {
+        completeCount++
+        if (completeCount !== 3) {
+            return
+        }
+        expect(events).toEqual(['b', 'a', 'b'])
+        done()
+    }
+
+    app.path('/:a/**', (req, res) => {
+        const app2 = create('b', window, document)
+
+        app2.path('/test/:b', (req, res) => {
+            events.push('b')
+            complete()
+        })
+
+        app2.load()
+        
+        res.onLeave(() => {
+            app2.destroy()
+        })
+    })
+
+    app.path('/test/page-on-root', (req, res) => {
+        events.push('a')
+        complete()
+    })
+
+    app.load()
+
+    // Navigate
+    setTimeout(() => { app.navigate('/test/page-on-nested'); console.log('1') })
+    setTimeout(() => { app.navigate('/test/page-on-root'); console.log('2') }, 10)
+    setTimeout(() => { app.navigate('/test/page-on-nested'); console.log('3') }, 20)
+
+
+
+})

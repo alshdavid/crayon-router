@@ -16,6 +16,7 @@ export class Router {
     history: History
     $history: observe.Subscription
     $reqs: observe.Subscription[] = []
+    loads = 0
 
     get events() {
         return this.sharedState.events
@@ -93,6 +94,7 @@ export class Router {
 
     // digest() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
+    onLeave = () => {}
     async digest() {
         this.events.next({ type: RouterEventType.ProgressStart, id: this.id, data: this.window.location.pathname })
         this.isLoading = true
@@ -117,7 +119,7 @@ export class Router {
 
         // Don't run this route if you're already on it. Consumers should 
         // rely on the history event stream to render changes        
-        if (this.history.currentEvent) {
+        if (this.history.currentEvent && this.loads !== 0) {
             // The pattern for the previous route
             const previousPattern = this.getPattern(this.history.currentEvent.from)
             if (pattern === (previousPattern && previousPattern.pattern)) {
@@ -129,17 +131,21 @@ export class Router {
         req.routePattern = pattern
         req.params = { ...params }
         req.query = { ...url.deserializeQuery(this.window.location.search) }
-
         // Watch for update and mutate the request untill you navigate
         // elsewhere. This adds a new subscirption and removes the previous
         this.$reqs.push(this.onRequestUpdate(req, res, pattern))
 
         // Run handlers and middleware. They will skip
         // if a the res object has run 'end()'
+        this.onLeave()
         this.events.next({ type: RouterEventType.RunningHanlders, id: this.id, data: this.window.location.pathname })
         await this.runHandlers(this.middleware, req, res)
         await this.runHandlers(handlers, req, res)
+        this.loads++
         this.isLoading = false
+        if (res.leaveAction) {
+            this.onLeave = res.leaveAction
+        }
         this.events.next({ type: RouterEventType.ProgressEnd, id: this.id, data: this.window.location.pathname })
     }
 
