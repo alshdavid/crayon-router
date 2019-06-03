@@ -21,7 +21,7 @@
 ![size](https://cdn.davidalsh.com/crayon/badges/size.svg)
 ![coverage](https://img.shields.io/badge/license-MIT-green.svg?cacheSeconds=2592000)
 ![dependencies](https://img.shields.io/badge/dependencies-0-orange.svg?cacheSeconds=2592000)
-![coverage](https://img.shields.io/badge/test%20coverage-91.42%-green.svg?cacheSeconds=2592000)
+![coverage](https://img.shields.io/badge/test%20coverage-91.42%25-green.svg?cacheSeconds=2592000)
 
 - Clientside Router
 - Express like syntax
