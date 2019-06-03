@@ -1,5 +1,6 @@
 import { create } from './router'
 import { MockWindow, MockDocument } from './tests/mocks'
+import { RouterEventType } from './types';
 
 it('Should navigate to route', (done) => {
     const window = new MockWindow()
@@ -63,6 +64,40 @@ it('Should route with params', (done) => {
     app.load()
 
     app.navigate('/test-value')
+})
+
+fit('Should not rerender route with params', (done) => {
+    const window = new MockWindow()
+    const document = new MockDocument()
+    const app = create(
+        'test-router',
+        window as Window,
+        document as Document
+    )
+    let hits = 0
+    let events = 0
+
+    app.events.subscribe(event => {
+        if (event.type !== RouterEventType.ProgressEnd) {
+            return
+        }
+        events++
+        if (events !== 4) {
+            return
+        }
+        expect(hits).toBe(1)
+        done()
+    })
+
+    app.path('/:id', (req, res) => {
+        hits++
+    })
+
+    app.load()
+
+    setTimeout(() => app.navigate('/test-value'))
+    setTimeout(() => app.navigate('/test-value-2'), 5)
+    setTimeout(() => app.navigate('/test-value-3'), 10)
 })
 
 it('Should route to wildcard route', (done) => {
