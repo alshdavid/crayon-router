@@ -46,9 +46,7 @@ export class Router {
         this.sharedState.removeRouter(this)
         this.$history.unsubscribe()
         this.$reqs.forEach(req => req.unsubscribe())
-        if (this.onLeave) {
-            this.onLeave()
-        }
+        this.runOnLeave()
         this.events.next({ type: RouterEventType.Destroyed, id: this.id, data: this.window.location.pathname })
     }
 
@@ -92,6 +90,14 @@ export class Router {
         this.history.pop()
     }
 
+    runOnLeave() {
+        if (!this.onLeave) {
+            return
+        }
+        this.onLeave()
+        this.onLeave = () => {}
+    }
+
     load() {
         this.events.next({ type: RouterEventType.LoadTriggered, id: this.id, data: this.window.location.pathname })
         return this.digest()
@@ -109,14 +115,28 @@ export class Router {
         // Define redirect action
         res.redirect = (path: string) => {
             this.isLoading = false
-            this.events.next({ type: RouterEventType.ProgressEnd, id: this.id })
+            this.events.next({ 
+                type: RouterEventType.ProgressEnd, 
+                id: this.id,
+                data: {
+                    path: this.window.location.pathname,
+                    note: 'redirected page'
+                }
+            })
             this.history.push(path)
         }
 
         const result = this.getPattern(url.normalise(req.pathname))
         if (!result) {
             this.events.next({ type: RouterEventType.NoHanlders, id: this.id, data: this.window.location.pathname })
-            this.events.next({ type: RouterEventType.ProgressEnd, id: this.id, data: this.window.location.pathname })
+            this.events.next({ 
+                type: RouterEventType.ProgressEnd, 
+                id: this.id, 
+                data: {
+                    path: this.window.location.pathname,
+                    note: 'No handlers found for current path',
+                }
+            })
             this.isLoading = false
             return
         }
@@ -128,7 +148,11 @@ export class Router {
             // The pattern for the previous route
             const previousPattern = this.getPattern(this.history.currentEvent.from)
             if (pattern === (previousPattern && previousPattern.pattern)) {
-                this.events.next({ type: RouterEventType.SameRouteAbort, id: this.id, data: this.window.location.pathname })
+                this.events.next({ 
+                    type: RouterEventType.SameRouteAbort, 
+                    id: this.id, 
+                    data: this.window.location.pathname 
+                })
                 return
             }
         }
@@ -142,16 +166,30 @@ export class Router {
 
         // Run handlers and middleware. They will skip
         // if a the res object has run 'end()'
-        this.onLeave()
-        this.events.next({ type: RouterEventType.RunningHanlders, id: this.id, data: this.window.location.pathname })
+        this.runOnLeave()
+        this.events.next({ 
+            type: RouterEventType.RunningHanlders, 
+            id: this.id, 
+            data: this.window.location.pathname 
+        })
         await this.runHandlers(this.middleware, req, res)
         await this.runHandlers(handlers, req, res)
         this.loads++
         this.isLoading = false
         if (res.leaveAction) {
             this.onLeave = res.leaveAction
+        } else {
+            this.onLeave = () => {}
         }
-        this.events.next({ type: RouterEventType.ProgressEnd, id: this.id, data: this.window.location.pathname })
+        this.events.next({ 
+            type: RouterEventType.ProgressEnd, 
+            id: this.id, 
+            data: {
+                path: this.window.location.pathname,
+                note: 'handlers have completed running',
+                route: pattern
+            }
+        })
     }
 
     // getPattern takes a pathname and find the corresponding key in the
@@ -210,10 +248,15 @@ export class Router {
 
     private onRequestUpdate(req: Request, res: Response, key: string) {
         return this.history.onEvent.subscribe(event => {
-            if (url.matchPath(key, event.to) === undefined) {
+            const currentPattern = this.getPattern(event.to)
+            const previousPattern = this.getPattern(event.from)
+            if (
+                (currentPattern && currentPattern.pattern) !== 
+                (previousPattern && previousPattern.pattern)
+            ) {
                 this.$reqs[0].unsubscribe()
                 this.$reqs.shift()
-                res.leaveAction && res.leaveAction()
+                this.runOnLeave()
                 return
             }
             Object.assign(req, new Request(this.window))
@@ -221,7 +264,15 @@ export class Router {
             req.routePattern = key
             req.params = { ...params }
             req.query = { ...url.deserializeQuery(this.window.location.search) }
-            this.events.next({ type: RouterEventType.ProgressEnd, id: this.id, data: this.window.location.pathname })
+            this.events.next({ 
+                type: RouterEventType.ProgressEnd, 
+                id: this.id,
+                data: {
+                    path: this.window.location.pathname,
+                    note: 'Router ended after same-route update',
+                    route: key
+                }
+            })
             this.isLoading = false
         })
     }

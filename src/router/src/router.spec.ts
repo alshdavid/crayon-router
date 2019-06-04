@@ -1,6 +1,7 @@
 import { create } from './router'
 import { MockWindow, MockDocument } from './tests/mocks'
-import { RouterEventType } from './types';
+import { RouterEventType, handlerFunc } from './types';
+import routerMockData from './tests/data/router.data.json'
 
 it('Should navigate to route', (done) => {
     const window = new MockWindow()
@@ -338,4 +339,45 @@ it('Should destroy nested routers', (done) => {
     setTimeout(() => app.navigate('/a/b/c'))
     setTimeout(() => app.navigate('/a/root'), 10)
     setTimeout(() => app.navigate('/a/b/c'), 20)
+})
+
+// Potentially brittle
+it('Should create events in this order with two layers of nested routers', (done) => {
+    const window = new MockWindow('/a/a/a') as any
+    const document = new MockDocument() as any
+    const empty: handlerFunc = (req, res) => {}
+    
+    const pathA: handlerFunc = (req, res) => {
+        const app = create('router-b', window, document)
+        res.onLeave(() => app.destroy())
+        app.path('/a/a/**', pathB)
+        app.load()
+    }
+    
+    const pathB: handlerFunc = (req, res) => {
+        const app = create('router-c', window, document)
+        res.onLeave(() => app.destroy())
+        app.path('/a/a/a', empty)
+        app.load()
+    }
+        
+    const app = create('router-a', window, document)
+    
+    app.path('/a/**', pathA)
+    app.path('/a/static', empty)
+    
+    const eventHistory: any[] = []
+    app.events.subscribe(event => {
+        eventHistory.push(event)
+        if (eventHistory.length !== 30) {
+            return
+        }
+        expect(eventHistory).toEqual(routerMockData["test-a"])
+        done()
+    })
+
+    app.load()
+
+    setTimeout(() => app.navigate('/a/static'), 10)
+    setTimeout(() => app.navigate('/a/a/a'), 20)
 })
