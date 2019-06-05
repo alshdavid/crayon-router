@@ -130,7 +130,7 @@ npm install --save crayon-svelte
 ```
 
 ```javascript
-import svelte from 'crayon-react'
+import svelte from 'crayon-svelte'
 app.use(svelte.router())
 ```
 <br>
