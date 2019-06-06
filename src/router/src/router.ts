@@ -18,6 +18,8 @@ export class Router {
     $reqs: observe.Subscription[] = []
     loads = 0
     window: Window
+    onLeave = () => {}
+    currentRes: Response | undefined
 
     get events() {
         return this.sharedState.events
@@ -46,7 +48,12 @@ export class Router {
         this.sharedState.removeRouter(this)
         this.$history.unsubscribe()
         this.$reqs.forEach(req => req.unsubscribe())
-        this.runOnLeave()
+        if (this.currentRes) {
+            this.currentRes.runOnLeave()
+            this.currentRes.unmount()
+        }
+        
+        // this.runOnLeave()
         this.events.next({ type: RouterEventType.Destroyed, id: this.id, data: this.window.location.pathname })
     }
 
@@ -91,11 +98,11 @@ export class Router {
     }
 
     runOnLeave() {
-        if (!this.onLeave) {
+        if (!this.currentRes) {
             return
         }
-        this.onLeave()
-        this.onLeave = () => {}
+        this.currentRes.runOnLeave()
+        this.currentRes = undefined
     }
 
     load() {
@@ -105,7 +112,6 @@ export class Router {
 
     // digest() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
-    onLeave = () => {}
     async digest() {
         this.events.next({ type: RouterEventType.ProgressStart, id: this.id, data: this.window.location.pathname })
         this.isLoading = true
@@ -166,7 +172,6 @@ export class Router {
 
         // Run handlers and middleware. They will skip
         // if a the res object has run 'end()'
-        this.runOnLeave()
         this.events.next({ 
             type: RouterEventType.RunningHanlders, 
             id: this.id, 
@@ -176,11 +181,8 @@ export class Router {
         await this.runHandlers(handlers, req, res)
         this.loads++
         this.isLoading = false
-        if (res.leaveAction) {
-            this.onLeave = res.leaveAction
-        } else {
-            this.onLeave = () => {}
-        }
+
+        this.currentRes = res
         this.events.next({ 
             type: RouterEventType.ProgressEnd, 
             id: this.id, 
@@ -256,7 +258,7 @@ export class Router {
             ) {
                 this.$reqs[0].unsubscribe()
                 this.$reqs.shift()
-                this.runOnLeave()
+                res.runOnLeave()
                 return
             }
             Object.assign(req, new Request(this.window))

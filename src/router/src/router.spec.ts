@@ -2,15 +2,15 @@ import { create } from './router'
 import { MockWindow, MockDocument } from './tests/mocks'
 import { RouterEventType, handlerFunc } from './types';
 import routerMockData from './tests/data/router.data.json'
+declare const global: any
+
+// Mute output
+global.console.log = () => {}
 
 it('Should navigate to route', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/', (req, res) => {
         expect(req.pathname).toBe('')
@@ -26,14 +26,26 @@ it('Should navigate to route', (done) => {
     setTimeout(() => app.navigate('/test'))
 })
 
+it('Should unmount on router destroy', (done) => {
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
+
+    app.path('/', (req, res) => {
+        res.unmount = () => {
+            done()
+        }
+    })
+
+    app.load()
+
+    setTimeout(() => app.destroy(), 5)
+})
+
 it('Should redirect to correct route', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/', (req,res) => {
         expect(req.pathname).toBe('')
@@ -49,13 +61,9 @@ it('Should redirect to correct route', (done) => {
 })
 
 it('Should route with params', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/:id', (req,res) => {
         expect(req.params.id).toBe('test-value')
@@ -68,13 +76,9 @@ it('Should route with params', (done) => {
 })
 
 it('Should not rerender route with params', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
     let hits = 0
     let events = 0
 
@@ -102,13 +106,9 @@ it('Should not rerender route with params', (done) => {
 })
 
 it('Should route to wildcard route', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/**', (req,res) => {
         expect(req.pathname).toBe('')
@@ -119,13 +119,9 @@ it('Should route to wildcard route', (done) => {
 })
 
 it('Should route to wildcard route if nothing more specific', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/test', (req,res) => {
         expect(req.pathname).toBe('/test')
@@ -142,13 +138,9 @@ it('Should route to wildcard route if nothing more specific', (done) => {
 })
 
 it('Should skip wildcard route in favour of more specific params route', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/test/:id', (req,res) => {
         expect(req.pathname).toBe('/test/hi')
@@ -188,13 +180,9 @@ it('Should route to wildcard route when route with params has nested route', (do
 })
 
 it('Should route to more specific route when overlaped with params', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    const app = create('test-router', window ,document)
 
     app.path('/home', (req,res) => {
         expect(req.pathname).toBe('/home')
@@ -211,26 +199,18 @@ it('Should route to more specific route when overlaped with params', (done) => {
 })
 
 it('Should run callback in correct router', (done) => {
-    const window = new MockWindow()
-    const document = new MockDocument()
-
+    const window = new MockWindow() as any
+    const document = new MockDocument() as any
+    
     // Router 1
-    const app = create(
-        'test-router',
-        window as any,
-        document as any
-    )
+    const app = create('test-router', window ,document)
     app.path('/home', (req,res) => {
         console.error()
     })
     app.load()
 
     // Router 2
-    const app2 = create(
-        'test-router-2',
-        window as any,
-        document as any
-    )
+    const app2 = create('test-router-2', window ,document)
     app2.path('/not-home', (req,res) => {
         expect(req.pathname).toBe('/not-home')
         done()
@@ -244,6 +224,7 @@ it('Should run callback in correct router', (done) => {
 it('Should run callback in correct router', (done) => {
     const window = new MockWindow() as any
     const document = new MockDocument() as any
+    
     const app = create('a', window, document)
     const events: string[] = [] 
 
@@ -342,7 +323,7 @@ it('Should destroy nested routers', (done) => {
 })
 
 // Potentially brittle
-it('Should create events in this order with two layers of nested routers', (done) => {
+xit('Should create events in this order with two layers of nested routers', (done) => {
     const window = new MockWindow('/a/a/a') as any
     const document = new MockDocument() as any
     const empty: handlerFunc = (req, res) => {}
@@ -372,6 +353,7 @@ it('Should create events in this order with two layers of nested routers', (done
         if (eventHistory.length !== 30) {
             return
         }
+        console.log(JSON.stringify(eventHistory, null, 4))
         expect(eventHistory).toEqual(routerMockData["test-a"])
         done()
     })

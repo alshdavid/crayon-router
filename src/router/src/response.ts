@@ -1,10 +1,17 @@
+type LeaveAction = () => void
+
 export class Response {
     ctx: Record<string, any> = {}
     hasCompleted = false
-    leaveAction: (() => void) | undefined
+    leaveActions: LeaveAction[] = []
     
-    onLeave(cb: (() => void) | undefined) {
-        this.leaveAction = cb
+    runOnLeave() {
+        this.leaveActions.forEach(cb => cb())
+        this.leaveActions = []
+    }
+
+    onLeave(cb: LeaveAction) {
+        this.leaveActions.push(cb)
     }
 
     end() {

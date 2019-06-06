@@ -5,7 +5,7 @@ it('Should store onLeave value', () => {
     const res = new Response()
     const action = () => console.log('Hello World')
     res.onLeave(action)
-    expect(res.leaveAction).toEqual(action)
+    expect(res.leaveActions.includes(action)).toEqual(true)
 })
 
 it('Should store leave value', () => {

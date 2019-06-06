@@ -6,6 +6,7 @@ export interface mountable {
     target: HTMLElement
     push: (C: any) => Promise<void>
     pop: () => Promise<void>
+    unmount?: () => Promise<void>
 }
 
 // The secret sauce
