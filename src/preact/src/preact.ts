@@ -9,6 +9,10 @@ export const router = (target?: HTMLElement, className?: string): handlerFunc =>
         }
     }
 
+    res.unmount = () => {
+        return state.react.mounter.unmount()
+    }
+
     res.mount = (Component: any): Promise<any> => {
         return mount(
             Component,

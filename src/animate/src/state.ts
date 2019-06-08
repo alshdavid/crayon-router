@@ -41,17 +41,9 @@ export class AnimationState {
         }
     }
 
-    calculate(app: Router) {
+    calculate(from: string, to: string) {
         let name = this.name
         let duration = this.duration
-
-        let from = ''
-        let to = ''
-        
-        if (app.history.currentEvent) {
-            from = app.history.currentEvent.from
-            to = app.history.currentEvent.to
-        }
         
         for (const route of this.routes) {
             const routeFrom = route.from

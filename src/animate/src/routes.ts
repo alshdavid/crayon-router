@@ -16,7 +16,7 @@ export const routes = (
             route.to = req.routePattern
         }
     }
-    animationState.putRoutes(routes)
-
-    res.ctx.animation = animationState.calculate(app)
+    animationState.putRoutes(routes)    
+    const { from, to } = app.history.currentEvent
+    res.ctx.animation = animationState.calculate(from, to)
 }

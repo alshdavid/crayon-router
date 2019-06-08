@@ -1,6 +1,6 @@
 {
   "name": "crayon-preact",
-  "version": "1.0.2",
+  "version": "1.1.2",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -18,13 +18,13 @@
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
+    "preact": "^8.4.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.4.5",
-    "crayon": "^2.0.5",
-    "preact": "^8.4.2"
+    "crayon": "^2.3.0"
   },
   "peerDependencies": {
-    "crayon": "^2.0.5",
+    "crayon": "^2.3.0",
     "preact": "^8.4.2"
   }
 }

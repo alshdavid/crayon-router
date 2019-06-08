@@ -7,6 +7,13 @@ export class PeactMounter implements mountable {
         public selector = 'router-view'
     ) {}
 
+    async unmount() {
+        for (let i = 0; i < this.target.children.length; i++) {
+            render(null, this.target.children[i])
+            this.target.removeChild(this.target.children[i])
+        }
+    }
+
     async push(C: any) { 
         const incoming = document.createElement('div')
         addClass(incoming, this.selector)

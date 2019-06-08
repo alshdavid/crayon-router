@@ -22,5 +22,6 @@ export const defaults = (options: AnimationOptions): handlerFunc => (
         animationState.animationOnFirst = options.animationOnFirst
     }
 
-    res.ctx.animation = animationState.calculate(app)
+    const { from, to } = app.history.currentEvent
+    res.ctx.animation = animationState.calculate(from, to)
 }
