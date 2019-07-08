@@ -17,6 +17,12 @@ export const routes = (
         }
     }
     animationState.putRoutes(routes)    
-    const { from, to } = app.history.currentEvent
-    res.ctx.animation = animationState.calculate(from, to)
+    const historyEvent = app.history.currentEvent
+    if (historyEvent === undefined) {
+        return
+    }
+    res.ctx.animation = animationState.calculate(
+        historyEvent.from, 
+        historyEvent.to
+    )
 }
