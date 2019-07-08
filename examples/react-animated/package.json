@@ -5,6 +5,7 @@
   "dependencies": {
     "crayon": "^2.0.6",
     "crayon-react": "^1.0.3",
+    "crayon-animate": "^1.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"

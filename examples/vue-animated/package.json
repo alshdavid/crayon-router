@@ -9,7 +9,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "crayon": "^2.0.6",
-    "crayon-animate": "^1.0.1",
+    "crayon-animate": "^1.1.1",
     "crayon-transition": "^1.0.1",
     "crayon-vue": "^1.0.1",
     "vue": "^2.6.10"
