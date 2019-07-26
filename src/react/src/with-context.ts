@@ -1,7 +1,7 @@
 import React from 'react'
 import { Request, Response, Router } from 'crayon';
 
-export const withContext = (context: React.Context<any>, contextState: Record<string, any>) => {
+export const withContext = <T = any>(context: React.Context<any>, contextState?: T) => {
   const apply = (Component: any) => () =>
     React.createElement(context.Provider, { value: contextState }, 
       React.createElement(Component, null))
