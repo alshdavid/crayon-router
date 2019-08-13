@@ -5,7 +5,7 @@ export const normalise = (path?: string) => {
     if (!path.startsWith('/')) {
         path = '/' + path
     }
-    return removeTrailingSlash(path).toLowerCase()
+    return removeTrailingSlash(path)
 }
 
 
@@ -51,7 +51,7 @@ export const matchPath = (
         if (source[i].startsWith('**')) {
           return params
         }
-        if (source[i] !== test[i]) {
+        if (source[i].toLowerCase() !== test[i].toLowerCase()) {
             return
         }
     }
