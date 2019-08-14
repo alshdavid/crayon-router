@@ -105,7 +105,7 @@ var incomingPaths = [
         pattern: '/:id/path',
         pathname: '/yeS/Path',
         params: { id: 'yeS' },
-        normalise: '/yeS/Path'
+        normalise: '/yes/path'
     },
     {
         pattern: '/:id/:id2',
@@ -123,7 +123,7 @@ var incomingPaths = [
         pattern: '/:id/:id2/path',
         pathname: '/yes/yes2/NO',
         params: undefined,
-        normalise: '/yes/yes2/NO'
+        normalise: '/yes/yes2/no'
     },
     {
         pattern: '/**',
@@ -179,5 +179,11 @@ var incomingPaths = [
         params: {},
         query: { hi: 'test' },
         normalise: '/a?hi=test'
+    },
+    {
+        pattern: '/user/:username',
+        pathname: '/user/TestUser',
+        params: { username: 'TestUser' },
+        normalise: '/user/testuser'
     }
 ]
