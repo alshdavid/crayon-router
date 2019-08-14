@@ -104,8 +104,8 @@ var incomingPaths = [
     {
         pattern: '/:id/path',
         pathname: '/yeS/Path',
-        params: { id: 'yes' },
-        normalise: '/yes/path'
+        params: { id: 'yeS' },
+        normalise: '/yeS/Path'
     },
     {
         pattern: '/:id/:id2',
@@ -123,7 +123,7 @@ var incomingPaths = [
         pattern: '/:id/:id2/path',
         pathname: '/yes/yes2/NO',
         params: undefined,
-        normalise: '/yes/yes2/no'
+        normalise: '/yes/yes2/NO'
     },
     {
         pattern: '/**',
