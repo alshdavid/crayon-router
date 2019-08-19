@@ -132,7 +132,7 @@ export class Router {
             this.history.push(path)
         }
 
-        const result = this.getPattern(url.normalise(req.pathname))
+        const result = this.getPattern(url.normalise(req.pathname, false))
         if (!result) {
             this.events.next({ type: RouterEventType.NoHanlders, id: this.id, data: this.window.location.pathname })
             this.events.next({ 
