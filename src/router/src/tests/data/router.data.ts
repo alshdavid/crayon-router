@@ -1,4 +1,4 @@
-{
+export default {
     "test-a": [
         {
             "type": "ROUTER_LOAD_TRIGGERED",

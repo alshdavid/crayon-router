@@ -53,7 +53,10 @@ dev:
 		"cd src/vue && yarn build:watch"
 
 test:
-	cd kit && yarn test
-	cd rokt && yarn test
-	cd components && yarn test
-	cd widget && yarn test
+	cd src/router && yarn test
+	cd src/animate && yarn test
+	cd src/preact && yarn test
+	cd src/react && yarn test
+	cd src/svelte && yarn test
+	cd src/transition && yarn test
+	cd src/vue && yarn test

@@ -1,7 +1,7 @@
 import { create } from './router'
 import { MockWindow, MockDocument } from './tests/mocks'
 import { RouterEventType, handlerFunc } from './types';
-import routerMockData from './tests/data/router.data.json'
+import routerMockData from './tests/data/router.data'
 declare const global: any
 
 // Mute output

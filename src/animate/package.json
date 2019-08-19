@@ -28,9 +28,36 @@
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
-    "crayon": "^2.3.0"
+    "crayon": "*"
   },
   "peerDependencies": {
     "crayon": "^2.3.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/**.{ts,js}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/index.{ts,js}"
+    ],
+    "coverageDirectory": "reports/coverage",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "moduleNameMapper": {
+      "^~/(.*)$": "<rootDir>/src/$1"
+    },
+    "globals": {
+      "window": {}
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": ".*\\.spec\\.(jsx?|tsx?)$",
+    "reporters": [
+      "default"
+    ]
   }
 }
