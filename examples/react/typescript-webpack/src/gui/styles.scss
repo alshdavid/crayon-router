@@ -1,0 +1,16 @@
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased;
+    -Mac-osx-font-smoothing: grayscale;
+    list-style-type: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+  
+*:active, 
+*:focus {
+    outline: none;
+}

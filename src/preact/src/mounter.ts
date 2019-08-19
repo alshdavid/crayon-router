@@ -1,5 +1,5 @@
 import { render, h } from 'preact';
-import { mountable, getOutlets, addClass } from 'crayon/platform/mount';
+import { mountable, getOutlets, addClass } from 'crayon';
 
 export class PeactMounter implements mountable {
     constructor(

@@ -1,4 +1,4 @@
-import { mountable, getOutlets, addClass } from 'crayon/platform/mount'
+import { mountable, getOutlets, addClass } from 'crayon'
 
 export class SvelteMounter implements mountable {
     constructor(
