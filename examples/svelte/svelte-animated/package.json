@@ -20,9 +20,9 @@
     "start:dev": "sirv public -s --dev"
   },
   "dependencies": {
-    "crayon": "^2.0.6",
-    "crayon-animate": "^1.1.1",
-    "crayon-svelte": "^1.0.1",
-    "crayon-transition": "^1.0.1"
+    "crayon": "*",
+    "crayon-animate": "*",
+    "crayon-svelte": "*",
+    "crayon-transition": "*"
   }
 }

@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "crayon": "^2.0.6",
-    "crayon-vue": "^1.0.1",
+    "crayon": "*",
+    "crayon-vue": "*",
     "vue": "^2.6.10"
   },
   "devDependencies": {

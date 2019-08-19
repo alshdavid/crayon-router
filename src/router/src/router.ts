@@ -185,7 +185,6 @@ export class Router {
         this.isLoading = false
 
         this.currentRes = res
-        this.currentReq = req
         this.events.next({ 
             type: RouterEventType.ProgressEnd, 
             id: this.id, 
