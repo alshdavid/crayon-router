@@ -1,25 +1,28 @@
 import crayon from 'crayon';
 import react from 'crayon-react';
 import * as pages from './pages'
+import { AppContext, AppState } from './context'
 import './index.css'
 
-const app = crayon.create()
-
 const outlet = document.getElementById('app')
-app.use(react.router(outlet))
+const router = crayon.create()
+AppState.router = router
 
-app.path('/', (req, res) => res.redirect('/home'))
+router.use(react.router(outlet))
+router.use(react.withContext(AppContext, AppState))
 
-app.path('/home', (req, res) => 
-    res.mount(pages.Route(req, app))
+router.path('/', (req, res) => res.redirect('/home'))
+
+router.path('/home', (req, res) => 
+    res.mount(pages.Route)
 )
 
-app.path('/about', (req, res) =>
-    res.mount(pages.Route(req, app))
+router.path('/about', (req, res) =>
+    res.mount(pages.Route)
 )
 
-app.path('/more', (req, res) =>
-    res.mount(pages.More(req, app))
+router.path('/more', (req, res) =>
+    res.mount(pages.More)
 ) 
 
-app.load()
+router.load()

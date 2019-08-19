@@ -20,6 +20,8 @@ export class Router {
     window: Window
     onLeave = () => {}
     currentRes: Response | undefined
+    currentReq: Request | undefined
+
 
     get events() {
         return this.sharedState.events
@@ -183,6 +185,7 @@ export class Router {
         this.isLoading = false
 
         this.currentRes = res
+        this.currentReq = req
         this.events.next({ 
             type: RouterEventType.ProgressEnd, 
             id: this.id, 

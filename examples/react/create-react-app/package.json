@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "crayon": "^2.0.6",
-    "crayon-react": "^1.0.3",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "crayon": "*",
+    "crayon-react": "*",
+    "react": "*",
+    "react-dom": "*",
     "react-scripts": "3.0.1"
   },
   "scripts": {

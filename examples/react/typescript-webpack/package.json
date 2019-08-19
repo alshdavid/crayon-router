@@ -1,5 +1,6 @@
 {
   "name": "crayon-react-app-example",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,10 +16,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crayon": "^2.3.0",
-    "crayon-react": "^1.1.2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "crayon": "*",
+    "crayon-react": "*",
+    "react": "*",
+    "react-dom": "*"
   },
   "devDependencies": {
     "@types/react": "^16.9.2",

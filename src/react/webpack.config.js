@@ -72,6 +72,20 @@ module.exports = {
       umd: "react",
       amd: "React",
       root: "React"
+    },
+    crayon: {
+      commonjs: "crayon",
+      commonjs2: "crayon",
+      umd: "crayon",
+      amd: "crayon",
+      root: "crayon"
+    },
+    'react-dom': {
+      commonjs: "react-dom",
+      commonjs2: "react-dom",
+      umd: "react-dom",
+      amd: "React-dom",
+      root: "React-dom"
     }
   }
 }

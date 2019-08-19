@@ -30,7 +30,9 @@
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7",
-    "crayon": "^2.3.0"
+    "crayon": "^2.3.0",
+    "react": "*",
+    "react-dom": "*"
   },
   "peerDependencies": {
     "react": "^16.8.6",
