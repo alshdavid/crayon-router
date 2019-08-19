@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6", 
+    "module": "esnext",  
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "lib": [
+      "dom",
+      "es2017"
+    ],
+    "sourceMap": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "paths": {
+      "~/*": ["src/*"],
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "webpack.config.js"
+  ]
+}

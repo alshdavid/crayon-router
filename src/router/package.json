@@ -1,18 +1,21 @@
 {
   "name": "crayon",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/alshdavid/crayon"
   },
   "scripts": {
-    "build": "npx tsc && cp package.json ./dist",
+    "build": "webpack",
+    "build:prod": "webpack --prod",
+    "build:watch": "webpack --watch",
     "clean": "rm -rf dist && rm -rf coverage",
-    "test": "npx jest --passWithNoTests",
-    "test:watch": "npx jest --watch --passWithNoTests",
-    "test:cover": "npx jest --coverage --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch --passWithNoTests",
+    "test:cover": "jest --coverage --passWithNoTests"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +23,11 @@
     "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5"
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2",
+    "webpack-bundle-analyzer": "^3.4.1",
+    "webpack-cli": "^3.3.7"
   },
   "dependencies": {}
 }

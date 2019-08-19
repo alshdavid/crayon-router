@@ -1,26 +1,28 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "declaration": true,
-        "outDir": "./dist",
-        "strict": true,
-        "moduleResolution": "node",
-        "inlineSourceMap": true,
-        "baseUrl": "./",
-        "lib": [
-            "dom",
-            "es2017"
-        ],
-        "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "paths": {
-            "~/*": ["src/*"],
-        }
-    },
-    "include": ["src"],
-    "exclude": [
-        "node_modules", 
-        "**.tests.ts"
-    ]
+  "compilerOptions": {
+    "preserveWatchOutput": true,
+    "target": "esnext",
+    "module": "es2015",
+    "declaration": true,
+    "outDir": "dist",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "lib": ["dom", "es2017"],
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts", 
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts", 
+    "node_modules", 
+    "dist"
+  ]
 }

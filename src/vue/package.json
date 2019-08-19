@@ -2,16 +2,20 @@
   "name": "crayon-vue",
   "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/alshdavid/crayon"
   },
   "scripts": {
-    "build": "npx tsc && cp package.json ./dist",
-    "clean": "rm -rf dist",
-    "test": "npx jest --passWithNoTests",
-    "test:cover": "npx jest --coverage --passWithNoTests"
+    "build": "webpack",
+    "build:prod": "webpack --prod",
+    "build:watch": "webpack --watch",
+    "clean": "rm -rf dist && rm -rf coverage",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch --passWithNoTests",
+    "test:cover": "jest --coverage --passWithNoTests"
   },
   "author": "",
   "license": "ISC",
@@ -19,12 +23,16 @@
     "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5",
-    "crayon": "^2.0.5",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2",
+    "webpack-bundle-analyzer": "^3.4.1",
+    "webpack-cli": "^3.3.7",
+    "crayon": "^2.3.0",
     "vue": "^2.6.10"
   },
   "peerDependencies": {
-    "crayon": "^2.0.5",
+    "crayon": "^2.3.0",
     "vue": "^2.6.10"
   }
 }

@@ -1,5 +1,5 @@
 import Vue, { VueConstructor } from 'vue';
-import { mountable, getOutlets } from 'crayon/platform/mount'
+import { mountable, getOutlets } from 'crayon'
 
 const isFunction = (value: any) => typeof value === 'function'
 

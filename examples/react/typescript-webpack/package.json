@@ -1,0 +1,37 @@
+{
+  "name": "crayon-react-app-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "run-p watch serve",
+    "watch": "webpack --watch",
+    "serve": "http-server -p 8080 -s public",
+    "build": "webpack",
+    "build:prod": "webpack --prod",
+    "clean": "rm -rf public/app node_modules"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crayon": "^2.3.0",
+    "crayon-react": "^1.1.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.8.5",
+    "css-loader": "^3.2.0",
+    "http-server": "^0.11.1",
+    "node-sass": "^4.12.0",
+    "npm-run-all": "^4.1.5",
+    "sass-loader": "^7.2.0",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
+  }
+}

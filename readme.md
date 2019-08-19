@@ -73,6 +73,8 @@ This means that the front-end framework or animations you choose are a middlewar
 
 *The philosophy behind Crayon is to ask less of our front-end frameworks, but get more*
 
+[Contributing Guide](docs/contributing.md)
+
 ### Installing
 
 

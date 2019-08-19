@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mountable,getOutlets, addClass } from 'crayon/platform/mount'
+import { mountable, getOutlets, addClass } from 'crayon'
 
 export class ReactMounter implements mountable {
     constructor(
