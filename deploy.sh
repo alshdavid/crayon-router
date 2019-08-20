@@ -13,9 +13,6 @@ if ! [ -x "$(command -v alshx)" ]; then
   curl -s -f https://alshdavid.github.io/alshx/bin/alshx | sh /dev/stdin --install
 fi
 
-# Build all of the things
-make
-
 # Go to package directory
 cd $TARGET_PATH
 
@@ -23,7 +20,8 @@ cd $TARGET_PATH
 yarn test:cover
 
 # If the version in NPM is older than the version 
-# in the package deploy the package, otherwise skip it.
+# in the package then deploy the package, otherwise
+# skip publishing it.
 alshx npm-version-bouncer ./package.json
 if [ $? = "0" ]; then
   yarn clean

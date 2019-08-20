@@ -1,6 +1,18 @@
 stages:
+  - install
   - publish
 #   - gendocs
+
+install_dependencies:
+  image: node:lts
+  stage: install
+  only:
+    - master
+  artifacts:
+    paths:
+      - node_modules/**
+  script:
+    - make
 
 # router:
 #   image: node:lts
@@ -31,8 +43,6 @@ stages:
 animate:
   image: node:lts
   stage: publish
-  only:
-    - master
   script:
     - sh deploy.sh ./src/animate
 
