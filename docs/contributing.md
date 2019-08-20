@@ -31,5 +31,10 @@ To clean the project run
 make clean
 ```
 
+To test the project run
+```
+make test
+```
+
 Use one of the example projects in the `/examples` folder to sandbox your changes.
 In a seperate terminal window run the respective developement command.
