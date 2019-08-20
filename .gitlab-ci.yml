@@ -14,8 +14,13 @@ stages:
   artifacts:
     paths:
       - ./node_modules/
-      - ./src/router/node_modules/
       - ./src/animate/node_modules/
+      - ./src/preact/node_modules/
+      - ./src/react/node_modules/
+      - ./src/router/node_modules/
+      - ./src/svelte/node_modules/
+      - ./src/transition/node_modules/
+      - ./src/vue/node_modules/
   script:
     - npm install -g concurrently
     - make clean
@@ -26,9 +31,15 @@ stages:
   stage: build
   artifacts:
     paths:
-      - ./src/router/dist/
       - ./src/animate/dist/
+      - ./src/preact/dist/
+      - ./src/react/dist/
+      - ./src/router/dist/
+      - ./src/svelte/dist/
+      - ./src/transition/dist/
+      - ./src/vue/dist/
   script:
+    - npm install -g concurrently
     - make build-prod
 
 ##
