@@ -1,6 +1,6 @@
 {
   "name": "crayon-preact",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,5 +34,32 @@
   "peerDependencies": {
     "crayon": "^2.3.0",
     "preact": "^8.4.2"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/**.{ts,js}",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/index.{ts,js}"
+    ],
+    "coverageDirectory": "reports/coverage",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "moduleNameMapper": {
+      "^~/(.*)$": "<rootDir>/src/$1"
+    },
+    "globals": {
+      "window": {}
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": ".*\\.spec\\.(jsx?|tsx?)$",
+    "reporters": [
+      "default"
+    ]
   }
 }
