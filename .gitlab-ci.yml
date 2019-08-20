@@ -22,7 +22,7 @@ stages:
   - build
   - test
   - publish
-#   - docs
+  - docs
 
 #
 # All
@@ -42,44 +42,44 @@ stages:
     - npm install -g concurrently
     - make build-prod
 
-##
-## router
-##
-# (Test) router:
-#   image: node:lts
-#   stage: test
-#   script:
-#     - cd ./src/router && yarn test:cover
+#
+# router
+#
+(Test) router:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/router && yarn test:cover
 
-# (Publish) router:
-#   image: node:lts
-#   stage: publish
-#   artifacts:
-#     paths:
-#       - badges/**
-#   only:
-#   - master
-#   script:
-#     - sh deploy.sh ./src/router
-#     - mkdir -p badges
-#     - export VERSION=$(node -e "console.log(require('./package.json').version)")
-#     - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
-#     - wget -O badges/size.svg https://img.shields.io/badge/size-6kb-green.svg
-#     - cp ../../readme.md .
-#     - cd ../../
-#     - cp -r src/router/badges .
+(Publish) router:
+  image: node:lts
+  stage: publish
+  artifacts:
+    paths:
+      - badges/**
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/router
+    - mkdir -p badges
+    - export VERSION=$(node -e "console.log(require('./package.json').version)")
+    - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
+    - wget -O badges/size.svg https://img.shields.io/badge/size-6kb-green.svg
+    - cp ../../readme.md .
+    - cd ../../
+    - cp -r src/router/badges .
 
-# (Docs) Generate:
-#   image: alshdavid/aws-cli
-#   stage: docs
-#   only:
-#     - master
-#   script:
-#     - sh <(curl -sSL https://alshdavid.github.io/alshx/bin/alshx) --install
-#     - aws s3 rm --recursive s3://alshdavid-public/crayon/badges
-#     - aws s3 cp --recursive ./badges s3://alshdavid-public/crayon/badges
-#     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
-#     - alshx hub-purge https://github.com/alshdavid/crayon
+(Generate) Docs:
+  image: alshdavid/aws-cli
+  stage: docs
+  only:
+    - master
+  script:
+    - sh <(curl -sSL https://alshdavid.github.io/alshx/bin/alshx) --install
+    - aws s3 rm --recursive s3://alshdavid-public/crayon/badges
+    - aws s3 cp --recursive ./badges s3://alshdavid-public/crayon/badges
+    - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
+    - alshx hub-purge https://github.com/alshdavid/crayon
 
 #
 # Animate
@@ -98,87 +98,87 @@ stages:
   script:
     - sh deploy.sh ./src/animate
 
-# #
-# # Transition
-# #
-# (Test) transition:
-#   image: node:lts
-#   stage: test
-#   script:
-#     - cd ./src/transition && yarn test:cover
+#
+# Transition
+#
+(Test) transition:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/transition && yarn test:cover
 
-# (Publish) transition:
-#   image: node:lts
-#   stage: publish
-#   only:
-#   - master
-#   script:
-#     - sh deploy.sh ./src/transition
+(Publish) transition:
+  image: node:lts
+  stage: publish
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/transition
 
-# #
-# # React
-# #
-# (Test) react:
-#   image: node:lts
-#   stage: test
-#   script:
-#     - cd ./src/react && yarn test:cover
+#
+# React
+#
+(Test) react:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/react && yarn test:cover
 
-# (Publish) react:
-#   image: node:lts
-#   stage: publish
-#   only:
-#   - master
-#   script:
-#     - sh deploy.sh ./src/react
+(Publish) react:
+  image: node:lts
+  stage: publish
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/react
 
-# #
-# # Preact
-# #
-# (Test) preact:
-#   image: node:lts
-#   stage: test
-#   script:
-#     - cd ./src/preact && yarn test:cover
+#
+# Preact
+#
+(Test) preact:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/preact && yarn test:cover
 
-# (Publish) preact:
-#   image: node:lts
-#   stage: publish
-#   only:
-#   - master
-#   script:
-#     - sh deploy.sh ./src/preact
+(Publish) preact:
+  image: node:lts
+  stage: publish
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/preact
 
-# #
-# # Svelte
-# #
-# (Test) svelte:
-#   image: node:lts
-#   stage: test
-#   script:
-#     - cd ./src/svelte && yarn test:cover
+#
+# Svelte
+#
+(Test) svelte:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/svelte && yarn test:cover
 
-# (Publish) svelte:
-#   image: node:lts
-#   stage: publish
-#   only:
-#   - master
-#   script:
-#     - sh deploy.sh ./src/svelte
+(Publish) svelte:
+  image: node:lts
+  stage: publish
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/svelte
 
-# #
-# # Vue
-# #
-# (Test) vue:
-#   image: node:lts
-#   stage: test
-#   script:
-#     - cd ./src/vue && yarn test:cover
+#
+# Vue
+#
+(Test) vue:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/vue && yarn test:cover
 
-# (Publish) vue:
-#   image: node:lts
-#   stage: publish
-#   only:
-#   - master
-#   script:
-#     - sh deploy.sh ./src/vue
+(Publish) vue:
+  image: node:lts
+  stage: publish
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/vue
