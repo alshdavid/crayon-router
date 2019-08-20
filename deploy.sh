@@ -5,7 +5,7 @@ TARGET_PATH=$1
 
 # Set npm token if the env variable is present
 if [ ! -z "$NPM_TOKEN" ]; then
-  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > $TARGET_PATH/.npmrc
 fi
 
 # If alshx is not installed, install it
