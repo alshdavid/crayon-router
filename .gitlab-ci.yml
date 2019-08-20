@@ -27,6 +27,7 @@ stages:
   image: node:lts
   stage: build
   script:
+    - ls node_modules
     - ls src/router
     - ls src/router/node_modules
     - ls src/router/node_modules/.bin
