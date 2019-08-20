@@ -5,13 +5,13 @@ TARGET_PATH=$1
 
 # Set npm token if the env variable is present
 if [ ! -z "$NPM_TOKEN" ]; then
-    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+  echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
 fi
 
 # If alshx is not installed, install it
-# if ! [ -x "$(command -v alshx)" ]; then
-  sh <(curl -sL https://alshdavid.github.io/alshx/bin/alshx) --install
-# fi
+if ! [ -x "$(command -v alshx)" ]; then
+  curl -s -f https://alshdavid.github.io/alshx/bin/alshx | sh /dev/stdin --install
+fi
 
 # Build all of the things
 make
