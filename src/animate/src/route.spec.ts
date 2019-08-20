@@ -1,6 +1,6 @@
 import { route } from './route'
 import crayon from 'crayon'
-import { MockDocument, MockWindow } from 'crayon/tests/mocks'
+import { MockDocument, MockWindow } from '../../router/src/tests/mocks'
 import { defaults } from './defaults';
 import { routes } from './routes';
 
@@ -23,13 +23,13 @@ fit('Should give the enter animation', (done) => {
             { to:   '/**', from: '/a', name: 'exit'  },
         ]),
         (req, res) => {
-            console.log(res.ctx.animation)
+            // console.log(res.ctx.animation)
         }
     )
 
     app.path('/b', 
         (req, res) => {
-            console.log(res.ctx.animation)
+            // console.log(res.ctx.animation)
             done()
         }
     )

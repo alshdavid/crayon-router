@@ -73,6 +73,8 @@ This means that the front-end framework or animations you choose are a middlewar
 
 *The philosophy behind Crayon is to ask less of our front-end frameworks, but get more*
 
+[Contributing Guide](docs/contributing.md)
+
 ### Installing
 
 
@@ -416,27 +418,4 @@ void async function main() {
 
     app.load()
 }()
-```
-
-### Dealing With Dependencies
-
-I recommend using a parameter injection model for dependency injection
-
-```jsx
-export const MyView = (dep) => () => <div>{ dep.value }<div>
-```
-
-```javascript
-import * as crayon from 'crayon';
-import * as react from 'crayon/react';
-import { MyView } from './views'
-
-const dep = { value: 'hello world' }
-const app = crayon.create()
-
-app.use(react.Router())
-
-app.path('/', (req, res) => res.mount(MyView(dep)))
-
-app.load()
 ```

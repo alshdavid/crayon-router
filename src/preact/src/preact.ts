@@ -1,5 +1,5 @@
 import { handlerFunc } from 'crayon'
-import { mount } from 'crayon/platform/mount';
+import { mount } from 'crayon';
 import { PeactMounter } from './mounter';
 
 export const router = (target?: HTMLElement, className?: string): handlerFunc => (req, res, state) => {  

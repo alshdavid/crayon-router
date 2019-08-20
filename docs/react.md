@@ -23,28 +23,3 @@ app.path('/', (req, res) => {
 
 app.load()
 ```
-
-### Dealing With Dependencies
-
-I recomend using a parameter injection model for dependency injection
-
-```jsx
-export const MyView = (dep) => () => <div>{ dep.value }<div>
-```
-
-```javascript
-import crayon from 'crayon'
-import react from 'crayon/react'
-import { MyView } from './views'
-
-const dep = { value: 'hello world' }
-const app = crayon.create()
-
-app.use(react.router())
-
-app.path('/', (req, res) => {
-    return res.mount(MyView(dep))
-})
-
-app.load()
-```

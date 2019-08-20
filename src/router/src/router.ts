@@ -20,6 +20,8 @@ export class Router {
     window: Window
     onLeave = () => {}
     currentRes: Response | undefined
+    currentReq: Request | undefined
+
 
     get events() {
         return this.sharedState.events
