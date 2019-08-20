@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Path of target package
 TARGET_PATH=$1
