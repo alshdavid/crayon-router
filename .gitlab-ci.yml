@@ -6,6 +6,7 @@ cache:
 
 stages:
   - install
+  - build
   - test
   - publish
 #   - gendocs
@@ -23,7 +24,7 @@ stages:
 
 (Build) All:
   image: node:lts
-  stage: install
+  stage: build
   script:
     - make build-prod
 
