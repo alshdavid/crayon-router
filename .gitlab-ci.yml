@@ -11,6 +11,7 @@ router:
     paths:
       - badges/**
   script:
+    - yarn
     - cd src/router
     - sh ../../deploy.sh
     - mkdir -p badges
@@ -27,6 +28,7 @@ animate:
   only:
     - master
   script:
+    - yarn
     - cd src/animate
     - sh ../../deploy.sh
 
@@ -36,6 +38,7 @@ transition:
   only:
     - master
   script:
+    - yarn
     - cd src/transition
     - sh ../../deploy.sh
 
@@ -45,6 +48,7 @@ preact:
   only:
     - master
   script:
+    - yarn
     - cd src/preact
     - sh ../../deploy.sh
 
@@ -54,6 +58,7 @@ react:
   only:
     - master
   script:
+    - yarn
     - cd src/react
     - sh ../../deploy.sh
 
@@ -63,6 +68,7 @@ svelte:
   only:
     - master
   script:
+    - yarn
     - cd src/svelte
     - sh ../../deploy.sh
 
@@ -72,6 +78,7 @@ vue:
   only:
     - master
   script:
+    - yarn
     - cd src/vue
     - sh ../../deploy.sh
 
