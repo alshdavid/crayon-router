@@ -74,11 +74,13 @@ react:
   only:
     - master
   script:
+    - sh <(curl -sSL https://alshdavid.github.io/alshx/bin/alshx) --install
+    - alshx npm-version-bouncer ./src/react/package.json
     - make
     - cd src/react
     - yarn test:cover
     - yarn clean
-    - yarn build
+    - yarn build:prod
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - npm publish
 
