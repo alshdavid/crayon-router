@@ -1,11 +1,17 @@
-export const normalise = (path?: string) => {
+export const normalise = (path?: string, lowerCase: boolean = true) => {
     if (!path || path === '/') {
         return '/'
     }
     if (!path.startsWith('/')) {
         path = '/' + path
     }
-    return removeTrailingSlash(path).toLowerCase()
+    path = removeTrailingSlash(path)
+
+    if(lowerCase) {
+      path = path.toLowerCase()
+    }
+
+    return path;
 }
 
 
@@ -34,7 +40,7 @@ export const matchPath = (
     pattern: string,
     pathname: string
 ): Record<string, string> | undefined => {
-    pathname = normalise(pathname).split('?')[0]
+    pathname = normalise(pathname, false).split('?')[0]
     pattern = normalise(pattern)
     const params: Record<string, string> = {}
     const source = pattern.split('/')
@@ -51,7 +57,7 @@ export const matchPath = (
         if (source[i].startsWith('**')) {
           return params
         }
-        if (source[i] !== test[i]) {
+        if (source[i] !== test[i].toLowerCase()) {
             return
         }
     }
