@@ -1,3 +1,22 @@
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ./node_modules/
+    - ./src/animate/node_modules/
+    - ./src/preact/node_modules/
+    - ./src/react/node_modules/
+    - ./src/router/node_modules/
+    - ./src/svelte/node_modules/
+    - ./src/transition/node_modules/
+    - ./src/vue/node_modules/
+    - ./src/animate/dist/
+    - ./src/preact/dist/
+    - ./src/react/dist/
+    - ./src/router/dist/
+    - ./src/svelte/dist/
+    - ./src/transition/dist/
+    - ./src/vue/dist/
+
 stages:
   - install
   - build
@@ -11,16 +30,6 @@ stages:
 (Install) All:
   image: node:lts
   stage: install
-  artifacts:
-    paths:
-      - ./node_modules/
-      - ./src/animate/node_modules/
-      - ./src/preact/node_modules/
-      - ./src/react/node_modules/
-      - ./src/router/node_modules/
-      - ./src/svelte/node_modules/
-      - ./src/transition/node_modules/
-      - ./src/vue/node_modules/
   script:
     - npm install -g concurrently
     - make clean
@@ -29,15 +38,6 @@ stages:
 (Build) All:
   image: node:lts
   stage: build
-  artifacts:
-    paths:
-      - ./src/animate/dist/
-      - ./src/preact/dist/
-      - ./src/react/dist/
-      - ./src/router/dist/
-      - ./src/svelte/dist/
-      - ./src/transition/dist/
-      - ./src/vue/dist/
   script:
     - npm install -g concurrently
     - make build-prod
