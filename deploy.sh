@@ -10,7 +10,7 @@ fi
 
 # If alshx is not installed, install it
 # if ! [ -x "$(command -v alshx)" ]; then
-  sh <(curl -sSL https://alshdavid.github.io/alshx/bin/alshx) --install
+  sh <(curl -sL https://alshdavid.github.io/alshx/bin/alshx) --install
 # fi
 
 # Build all of the things
