@@ -1,5 +1,7 @@
 #!/bin/sh
 
+START_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+
 # Path of target package
 TARGET_PATH=$1
 
@@ -16,6 +18,8 @@ fi
 # This is done in the previous pipeline step
 # Build all the things
 # make
+
+cp readme.md $TARGET_PATH
 
 # Go to package directory
 cd $TARGET_PATH
@@ -35,3 +39,5 @@ if [ $? = "0" ]; then
 else
   echo Skipped Publish
 fi
+
+cd $START_DIR

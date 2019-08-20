@@ -61,11 +61,11 @@ stages:
   - master
   script:
     - sh deploy.sh ./src/router
+    - cd src/router
     - mkdir -p badges
     - export VERSION=$(node -e "console.log(require('./package.json').version)")
     - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
     - wget -O badges/size.svg https://img.shields.io/badge/size-6kb-green.svg
-    - cp ../../readme.md .
     - cd ../../
     - cp -r src/router/badges .
 
