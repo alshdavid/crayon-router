@@ -2,10 +2,12 @@ import { create } from '../create'
 import { MockWindow, MockDocument } from './mocks'
 import { RouterEventType, handlerFunc } from '../types';
 import routerMockData from './data/router.data'
+import { getSharedState, SharedState } from '../shared-state';
+import { first, Beacon } from '../platform/beacon';
 declare const global: any
 
 // Mute output
-global.console.log = () => {}
+global.console.log = () => {} 
 
 it('Should navigate to route', (done) => {
   const window = new MockWindow() as any
@@ -38,6 +40,31 @@ it('Should unmount on router destroy', (done) => {
   app.load()
 
   setTimeout(() => app.destroy(), 5)
+})
+
+it('Should cleanup shared state on router destroy', async () => {
+  const routerName = 'test-router'
+  const destroy = jest.fn()
+  const window = new MockWindow() as any
+  const history: any =  { 
+    destroy,
+    onEvent: new Beacon()
+  }
+  const sharedState = new SharedState(history)
+  const app = create(routerName, window, sharedState)
+  
+  const hasRouter = (): boolean => !!sharedState!.routers[routerName]
+
+  void async function() {
+    await sharedState.events.first(event => 
+      event.type === RouterEventType.Unregistered
+    )
+    expect(hasRouter()).toBe(false)
+    expect(destroy).toBeCalled()
+  }()
+
+  expect(hasRouter()).toBe(true)
+  app.destroy()
 })
 
 it('Should redirect to correct route', (done) => {
@@ -190,7 +217,7 @@ it('Should run callback in correct router', (done) => {
   // Router 1
   const app = create('test-router', window)
   app.path('/home', (req, res) => {
-    console.error()
+    done.fail('Should not run this callback')
   })
   app.load()
 
@@ -230,13 +257,14 @@ it('Should run callback in correct router', (done) => {
       complete('b1')
     })
 
-    app2.load()
 
     res.onLeave(() => {
       app2.destroy()
     })
 
     complete('a1')
+
+    app2.load()
   })
 
   app.path('/test/page-on-root', (req, res) => {
@@ -277,20 +305,20 @@ it('Should destroy nested routers', (done) => {
         complete('c1')
       })
 
-      app3.load()
 
       res2.onLeave(() => {
         app3.destroy()
       })
       complete('b1')
+      app3.load()
     })
-    app2.load()
 
     res1.onLeave(() => {
       app2.destroy()
     })
 
     complete('a1')
+    app2.load()
   })
 
   app.path('/a/root', (req, res) => {

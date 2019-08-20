@@ -23,6 +23,12 @@ export class RouteMap {
     this.routes[url.normalise(path)] = handlers
   }
 
+  public addMiddleware(...handlers: handlerFunc[]) {
+    for (const handler of handlers) {
+      this.middleware.push(handler)
+    }
+  }
+
   public findWithPathname(pathname: string): Route | undefined {
     let patterns: { key: string, params: Record<string, string> }[] = []
     for (let key in this.routes) {
@@ -50,7 +56,10 @@ export class RouteMap {
     }
     if (!pattern || !params && wildcard.length) {
       const pattern = wildcard[0].key
-      const handlers = this.routes[pattern]
+      const handlers = [
+        ...this.middleware, 
+        ...this.routes[pattern]
+      ]
       return {
         params: wildcard[0].params,
         pattern,
@@ -62,7 +71,10 @@ export class RouteMap {
       return
       // throw new Error('Route not found')
     }
-    const handlers = this.routes[pattern]
+    const handlers = [
+      ...this.middleware, 
+      ...this.routes[pattern]
+    ]
     return {
       params,
       pattern,

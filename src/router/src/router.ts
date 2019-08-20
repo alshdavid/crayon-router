@@ -1,76 +1,79 @@
 import * as url from "~/platform/url"
-import { handlerFunc, RouterEventType } from '~/types'
+import { handlerFunc, RouterEventType, RouterEvent } from '~/types'
 import { Request } from '~/request'
 import { Response } from '~/response'
 import { Locator } from '~/locator'
 import { Group } from "~/group"
-import { History } from '~/history'
+import { History, HistoryEvent } from '~/history'
 import { SharedState } from '~/shared-state';
 import { RouteMap } from './route-map';
 import { Beacon, Subscription } from '~/platform/beacon';
 
 export class Router {
-  middleware: handlerFunc[] = []
-  state: Record<string, any> = {}
-  isLoading = true
-  history: History
-  $history: Subscription
-  $reqs: Subscription[] = []
-  loads = 0
-  onLeave = () => { }
-  currentRes: Response | undefined
-  currentReq: Request | undefined
-
-
-  get events() {
-    return this.sharedState.events
-  }
-
+  public currentRes: Response | undefined
+  public currentReq: Request | undefined
+  private isLoading = true
+  private state: Record<string, any> = {}
+  private $history: Subscription
+  private $reqs: Subscription[] = []
+  
   constructor(
     public id: string,
     public locator: Locator,
     public routeMap: RouteMap,
-    public sharedState: SharedState,
-  ) {
-    sharedState.addRouter(this)
-    this.history = sharedState.history
-    this.$history = this.history.onEvent
-      .subscribe(event => {
-        this.events.next({
-          type: RouterEventType.History,
-          id: this.id,
-          data: { ...event }
-        })
-        this.digest()
-      })
+    public history: History,
+    public events: Beacon<RouterEvent>,
+  ) { 
+    this.$history = this.history.onEvent.subscribe(this.onHistoryEvent)
   }
 
-  destroy() {
-    this.sharedState.removeRouter(this)
+  public destroy() {
     this.$history.unsubscribe()
     this.$reqs.forEach(req => req.unsubscribe())
     if (this.currentRes) {
       this.currentRes.runOnLeave()
       this.currentRes.unmount()
     }
-
-    // this.runOnLeave()
-    this.events.next({ type: RouterEventType.Destroyed, id: this.id, data: this.locator.getLocation().pathname })
+    this.emitEvent(RouterEventType.Destroyed)
   }
 
-  path(path: string, ...handlers: handlerFunc[]): void {
+  public path(path: string, ...handlers: handlerFunc[]): void {
     this.routeMap.add(path, ...handlers)
   }
 
-  use(target: handlerFunc | Group) {
+  public use(target: handlerFunc | Group) {
     if (target instanceof Group) {
       this.useGroup(target)
     } else {
-      this.useHandler(target)
+      this.routeMap.addMiddleware(target)
     }
   }
 
-  useGroup(group: Group) {
+  public async navigate(path: string) {
+    if (this.isLoading) {
+      return
+    }
+    this.history.push(path)
+  }
+
+  public async back() {
+    if (this.isLoading) {
+      return
+    }
+    this.history.pop()
+  }
+
+  public load() {
+    this.emitEvent(RouterEventType.LoadTriggered)
+    return this.digest()
+  }
+
+  private onHistoryEvent = (event: HistoryEvent) => {
+    this.emitEvent(RouterEventType.History, { ...event })
+    this.digest()
+  }
+
+  private useGroup(group: Group) {
     for (const route in group.routes) {
       const path = url.normalise(group.base + route)
       const handlers = [
@@ -81,38 +84,7 @@ export class Router {
     }
   }
 
-  useHandler(handler: handlerFunc) {
-    this.middleware.push(handler)
-  }
-
-  async navigate(path: string) {
-    if (this.isLoading) {
-      return
-    }
-    this.history.push(path)
-  }
-
-  async back() {
-    if (this.isLoading) {
-      return
-    }
-    this.history.pop()
-  }
-
-  runOnLeave() {
-    if (!this.currentRes) {
-      return
-    }
-    this.currentRes.runOnLeave()
-    this.currentRes = undefined
-  }
-
-  load() {
-    this.events.next({ type: RouterEventType.LoadTriggered, id: this.id, data: this.locator.getLocation().pathname })
-    return this.digest()
-  }
-
-  emitEvent(type: RouterEventType, data?: any) {
+  private emitEvent(type: RouterEventType, data?: any) {
     if (!data) {
       data = this.locator.getLocation().pathname
     }
@@ -132,41 +104,34 @@ export class Router {
     }
   }
 
+  private onRedirect = (path: string) => {
+    this.isLoading = false
+    this.emitEvent(RouterEventType.Redirected)
+    this.emitEvent(RouterEventType.ProgressEnd)
+    this.history.push(path)
+  }
+
   // digest() matches a path with patterns in the current router's routing 
   // table and executes the middleware/handlers for that route
-  async digest() {
+  private async digest() {
     this.emitEvent(RouterEventType.ProgressStart)
     this.isLoading = true
     const location = this.locator.getLocation()
     const res = new Response()
-
-    // Define redirect action
-    res.redirect = (path: string) => {
-      this.isLoading = false
-      this.emitEvent(RouterEventType.ProgressEnd, {
-        path: location.pathname,
-        note: 'redirected page'
-      })
-      this.history.push(path)
-    }
+    res.redirect = this.onRedirect
 
     const result = this.routeMap.findWithPathname(location.pathname)
     if (!result) {
       this.emitEvent(RouterEventType.NoHanlders)
-      this.emitEvent(RouterEventType.ProgressEnd, {
-        path: location.pathname,
-        note: 'No handlers found for current path',
-      })
+      this.emitEvent(RouterEventType.ProgressEnd)
       this.isLoading = false
       return
     }
     const { handlers, pattern, params } = result 
     const req = this.locator.generateRequest(pattern, params)
 
-    // Don't run this route if you're already on it. Consumers should 
-    // rely on the history event stream to render changes        
-    if (this.history.currentEvent && this.loads !== 0) {
-      // The pattern for the previous route
+    // Don't run this route if you're already on it.        
+    if (this.history.currentEvent) {
       const previousPattern = this.routeMap.findWithPathname(this.history.currentEvent.from)
       if (pattern === (previousPattern && previousPattern.pattern)) {
         this.emitEvent(RouterEventType.SameRouteAbort)
@@ -181,23 +146,14 @@ export class Router {
     // if a the res object has run 'end()'
     this.emitEvent(RouterEventType.RunningHanlders)
 
-    await this.runHandlers(this.middleware, req, res)
     await this.runHandlers(handlers, req, res)
-    this.loads++
     this.isLoading = false
-
     this.currentRes = res
-    this.emitEvent(RouterEventType.ProgressEnd, {
-      path: location.pathname,
-      note: 'handlers have completed running',
-      route: pattern
-    })
+    this.emitEvent(RouterEventType.ProgressEnd)
   }
 
-
-
   private onRequestUpdate(req: Request, res: Response, key: string): Subscription {
-    return this.history.onEvent.subscribe(event => {
+    const onEvent = (event: HistoryEvent) => {
       const currentPattern = this.routeMap.findWithPathname(event.to)
       const previousPattern = this.routeMap.findWithPathname(event.from)
       if (
@@ -212,17 +168,14 @@ export class Router {
       const params = url.matchPath(key, req.pathname)
       const newRequest = this.locator.generateRequest(key, params!)
       Object.assign(req, newRequest)
-      this.events.next({
-        type: RouterEventType.ProgressEnd,
-        id: this.id,
-        data: {
-          path: newRequest.pathname,
-          note: 'Router ended after same-route update',
-          route: key
-        }
+      this.emitEvent(RouterEventType.ProgressEnd, {
+        path: newRequest.pathname,
+        note: 'Router ended after same-route update',
+        route: key
       })
       this.isLoading = false
-    })
+    }
+    return this.history.onEvent.subscribe(onEvent)
   }
 }
 

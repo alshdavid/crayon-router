@@ -1,13 +1,6 @@
-import * as observe from './platform/beacon'
 import { Request } from './request'
 import { Response } from './response'
 import { Router } from './router';
-
-export interface Navigator {
-    navigate: (path: string) => void
-    back: () => void
-    events: observe.Subject<any>
-}
 
 export type handlerFunc = (
     req: Request,
@@ -24,7 +17,10 @@ export enum RouterEventType {
     RunningHanlders = 'ROUTER_RUNNING_HANDLERS',
     NoHanlders = 'ROUTER_NO_HANDLERS',
     SameRouteAbort = 'ROUTER_SAME_ROUTE_ABORT',
-    Destroyed = 'ROUTER_DESTROYED'
+    Redirected = 'ROUTER_REDIRECTED',
+    Destroyed = 'ROUTER_DESTROYED',
+    Registered = 'ROUTER_REGISTERED',
+    Unregistered = 'ROUTER_UNREGISTERED',
 }
 
 export interface RouterEvent {
