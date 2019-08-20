@@ -13,7 +13,11 @@ router:
   script:
     - yarn
     - cd src/router
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
     - mkdir -p badges
     - export VERSION=$(node -e "console.log(require('./package.json').version)")
     - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
@@ -30,7 +34,11 @@ animate:
   script:
     - yarn
     - cd src/animate
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
 
 transition:
   image: node:lts
@@ -40,7 +48,11 @@ transition:
   script:
     - yarn
     - cd src/transition
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
 
 preact:
   image: node:lts
@@ -50,7 +62,11 @@ preact:
   script:
     - yarn
     - cd src/preact
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
 
 react:
   image: node:lts
@@ -60,7 +76,11 @@ react:
   script:
     - yarn
     - cd src/react
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
 
 svelte:
   image: node:lts
@@ -70,7 +90,11 @@ svelte:
   script:
     - yarn
     - cd src/svelte
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
 
 vue:
   image: node:lts
@@ -80,7 +104,11 @@ vue:
   script:
     - yarn
     - cd src/vue
-    - sh ../../deploy.sh
+    - yarn test:cover
+    - yarn clean
+    - yarn build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
 
 gendocs:
   image: alshdavid/aws-cli
