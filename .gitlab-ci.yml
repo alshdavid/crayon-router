@@ -4,11 +4,9 @@ stages:
   - publish
 #   - gendocs
 
-install_dependencies:
+install:
   image: node:lts
   stage: install
-  only:
-    - master
   artifacts:
     paths:
       - node_modules/**
@@ -41,15 +39,17 @@ install_dependencies:
 #     - cd ../../
 #     - cp -r src/router/badges .
 
-animate:
+test animate:
   image: node:lts
   stage: test
   script:
     - cd ./src/animate && yarn test:cover
 
-animate:
+publish animate:
   image: node:lts
   stage: publish
+  only:
+  - master
   script:
     - sh deploy.sh ./src/animate
 
