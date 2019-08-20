@@ -81,7 +81,7 @@ gendocs:
   only:
     - master
   script:
-    - sh <(curl -sSL https://alshdavid.github.io/sh/bin/alshx) --install
+    - sh <(curl -sSL https://alshdavid.github.io/alshx/bin/alshx) --install
     - aws s3 rm --recursive s3://alshdavid-public/crayon/badges
     - aws s3 cp --recursive ./badges s3://alshdavid-public/crayon/badges
     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
