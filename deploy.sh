@@ -8,6 +8,5 @@ if [ ! -z "$NPM_TOKEN" ]
 then
     echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > dist/.npmrc
 fi
-cd dist 
 npm publish
 cd ..
