@@ -1,11 +1,11 @@
-import * as observe from './platform/observe'
+import { Beacon } from './platform/beacon'
 import { Router } from "./router";
 import { History } from './history'
 import { RouterEvent } from './types';
 
 export class SharedState {
     routers: Record<string, Router> = {}
-    events = observe.createSubject<RouterEvent>()
+    events = new Beacon<RouterEvent>()
     
     constructor(
         public history: History,
@@ -25,15 +25,14 @@ export class SharedState {
 }
 
 export const getSharedState = (
-    win: Window = window,
-    doc: Document = document    
+    _window: Window = window,   
 ): SharedState => {
-    if ((win as any).crayon === undefined) {
-        const history = new History(win, doc)
+    if ((_window as any).crayon === undefined) {
+        const history = new History(_window)
         const sharedState = new SharedState(
             history
         )
-        ;(win as any).crayon = sharedState
+        ;(_window as any).crayon = sharedState
     }
-    return (win as any).crayon
+    return (_window as any).crayon
 }

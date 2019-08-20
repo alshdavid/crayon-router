@@ -1,12 +1,12 @@
-import * as observe from './platform/observe'
-import * as url from "./platform/url"
-import * as genString from "./platform/gen-string" 
-import { handlerFunc, RouterEventType } from './types'
-import { Request } from './request'
-import { Response } from './response'
-import { Group } from "./group"
-import { History } from './history'
-import { getSharedState, SharedState } from './shared-state';
+import * as observe from '~/platform/beacon'
+import * as url from "~/platform/url"
+import { handlerFunc, RouterEventType } from '~/types'
+import { Request } from '~/request'
+import { Response } from '~/response'
+import { Locator } from '~/locator'
+import { Group } from "~/group"
+import { History } from '~/history'
+import { SharedState } from '~/shared-state';
 
 export class Router {
     middleware: handlerFunc[] = []
@@ -17,7 +17,6 @@ export class Router {
     $history: observe.Subscription
     $reqs: observe.Subscription[] = []
     loads = 0
-    window: Window
     onLeave = () => {}
     currentRes: Response | undefined
     currentReq: Request | undefined
@@ -28,11 +27,10 @@ export class Router {
     } 
 
     constructor(
-        public sharedState: SharedState,
         public id: string,
-        browserWindow: Window = window
+        public sharedState: SharedState,
+        public locator: Locator,
     ) {
-        this.window = browserWindow
         sharedState.addRouter(this)
         this.history = sharedState.history
         this.$history = this.history.onEvent
@@ -56,7 +54,7 @@ export class Router {
         }
         
         // this.runOnLeave()
-        this.events.next({ type: RouterEventType.Destroyed, id: this.id, data: this.window.location.pathname })
+        this.events.next({ type: RouterEventType.Destroyed, id: this.id, data: this.locator.getLocation().pathname })
     }
 
     path(path: string, ...handlers: handlerFunc[]) {
@@ -108,16 +106,16 @@ export class Router {
     }
 
     load() {
-        this.events.next({ type: RouterEventType.LoadTriggered, id: this.id, data: this.window.location.pathname })
+        this.events.next({ type: RouterEventType.LoadTriggered, id: this.id, data: this.locator.getLocation().pathname })
         return this.digest()
     }
 
     // digest() matches a path with patterns in the current router's routing 
     // table and executes the middleware/handlers for that route
     async digest() {
-        this.events.next({ type: RouterEventType.ProgressStart, id: this.id, data: this.window.location.pathname })
+        this.events.next({ type: RouterEventType.ProgressStart, id: this.id, data: this.locator.getLocation().pathname })
         this.isLoading = true
-        const req = new Request(this.window)
+        const location = this.locator.getLocation()
         const res = new Response()
 
         // Define redirect action
@@ -127,21 +125,21 @@ export class Router {
                 type: RouterEventType.ProgressEnd, 
                 id: this.id,
                 data: {
-                    path: this.window.location.pathname,
+                    path: location.pathname,
                     note: 'redirected page'
                 }
             })
             this.history.push(path)
         }
 
-        const result = this.getPattern(url.normalise(req.pathname, false))
+        const result = this.getPattern(url.normalise(location.pathname, false))
         if (!result) {
-            this.events.next({ type: RouterEventType.NoHanlders, id: this.id, data: this.window.location.pathname })
+            this.events.next({ type: RouterEventType.NoHanlders, id: this.id, data: this.locator.getLocation().pathname })
             this.events.next({ 
                 type: RouterEventType.ProgressEnd, 
                 id: this.id, 
                 data: {
-                    path: this.window.location.pathname,
+                    path: location.pathname,
                     note: 'No handlers found for current path',
                 }
             })
@@ -159,15 +157,14 @@ export class Router {
                 this.events.next({ 
                     type: RouterEventType.SameRouteAbort, 
                     id: this.id, 
-                    data: this.window.location.pathname 
+                    data: this.locator.getLocation().pathname 
                 })
                 return
             }
         }
         const handlers = this.routes[pattern]
-        req.routePattern = pattern
-        req.params = { ...params }
-        req.query = { ...url.deserializeQuery(this.window.location.search) }
+        const req = this.locator.generateRequest(pattern, params)
+
         // Watch for update and mutate the request untill you navigate
         // elsewhere. This adds a new subscirption and removes the previous
         this.$reqs.push(this.onRequestUpdate(req, res, pattern))
@@ -177,7 +174,7 @@ export class Router {
         this.events.next({ 
             type: RouterEventType.RunningHanlders, 
             id: this.id, 
-            data: this.window.location.pathname 
+            data: location.pathname 
         })
         await this.runHandlers(this.middleware, req, res)
         await this.runHandlers(handlers, req, res)
@@ -189,7 +186,7 @@ export class Router {
             type: RouterEventType.ProgressEnd, 
             id: this.id, 
             data: {
-                path: this.window.location.pathname,
+                path: location.pathname,
                 note: 'handlers have completed running',
                 route: pattern
             }
@@ -263,16 +260,14 @@ export class Router {
                 res.runOnLeave()
                 return
             }
-            Object.assign(req, new Request(this.window))
             const params = url.matchPath(key, req.pathname)
-            req.routePattern = key
-            req.params = { ...params }
-            req.query = { ...url.deserializeQuery(this.window.location.search) }
+            const newRequest = this.locator.generateRequest(key, params!)
+            Object.assign(req, newRequest)
             this.events.next({ 
                 type: RouterEventType.ProgressEnd, 
                 id: this.id,
                 data: {
-                    path: this.window.location.pathname,
+                    path: newRequest.pathname,
                     note: 'Router ended after same-route update',
                     route: key
                 }
@@ -282,15 +277,4 @@ export class Router {
     }
 }
 
-export const create = (
-    id = genString.ofLength(10),
-    win: Window = window,
-    doc: Document = document
-) => {
-    const sharedState = getSharedState(win, doc)
-    return new Router(
-        sharedState,
-        id,
-        win
-    )
-}
+

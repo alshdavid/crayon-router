@@ -1,7 +1,10 @@
+import { MockDocument } from "./document";
+
 export class MockWindow {
     eventListeners: Record<string, any[]> = {}
     paths: string[] = []
     lastPath = ''
+    document = new MockDocument()
 
     location = {
         pathname: ''

@@ -1,7 +1,7 @@
-import { create } from './router'
-import { MockWindow, MockDocument } from './tests/mocks'
-import { RouterEventType, handlerFunc } from './types';
-import routerMockData from './tests/data/router.data'
+import { create } from '../index'
+import { MockWindow, MockDocument } from './mocks'
+import { RouterEventType, handlerFunc } from '../types';
+import routerMockData from './data/router.data'
 declare const global: any
 
 // Mute output
@@ -353,7 +353,6 @@ xit('Should create events in this order with two layers of nested routers', (don
         if (eventHistory.length !== 30) {
             return
         }
-        console.log(JSON.stringify(eventHistory, null, 4))
         expect(eventHistory).toEqual(routerMockData["test-a"])
         done()
     })

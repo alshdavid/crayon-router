@@ -1,14 +1,14 @@
-import { createSubject } from './subject'
+import { Beacon } from './beacon'
 
 it('Should get value when subscribed to', () => {
-    const subject = createSubject<string>()
+    const beacon = new Beacon<string>()
     let result: string | undefined
 
-    const a = subject.subscribe((value) =>
+    const a = beacon.subscribe((value) =>
         result = value
     )
 
-    subject.next('marco')
+    beacon.next('marco')
     a.unsubscribe()
 
     expect(result).toBe('marco')
@@ -16,14 +16,14 @@ it('Should get value when subscribed to', () => {
 
 
 it('Should not get value when unsubscribed', () => {
-    const subject = createSubject<string>()
+    const beacon = new Beacon<string>()
     let result: string | undefined
 
-    const a = subject.subscribe((value) =>
+    const a = beacon.subscribe((value) =>
         result = value
     )
     a.unsubscribe()
-    subject.next('marco')
+    beacon.next('marco')
 
     expect(result).toBe(undefined)
 

@@ -1,4 +1,4 @@
-import * as observe from './platform/observe'
+import { Beacon } from './platform/beacon'
 import * as url from './platform/url'
 
 export enum HistoryType {
@@ -17,7 +17,7 @@ export interface HistoryEvent {
 export class History {
     entries: string[] = []
     events: HistoryEvent[] = []
-    onEvent = observe.createSubject<HistoryEvent>()
+    onEvent = new Beacon<HistoryEvent>()
     window: Window
     document: Document
 
@@ -53,11 +53,10 @@ export class History {
     }
 
     constructor(
-        win: Window = window,
-        doc: Document = document
+        _window: Window = window,
     ) {
-        this.window = win
-        this.document = doc
+        this.window = _window
+        this.document = _window.document
         this.entries.push(this.window.location.pathname)
         this.window.addEventListener('popstate', this.onPop)
     }
