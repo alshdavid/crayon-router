@@ -13,11 +13,16 @@ if ! [ -x "$(command -v alshx)" ]; then
   curl -s -f https://alshdavid.github.io/alshx/bin/alshx | sh /dev/stdin --install
 fi
 
+# This is done in the previous pipeline step
+# Build all the things
+# make
+
 # Go to package directory
 cd $TARGET_PATH
 
+# This is done in the previous pipeline step
 # Test the package
-yarn test:cover
+# yarn test:cover
 
 # If the version in NPM is older than the version 
 # in the package then deploy the package, otherwise

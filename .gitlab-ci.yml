@@ -1,5 +1,6 @@
 stages:
   - install
+  - test
   - publish
 #   - gendocs
 
@@ -39,6 +40,12 @@ install_dependencies:
 #     - cp ../../readme.md .
 #     - cd ../../
 #     - cp -r src/router/badges .
+
+animate:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/animate && yarn test:cover
 
 animate:
   image: node:lts
