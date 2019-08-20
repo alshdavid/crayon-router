@@ -18,6 +18,10 @@ stages:
 (Install) All:
   image: node:lts
   stage: install
+  artifacts:
+    paths:
+      - ./node_modules/
+      - ./src/**/node_modules/
   script:
     - npm install -g concurrently
     - make clean
@@ -26,6 +30,9 @@ stages:
 (Build) All:
   image: node:lts
   stage: build
+  artifacts:
+    paths:
+      - ./src/**/dist/
   script:
     - ls node_modules
     - ls src/router
