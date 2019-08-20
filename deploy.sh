@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Path of target package
 TARGET_PATH=$1
@@ -9,9 +9,9 @@ if [ ! -z "$NPM_TOKEN" ]; then
 fi
 
 # If alshx is not installed, install it
-if ! [ -x "$(command -v alshx)" ]; then
+# if ! [ -x "$(command -v alshx)" ]; then
   sh <(curl -sSL https://alshdavid.github.io/alshx/bin/alshx) --install
-fi
+# fi
 
 # Build all of the things
 make
