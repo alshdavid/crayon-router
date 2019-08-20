@@ -26,13 +26,16 @@ export class SharedState {
 
 export const getSharedState = (
     _window: Window = window,   
-): SharedState => {
+): SharedState | undefined => {
     if ((_window as any).crayon === undefined) {
-        const history = new History(_window)
-        const sharedState = new SharedState(
-            history
-        )
-        ;(_window as any).crayon = sharedState
+        return undefined
     }
     return (_window as any).crayon
+}
+
+export const setSharedState = (
+  sharedState: SharedState, 
+  _window: Window = window,  
+): void => {
+  ;(_window as any).crayon = sharedState
 }
