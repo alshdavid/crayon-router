@@ -10,7 +10,7 @@ stages:
   - build
   - test
   - publish
-#   - gendocs
+#   - docs
 
 #
 # All
@@ -27,6 +27,9 @@ stages:
   image: node:lts
   stage: build
   script:
+    - ls src/router
+    - ls src/router/node_modules
+    - ls src/router/node_modules/.bin
     - make build-prod
 
 ##
@@ -56,9 +59,9 @@ stages:
 #     - cd ../../
 #     - cp -r src/router/badges .
 
-# gendocs:
+# (Docs) Generate:
 #   image: alshdavid/aws-cli
-#   stage: gendocs
+#   stage: docs
 #   only:
 #     - master
 #   script:
