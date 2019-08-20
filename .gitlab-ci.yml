@@ -13,12 +13,18 @@ stages:
 #
 # All
 #
-Install && Build:
+(Install) All:
   image: node:lts
   stage: install
   script:
+    - npm install -g concurrently
     - make clean
     - make install
+
+(Build) All:
+  image: node:lts
+  stage: install
+  script:
     - make build-prod
 
 ##
