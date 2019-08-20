@@ -1,4 +1,3 @@
-import * as observe from '~/platform/beacon'
 import * as url from "~/platform/url"
 import { handlerFunc, RouterEventType } from '~/types'
 import { Request } from '~/request'
@@ -8,14 +7,15 @@ import { Group } from "~/group"
 import { History } from '~/history'
 import { SharedState } from '~/shared-state';
 import { RouteMap } from './route-map';
+import { Beacon, Subscription } from '~/platform/beacon';
 
 export class Router {
   middleware: handlerFunc[] = []
   state: Record<string, any> = {}
   isLoading = true
   history: History
-  $history: observe.Subscription
-  $reqs: observe.Subscription[] = []
+  $history: Subscription
+  $reqs: Subscription[] = []
   loads = 0
   onLeave = () => { }
   currentRes: Response | undefined
@@ -112,10 +112,30 @@ export class Router {
     return this.digest()
   }
 
+  emitEvent(type: RouterEventType, data?: any) {
+    if (!data) {
+      data = this.locator.getLocation().pathname
+    }
+    this.events.next({
+      id: this.id, 
+      type, 
+      data
+    })
+  }
+
+  private async runHandlers(handlers: handlerFunc[], req: Request, res: Response) {
+    for (const handler of handlers) {
+      if (res.hasCompleted) {
+        break
+      }
+      await handler(req, res, this.state, (this as any))
+    }
+  }
+
   // digest() matches a path with patterns in the current router's routing 
   // table and executes the middleware/handlers for that route
   async digest() {
-    this.events.next({ type: RouterEventType.ProgressStart, id: this.id, data: this.locator.getLocation().pathname })
+    this.emitEvent(RouterEventType.ProgressStart)
     this.isLoading = true
     const location = this.locator.getLocation()
     const res = new Response()
@@ -123,27 +143,19 @@ export class Router {
     // Define redirect action
     res.redirect = (path: string) => {
       this.isLoading = false
-      this.events.next({
-        type: RouterEventType.ProgressEnd,
-        id: this.id,
-        data: {
-          path: location.pathname,
-          note: 'redirected page'
-        }
+      this.emitEvent(RouterEventType.ProgressEnd, {
+        path: location.pathname,
+        note: 'redirected page'
       })
       this.history.push(path)
     }
 
     const result = this.routeMap.findWithPathname(location.pathname)
     if (!result) {
-      this.events.next({ type: RouterEventType.NoHanlders, id: this.id, data: this.locator.getLocation().pathname })
-      this.events.next({
-        type: RouterEventType.ProgressEnd,
-        id: this.id,
-        data: {
-          path: location.pathname,
-          note: 'No handlers found for current path',
-        }
+      this.emitEvent(RouterEventType.NoHanlders)
+      this.emitEvent(RouterEventType.ProgressEnd, {
+        path: location.pathname,
+        note: 'No handlers found for current path',
       })
       this.isLoading = false
       return
@@ -157,11 +169,7 @@ export class Router {
       // The pattern for the previous route
       const previousPattern = this.routeMap.findWithPathname(this.history.currentEvent.from)
       if (pattern === (previousPattern && previousPattern.pattern)) {
-        this.events.next({
-          type: RouterEventType.SameRouteAbort,
-          id: this.id,
-          data: this.locator.getLocation().pathname
-        })
+        this.emitEvent(RouterEventType.SameRouteAbort)
         return
       }
     }
@@ -171,11 +179,7 @@ export class Router {
 
     // Run handlers and middleware. They will skip
     // if a the res object has run 'end()'
-    this.events.next({
-      type: RouterEventType.RunningHanlders,
-      id: this.id,
-      data: location.pathname
-    })
+    this.emitEvent(RouterEventType.RunningHanlders)
 
     await this.runHandlers(this.middleware, req, res)
     await this.runHandlers(handlers, req, res)
@@ -183,27 +187,16 @@ export class Router {
     this.isLoading = false
 
     this.currentRes = res
-    this.events.next({
-      type: RouterEventType.ProgressEnd,
-      id: this.id,
-      data: {
-        path: location.pathname,
-        note: 'handlers have completed running',
-        route: pattern
-      }
+    this.emitEvent(RouterEventType.ProgressEnd, {
+      path: location.pathname,
+      note: 'handlers have completed running',
+      route: pattern
     })
   }
 
-  private async runHandlers(handlers: handlerFunc[], req: Request, res: Response) {
-    for (const handler of handlers) {
-      if (res.hasCompleted) {
-        break
-      }
-      await handler(req, res, this.state, (this as any))
-    }
-  }
 
-  private onRequestUpdate(req: Request, res: Response, key: string) {
+
+  private onRequestUpdate(req: Request, res: Response, key: string): Subscription {
     return this.history.onEvent.subscribe(event => {
       const currentPattern = this.routeMap.findWithPathname(event.to)
       const previousPattern = this.routeMap.findWithPathname(event.from)
