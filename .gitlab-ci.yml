@@ -14,7 +14,8 @@ stages:
   artifacts:
     paths:
       - ./node_modules/
-      - ./src/**/node_modules/
+      - ./src/router/node_modules/
+      - ./src/animate/node_modules/
   script:
     - npm install -g concurrently
     - make clean
@@ -25,7 +26,8 @@ stages:
   stage: build
   artifacts:
     paths:
-      - ./src/**/dist/
+      - ./src/router/dist/
+      - ./src/animate/dist/
   script:
     - make build-prod
 
