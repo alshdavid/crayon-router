@@ -1,9 +1,9 @@
 import Vue, { VueConstructor } from 'vue';
-import { mountable, getOutlets } from 'crayon'
+import { Mounter, getOutlets } from 'crayon'
 
 const isFunction = (value: any) => typeof value === 'function'
 
-export class VueMounter implements mountable {
+export class VueMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view',

@@ -1,7 +1,7 @@
-import { mountable, getOutlets } from 'crayon'
+import { Mounter, getOutlets } from 'crayon'
 import { Element } from 'kit'
 
-export class SvelteMounter implements mountable {
+export class SvelteMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view',

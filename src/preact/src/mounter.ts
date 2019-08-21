@@ -1,8 +1,8 @@
 import { render, h } from 'preact';
-import { mountable, getOutlets } from 'crayon';
+import { Mounter, getOutlets } from 'crayon';
 import { Element } from 'kit'
 
-export class PeactMounter implements mountable {
+export class PeactMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view'

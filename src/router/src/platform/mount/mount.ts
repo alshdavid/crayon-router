@@ -3,7 +3,7 @@ import { getOutlets } from "./get-outlets";
 
 const { addClassNames, removeClassNames, clearClassList, setStyles, waitForElements } = Element
 
-export interface mountable {
+export interface Mounter {
     selector: string
     target: HTMLElement
     push: (C: any) => Promise<void>
@@ -43,7 +43,7 @@ export interface mountable {
 */
 export const mount = async (
     incoming: any,
-    mounter: mountable,
+    mounter: Mounter,
     name: string,
     duration: number
 ): Promise<void> => {

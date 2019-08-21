@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mountable, getOutlets } from 'crayon'
+import { Mounter, getOutlets } from 'crayon'
 import { Element } from 'kit'
 
-export class ReactMounter implements mountable {
+export class ReactMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view'
