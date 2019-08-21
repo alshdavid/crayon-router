@@ -22,8 +22,9 @@ install:
 	yarn install
 
 build:
-	cd src/router && yarn build
+	cd src/kit && yarn build
 	concurrently \
+		"cd src/router && yarn build" \
 		"cd src/animate && yarn build" \
 		"cd src/preact && yarn build" \
 		"cd src/react && yarn build" \
@@ -32,8 +33,9 @@ build:
 		"cd src/vue && yarn build"
 
 build-prod:
-	cd src/router && yarn build:prod
+	cd src/kit && yarn build:prod
 	concurrently \
+		"cd src/router && yarn build:prod" \
 		"cd src/animate && yarn build:prod" \
 		"cd src/preact && yarn build:prod" \
 		"cd src/react && yarn build:prod" \
@@ -42,8 +44,9 @@ build-prod:
 		"cd src/vue && yarn build:prod"
 
 dev:
-	cd src/router && yarn build
+	cd src/kit && yarn build
 	concurrently \
+		"cd src/kit && yarn build:watch" \
 		"cd src/router && yarn build:watch" \
 		"cd src/animate && yarn build:watch" \
 		"cd src/preact && yarn build:watch" \
@@ -53,6 +56,7 @@ dev:
 		"cd src/vue && yarn build:watch"
 
 test:
+	cd src/kit && yarn test
 	cd src/router && yarn test
 	cd src/animate && yarn test
 	cd src/preact && yarn test

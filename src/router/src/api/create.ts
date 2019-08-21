@@ -1,10 +1,9 @@
-import * as genString from "./platform/gen-string" 
-import { getSharedState, SharedState, setSharedState } from './shared-state';
-import { Router } from "./router";
-import { History } from './history'
-import { Locator } from "./locator";
-import { RouteMap } from "./route-map";
-import { RouterEventType } from "./types";
+import * as genString from "../kit/gen-string" 
+import { History } from '../platform/history'
+import { Locator } from "../platform/locator";
+import { RouteMap } from "../platform/route-map";
+import { getSharedState, SharedState, setSharedState } from '../platform/shared-state';
+import { Router, RouterEventType } from "../platform/router";
 
 /*
   This is the entrypoint.

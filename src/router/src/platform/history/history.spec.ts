@@ -1,10 +1,9 @@
 import { History, HistoryType } from './history'
-import { MockWindow, MockDocument } from './tests/mocks';
+import { MockWindow } from '../../../__tests__/mocks';
 
 it('Should emit events and stuff', () => {
     const window = new MockWindow() as any
-    const document = new MockDocument() as any
-    const history = new History(window, document)
+    const history = new History(window)
 
     expect(history.lastRoute).toBe(undefined)
     expect(history.currentRoute).toBe('')

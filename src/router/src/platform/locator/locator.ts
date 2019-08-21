@@ -1,6 +1,7 @@
-import { Request } from './request'
-import * as url from "./platform/url"
+import * as url from "../../kit/url"
+import { Request } from '../router'
 
+// Locator is a wrapper on top of window.location
 export class Locator {
   constructor(
     private window: Window = window

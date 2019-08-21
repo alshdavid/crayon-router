@@ -1,12 +1,12 @@
-import * as url from "./platform/url"
+import * as url from "../../kit/url"
+import { Beacon, Subscription } from '../../kit/beacon';
+import { History, HistoryEvent } from '../history'
+import { RouteMap } from '../route-map';
+import { Locator } from '../locator'
 import { handlerFunc, RouterEventType, RouterEvent } from './types'
 import { Request } from './request'
 import { Response } from './response'
-import { Locator } from './locator'
 import { Group } from "./group"
-import { History, HistoryEvent } from './history'
-import { RouteMap } from './route-map';
-import { Beacon, Subscription } from './platform/beacon';
 
 export class Router {
   public currentRes: Response | undefined
@@ -151,7 +151,11 @@ export class Router {
     this.emitEvent(RouterEventType.ProgressEnd)
   }
 
-  private onRequestUpdate(req: Request, res: Response, key: string): Subscription {
+  private onRequestUpdate(
+    req: Request, 
+    res: Response, 
+    key: string
+  ): Subscription {
     const onEvent = (event: HistoryEvent) => {
       const currentPattern = this.routeMap.findWithPathname(event.to)
       const previousPattern = this.routeMap.findWithPathname(event.from)

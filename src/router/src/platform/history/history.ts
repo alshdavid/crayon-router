@@ -1,5 +1,5 @@
-import { Beacon } from './platform/beacon'
-import * as url from './platform/url'
+import { Beacon } from '../../kit/beacon'
+import * as url from '../../kit/url'
 
 export enum HistoryType {
     push = 'PUSH',
@@ -14,11 +14,13 @@ export interface HistoryEvent {
     to: string
 }
 
+// History is a wrapper on top of window.history
+// exposing a stream and extended API including
+// forward detection 
 export class History {
     entries: string[] = []
     events: HistoryEvent[] = []
     onEvent = new Beacon<HistoryEvent>()
-    window: Window
     document: Document
 
     onPop = () => {
@@ -53,10 +55,9 @@ export class History {
     }
 
     constructor(
-        _window: Window = window,
+        private window: Window = window,
     ) {
-        this.window = _window
-        this.document = _window.document
+        this.document = this.window.document
         this.entries.push(this.window.location.pathname)
         this.window.addEventListener('popstate', this.onPop)
     }

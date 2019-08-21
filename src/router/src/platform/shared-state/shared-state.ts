@@ -1,7 +1,6 @@
-import { Beacon } from './platform/beacon'
-import { Router } from "./router";
-import { History } from './history'
-import { RouterEvent, RouterEventType } from './types';
+import { Beacon } from '../../kit/beacon'
+import { History } from '../history'
+import { Router, RouterEvent, RouterEventType } from "../router";
 
 export class SharedState {
   routers: Record<string, Router> = {}

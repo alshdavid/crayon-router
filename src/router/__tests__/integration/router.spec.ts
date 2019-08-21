@@ -1,13 +1,17 @@
-import { create } from '../create'
-import { MockWindow, MockDocument } from './mocks'
-import { RouterEventType, handlerFunc } from '../types';
-import routerMockData from './data/router.data'
-import { getSharedState, SharedState } from '../shared-state';
-import { first, Beacon } from '../platform/beacon';
+import { MockWindow } from '../mocks'
+import routerMockData from '../data/router.data'
+import { 
+  create, 
+  RouterEventType, 
+  handlerFunc, 
+  SharedState, 
+  Beacon 
+} from '../../src'
+
 declare const global: any
 
 // Mute output
-global.console.log = () => {} 
+global.console.log = () => { }
 
 it('Should navigate to route', (done) => {
   const window = new MockWindow() as any
@@ -46,17 +50,17 @@ it('Should cleanup shared state on router destroy', async () => {
   const routerName = 'test-router'
   const destroy = jest.fn()
   const window = new MockWindow() as any
-  const history: any =  { 
+  const history: any = {
     destroy,
     onEvent: new Beacon()
   }
   const sharedState = new SharedState(history)
   const app = create(routerName, window, sharedState)
-  
+
   const hasRouter = (): boolean => !!sharedState!.routers[routerName]
 
-  void async function() {
-    await sharedState.events.first(event => 
+  void async function () {
+    await sharedState.events.first(event =>
       event.type === RouterEventType.Unregistered
     )
     expect(hasRouter()).toBe(false)

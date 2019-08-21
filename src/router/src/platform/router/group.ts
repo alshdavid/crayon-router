@@ -16,9 +16,3 @@ export class Group {
         this.middleware.push(handler)
     }
 }
-
-export const group = (base: string, callback?: (group: Group) => void): Group => {
-    const group = new Group(base)
-    callback && callback(group)
-    return group
-}

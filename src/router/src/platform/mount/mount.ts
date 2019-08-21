@@ -1,27 +1,60 @@
-import { go } from "./timeout";
-import { addClass, addStyles, removeClass, clearClasses, waitForElements, getOutlets } from "./element";
+import { addClassNames, removeClassNames, clearClassList, setStyles, waitForElements,  } from '../../kit/elements'
+import { sleep } from "../../kit/sleep";
+import { getOutlets } from "./get-outlets";
 
 export interface mountable {
     selector: string
     target: HTMLElement
     push: (C: any) => Promise<void>
-    pop: () => Promise<void>
+    shift: () => Promise<void>
     unmount?: () => Promise<void>
 }
 
-// The secret sauce
+/*
+    The mount function will take a framework/library specific component
+    and a generic "mounter" implimentation which knows how to mount that 
+    library's component.
+
+    When a mount action is triggered the follow occurs:
+
+        1)  A new HTML element which corresponds to the incoming 
+            route is pushed into the target outlet HTML element
+        
+        2)  The old HTML element which corresponds to the previous
+            route is unmounted and removed from the outlet element
+    
+    In effect, you can think of this process like an array, where
+    you push a new route, and shift the old route off.
+
+    1)  ['route-1']
+    2)  ['route-1', 'route-2']
+    3)  ['route-2']
+
+    If it's detected that we have an animation duration, then 
+    classNames and timers are added to the process to facilitate.
+
+    The animations themselves must be declared as CSS. The mount 
+    function only adds/removes classes relating to certain 
+    lifecycle events. There for, it's up to the CSS styles to 
+    action the requirements of the animaiton animation.
+
+    See /src/transition/ for example CSS animations
+*/
 export const mount = async (
     incoming: any,
     mounter: mountable,
     name: string,
     duration: number
-) => {
+): Promise<void> => {
     // Get actors
     const root = mounter.target
     const states = makeClassNames(name)
     const hasTransition = hasAnimation(states.noAnimation, name, duration)
     
-    // Push incoming to dom
+    // Push incoming component to dom
+    // The mountable implimentation describes
+    // What happens here - it is different for
+    // every framework
     await mounter.push(incoming)
 
     // Get elements
@@ -29,9 +62,9 @@ export const mount = async (
     
     // Add classes to entering element
     if (hasTransition) {
-        addClass(root, states.isAnimating)
-        addClass(entering, states.base)
-        addStyles(entering, { transitionDuration: `${duration}ms` })
+        addClassNames(root, [states.isAnimating])
+        addClassNames(entering, [states.base])
+        setStyles(entering, { transitionDuration: `${duration}ms` })
         waitForElements(entering)
     }
 
@@ -39,46 +72,40 @@ export const mount = async (
     // Special action
     if (leaving === undefined) {
         if (!hasTransition) {
-            addClass(entering, states.enterDone)
-            return Promise.resolve()
+            addClassNames(entering, [states.enterDone])
+            return
         }
-        addClass(entering, states.firstEnter)
-        addClass(entering, states.enter)
+        addClassNames(entering, [states.firstEnter, states.enter])
         waitForElements(entering)
-        return go(() => {
-            removeClass(entering, states.firstEnter)
-            removeClass(entering, states.enter)
-            addClass(entering, states.enterDone)
-            removeClass(root, states.isAnimating)
+        return sleep(() => {
+            removeClassNames(entering, [states.firstEnter, states.enter])
+            addClassNames(entering, [states.enterDone])
+            removeClassNames(root, [states.isAnimating])
         }, duration)
     }
 
     // If route has no animation skip
     if (!hasTransition) {
-        mounter.pop()
-        return Promise.resolve()
+        mounter.shift()
+        return
     }
 
     // Start route animation
-    clearClasses(leaving)
-    addStyles(leaving, { transitionDuration: `${duration}ms` })
-    addStyles(entering, { transitionDuration: `${duration}ms` })
-    addClass(leaving, mounter.selector)
-    addClass(leaving, states.base)
-    addClass(leaving, states.exit)
-    addClass(entering, states.enter)   
+    clearClassList(leaving)
+    setStyles(leaving, { transitionDuration: `${duration}ms` })
+    setStyles(entering, { transitionDuration: `${duration}ms` })
+    addClassNames(leaving, [mounter.selector, states.base, states.exit, states.enter])
     waitForElements(leaving, entering)
 
     // Remove classes once duration is complete
-    return go(() => {
-        mounter.pop()
-        removeClass(entering, states.enter)
-        addClass(entering, states.enterDone)
-        removeClass(root, states.isAnimating)
+    return sleep(() => {
+        mounter.shift()
+        removeClassNames(entering, [states.enter])
+        addClassNames(entering, [states.enterDone])
+        removeClassNames(root, [states.isAnimating])
     }, duration)
 }
 
-// TODO remove name
 const makeClassNames = (name: string) => ({
     isAnimating: 'is-animating',
     noAnimation: 'no-animation',
