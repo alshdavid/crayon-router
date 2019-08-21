@@ -19,7 +19,7 @@ export class SvelteMounter implements mountable {
         })
     }
 
-    async pop() {
+    async shift() {
         const { leaving } = getOutlets(this.selector)
         if (!leaving) {
             return

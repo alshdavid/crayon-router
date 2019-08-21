@@ -7,7 +7,7 @@ export interface mountable {
     selector: string
     target: HTMLElement
     push: (C: any) => Promise<void>
-    pop: () => Promise<void>
+    shift: () => Promise<void>
     unmount?: () => Promise<void>
 }
 
@@ -87,7 +87,7 @@ export const mount = async (
 
     // If route has no animation skip
     if (!hasTransition) {
-        mounter.pop()
+        mounter.shift()
         return
     }
 
@@ -100,7 +100,7 @@ export const mount = async (
 
     // Remove classes once duration is complete
     return Sleep.exec(() => {
-        mounter.pop()
+        mounter.shift()
         removeClassNames(entering, [states.enter])
         addClassNames(entering, [states.enterDone])
         removeClassNames(root, [states.isAnimating])

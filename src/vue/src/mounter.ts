@@ -19,7 +19,7 @@ export class VueMounter implements mountable {
         this.target.appendChild(incoming)
     }
 
-    async pop() {
+    async shift() {
         const { leaving } = getOutlets(this.selector)
         if (!leaving) {
             return
