@@ -12,7 +12,7 @@ export interface ElementOptions<T extends keyof HTMLElementTagNameMap> {
     events?: DOMEventMap;
 }
 
-export const createElement = <T extends keyof HTMLElementTagNameMap = 'div'>(
+export const create = <T extends keyof HTMLElementTagNameMap = 'div'>(
   options: ElementOptions<T> = {},
   ...children: Array<HTMLElement>
 ) => {

@@ -14,13 +14,10 @@
     "resolveJsonModule": true,
     "lib": ["dom", "es2017"]
   },
-  "include": [
-    "src/**/*.ts", 
-    "tests/**/*.ts"
-  ],
   "exclude": [
     "src/**/*.spec.ts", 
     "node_modules", 
-    "dist"
+    "dist",
+    "__tests__"
   ]
 }

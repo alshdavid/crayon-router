@@ -1,5 +1,4 @@
-import { Beacon } from '../../kit/beacon'
-import * as url from '../../kit/url'
+import { URL, EventStream } from 'kit'
 
 export enum HistoryType {
     push = 'PUSH',
@@ -9,7 +8,7 @@ export enum HistoryType {
 }
 
 export interface HistoryEvent {
-    type: string
+    type: string 
     from: string
     to: string
 }
@@ -20,7 +19,7 @@ export interface HistoryEvent {
 export class History {
     entries: string[] = []
     events: HistoryEvent[] = []
-    onEvent = new Beacon<HistoryEvent>()
+    onEvent = new EventStream.Beacon<HistoryEvent>()
     document: Document
 
     onPop = () => {
@@ -67,7 +66,7 @@ export class History {
     }
 
     push(path: string) {
-        path = url.normalise(path)
+        path = URL.normalise(path)
         this.window.history.pushState(null, this.document.title, path)
         const event = { type: HistoryType.push, from: this.currentRoute, to: path }
         this.entries.push(path)
@@ -80,7 +79,7 @@ export class History {
     }
 
     replace(path: string) {
-        path = url.normalise(path)
+        path = URL.normalise(path)
         this.window.history.replaceState(null, this.document.title, path)
         this.entries[this.entries.length - 1] = path
         this.onEvent.next({ type: HistoryType.replace, from: this.currentRoute, to: path })

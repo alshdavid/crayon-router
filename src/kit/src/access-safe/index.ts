@@ -3,7 +3,7 @@
     This method is aprox 70% slower than safe access
     but is way more readable so it wins in my book.
 */
-export const accessSafe = <T>(cb: () => T, alt: T): T => {
+export const exec = <T>(cb: () => T, alt: T): T => {
     try {
         return cb()
     } catch {

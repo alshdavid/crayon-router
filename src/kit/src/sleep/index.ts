@@ -1,4 +1,4 @@
-export const sleep = <T = any>(
+export const exec = <T = any>(
     callback: () => any, 
     duration: number = 0
 ): Promise<T> => new Promise(res =>

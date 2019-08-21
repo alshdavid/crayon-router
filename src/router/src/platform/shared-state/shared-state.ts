@@ -1,10 +1,10 @@
-import { Beacon } from '../../kit/beacon'
+import { EventStream } from 'kit'
 import { History } from '../history'
 import { Router, RouterEvent, RouterEventType } from "../router";
 
 export class SharedState {
   routers: Record<string, Router> = {}
-  events = new Beacon<RouterEvent>()
+  events = new EventStream.Beacon<RouterEvent>()
 
   constructor(
     public history: History,

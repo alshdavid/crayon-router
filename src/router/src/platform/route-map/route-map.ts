@@ -1,4 +1,4 @@
-import * as url from "../../kit/url"
+import { URL } from "kit"
 import { handlerFunc } from '../router'
 
 export type ParamMap = Record<string, string>
@@ -20,7 +20,7 @@ export class RouteMap {
   routes: Record<string, handlerFunc[]> = {}
 
   public add(path: string, ...handlers: handlerFunc[]) {
-    this.routes[url.normalise(path)] = handlers
+    this.routes[URL.normalise(path)] = handlers
   }
 
   public addMiddleware(...handlers: handlerFunc[]) {
@@ -32,7 +32,7 @@ export class RouteMap {
   public findWithPathname(pathname: string): Route | undefined {
     let patterns: { key: string, params: Record<string, string> }[] = []
     for (let key in this.routes) {
-      const params = url.matchPath(key, pathname)
+      const params = URL.matchPath(key, pathname)
       if (params !== undefined) {
         patterns.push({ key, params })
       }

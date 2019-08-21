@@ -1,7 +1,3 @@
-export * from './kit/check-types'
-export * from './kit/gen-string'
-export * from './kit/beacon'
-export * from './kit/url'
 export * from './platform/router'
 export * from './platform/mount'
 export * from './platform/history'

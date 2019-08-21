@@ -1,4 +1,4 @@
-import * as url from "../../kit/url"
+import { URL } from 'kit'
 import { Request } from '../router'
 
 // Locator is a wrapper on top of window.location
@@ -15,7 +15,7 @@ export class Locator {
     pattern: string, 
     params: Record<string, string>
   ): Request {
-    const query = url.deserializeQuery(this.window.location.search)
+    const query = URL.deserializeQuery(this.window.location.search)
     return new Request(
       pattern,
       this.window.location.hash,

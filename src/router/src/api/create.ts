@@ -1,4 +1,4 @@
-import * as genString from "../kit/gen-string" 
+import { GenString } from 'kit' 
 import { History } from '../platform/history'
 import { Locator } from "../platform/locator";
 import { RouteMap } from "../platform/route-map";
@@ -11,7 +11,7 @@ import { Router, RouterEventType } from "../platform/router";
   the router and handles teardown
 */
 export const create = (
-  id = genString.ofLength(10),
+  id = GenString.ofLength(10),
   _window: Window = window,
   sharedState?: SharedState,
 ): Router => {

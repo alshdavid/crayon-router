@@ -1,12 +1,13 @@
-import { addClassNames, removeClassNames, clearClassList, setStyles, waitForElements,  } from '../../kit/elements'
-import { sleep } from "../../kit/sleep";
+import { Element, Sleep } from 'kit'
 import { getOutlets } from "./get-outlets";
+
+const { addClassNames, removeClassNames, clearClassList, setStyles, waitForElements } = Element
 
 export interface mountable {
     selector: string
     target: HTMLElement
     push: (C: any) => Promise<void>
-    shift: () => Promise<void>
+    pop: () => Promise<void>
     unmount?: () => Promise<void>
 }
 
@@ -77,7 +78,7 @@ export const mount = async (
         }
         addClassNames(entering, [states.firstEnter, states.enter])
         waitForElements(entering)
-        return sleep(() => {
+        return Sleep.exec(() => {
             removeClassNames(entering, [states.firstEnter, states.enter])
             addClassNames(entering, [states.enterDone])
             removeClassNames(root, [states.isAnimating])
@@ -86,7 +87,7 @@ export const mount = async (
 
     // If route has no animation skip
     if (!hasTransition) {
-        mounter.shift()
+        mounter.pop()
         return
     }
 
@@ -98,7 +99,7 @@ export const mount = async (
     waitForElements(leaving, entering)
 
     // Remove classes once duration is complete
-    return sleep(() => {
+    return Sleep.exec(() => {
         mounter.shift()
         removeClassNames(entering, [states.enter])
         addClassNames(entering, [states.enterDone])

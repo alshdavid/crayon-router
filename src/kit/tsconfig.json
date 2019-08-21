@@ -12,6 +12,7 @@
     "baseUrl": "./",
     "rootDir": "./src",
     "resolveJsonModule": true,
+    "suppressImplicitAnyIndexErrors": true,
     "lib": ["dom", "es2017"]
   },
   "include": [

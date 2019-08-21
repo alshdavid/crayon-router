@@ -6,6 +6,12 @@ export interface Subscription {
   unsubscribe: () => void
 }
 
+export namespace EventStream {
+  export interface Subscription {
+    unsubscribe: () => void
+  }
+}
+
 export class Beacon<T> {
   subscribers: Record<string, callback<T>> = {}
 
