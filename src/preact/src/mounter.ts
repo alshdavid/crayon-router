@@ -1,5 +1,6 @@
 import { render, h } from 'preact';
-import { mountable, getOutlets, addClass } from 'crayon';
+import { mountable, getOutlets } from 'crayon';
+import { Element } from 'kit'
 
 export class PeactMounter implements mountable {
     constructor(
@@ -16,7 +17,7 @@ export class PeactMounter implements mountable {
 
     async push(C: any) { 
         const incoming = document.createElement('div')
-        addClass(incoming, this.selector)
+        Element.addClassNames(incoming, [this.selector])
         render(
             (h as any)(C), 
             incoming

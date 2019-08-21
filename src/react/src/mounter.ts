@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mountable, getOutlets, addClass } from 'crayon'
+import { mountable, getOutlets } from 'crayon'
+import { Element } from 'kit'
 
 export class ReactMounter implements mountable {
     constructor(
@@ -10,7 +11,7 @@ export class ReactMounter implements mountable {
 
     async push(C: any) { 
         const incoming = document.createElement('div')
-        addClass(incoming, this.selector)
+        Element.addClassNames(incoming, [this.selector])
         ReactDOM.render(
             React.createElement(C), 
             incoming

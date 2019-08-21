@@ -100,7 +100,7 @@ export const mount = async (
 
     // Remove classes once duration is complete
     return Sleep.exec(() => {
-        mounter.shift()
+        mounter.pop()
         removeClassNames(entering, [states.enter])
         addClassNames(entering, [states.enterDone])
         removeClassNames(root, [states.isAnimating])

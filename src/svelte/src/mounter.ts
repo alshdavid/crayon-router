@@ -1,4 +1,5 @@
-import { mountable, getOutlets, addClass } from 'crayon'
+import { mountable, getOutlets } from 'crayon'
+import { Element } from 'kit'
 
 export class SvelteMounter implements mountable {
     constructor(
@@ -9,7 +10,7 @@ export class SvelteMounter implements mountable {
 
     async push(builder: any) { 
         const container = document.createElement('div')
-        addClass(container, this.selector)
+        Element.addClassNames(container, [this.selector])
         this.target.appendChild(container)
         const instance = builder(container)
         this.instances.push({
