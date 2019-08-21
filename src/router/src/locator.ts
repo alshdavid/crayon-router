@@ -1,5 +1,5 @@
-import { Request } from '~/request'
-import * as url from "~/platform/url"
+import { Request } from './request'
+import * as url from "./platform/url"
 
 export class Locator {
   constructor(

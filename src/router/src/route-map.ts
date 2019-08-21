@@ -1,5 +1,5 @@
-import { handlerFunc } from '~/types'
-import * as url from "~/platform/url"
+import { handlerFunc } from './types'
+import * as url from "./platform/url"
 
 export type ParamMap = Record<string, string>
 

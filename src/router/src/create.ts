@@ -40,15 +40,18 @@ export const create = (
   )
   // Add the router to the shared state
   sharedState.addRouter(router)
-  
-  // When the router is destroyed, clean up
-  void async function(){
-    await sharedState.events.first(event =>
-      event.type === RouterEventType.Destroyed && 
-      event.id === router.id
-    )
-    sharedState!.removeRouter(router)
-  }()
+  onRouterDestroy(router, sharedState)
   
   return router
+}
+
+const onRouterDestroy = async (
+  router: Router, 
+  sharedState: SharedState,
+): Promise<void> => {
+  await sharedState.events.first(event =>
+    event.type === RouterEventType.Destroyed && 
+    event.id === router.id
+  )
+  sharedState!.removeRouter(router)
 }

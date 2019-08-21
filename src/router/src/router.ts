@@ -1,13 +1,12 @@
-import * as url from "~/platform/url"
-import { handlerFunc, RouterEventType, RouterEvent } from '~/types'
-import { Request } from '~/request'
-import { Response } from '~/response'
-import { Locator } from '~/locator'
-import { Group } from "~/group"
-import { History, HistoryEvent } from '~/history'
-import { SharedState } from '~/shared-state';
+import * as url from "./platform/url"
+import { handlerFunc, RouterEventType, RouterEvent } from './types'
+import { Request } from './request'
+import { Response } from './response'
+import { Locator } from './locator'
+import { Group } from "./group"
+import { History, HistoryEvent } from './history'
 import { RouteMap } from './route-map';
-import { Beacon, Subscription } from '~/platform/beacon';
+import { Beacon, Subscription } from './platform/beacon';
 
 export class Router {
   public currentRes: Response | undefined

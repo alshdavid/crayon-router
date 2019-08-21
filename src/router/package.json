@@ -24,12 +24,13 @@
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7"
   },
-  "dependencies": {},
+  "dependencies": {
+    "typescript": "^3.7.0-dev.20190820"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/**.{ts,js}",
