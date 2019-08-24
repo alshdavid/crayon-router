@@ -1,4 +1,4 @@
-import { URL } from "kit"
+import { URL } from 'crayon-kit'
 import { handlerFunc } from '../router'
 
 export type ParamMap = Record<string, string>

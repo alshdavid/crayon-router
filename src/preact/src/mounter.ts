@@ -1,6 +1,6 @@
 import { render, h } from 'preact';
 import { Mounter, getRouteTargets } from 'crayon';
-import { Element } from 'kit'
+import { Element } from 'crayon-kit'
 
 export class PeactMounter implements Mounter {
     constructor(

@@ -1,5 +1,5 @@
 import { Mounter, getRouteTargets } from 'crayon'
-import { Element } from 'kit'
+import { Element } from 'crayon-kit'
 
 export class SvelteMounter implements Mounter {
     constructor(

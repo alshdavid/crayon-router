@@ -1,4 +1,4 @@
-import { EventStream } from 'kit'
+import { EventStream } from 'crayon-kit'
 import { History } from '../history'
 import { Router, RouterEvent, RouterEventType } from "../router";
 

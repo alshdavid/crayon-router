@@ -1,4 +1,4 @@
-import { GenString } from 'kit' 
+import { GenString } from 'crayon-kit' 
 import { History } from '../platform/history'
 import { Locator } from "../platform/locator";
 import { RouteMap } from "../platform/route-map";

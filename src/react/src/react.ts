@@ -1,7 +1,7 @@
 import { handlerFunc } from 'crayon'
 import { mount } from 'crayon';
 import { ReactState } from './state';
-import { AccessSafe } from 'kit'
+import { AccessSafe } from 'crayon-kit'
 
 export const router = (
   target: HTMLElement = document.body, 

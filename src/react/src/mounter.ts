@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Mounter, getRouteTargets } from 'crayon'
-import { Element } from 'kit'
+import { Element } from 'crayon-kit'
 
 export class ReactMounter implements Mounter {
   constructor(

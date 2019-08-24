@@ -92,6 +92,14 @@ stages:
   script:
     - cd ./src/kit && yarn test:cover
 
+(Publish) kit:
+  image: node:lts
+  stage: publish
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/kit
+
 #
 # Animate
 #

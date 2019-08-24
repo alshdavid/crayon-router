@@ -1,4 +1,4 @@
-import { URL } from 'kit'
+import { URL } from 'crayon-kit'
 import { AnimationRoute } from "./types";
 
 export class AnimationState {

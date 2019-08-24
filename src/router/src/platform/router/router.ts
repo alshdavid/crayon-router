@@ -1,4 +1,4 @@
-import { URL, EventStream } from 'kit'
+import { URL, EventStream } from 'crayon-kit'
 import { History, HistoryEvent } from '../history'
 import { RouteMap } from '../route-map';
 import { Locator } from '../locator'

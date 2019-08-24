@@ -1,4 +1,4 @@
-import { URL } from 'kit'
+import { URL } from 'crayon-kit'
 import { Request } from '../router'
 
 // Locator is a wrapper on top of window.location

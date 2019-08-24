@@ -1,6 +1,6 @@
 import { MockWindow } from '../mocks'
 import routerMockData from '../data/router.data'
-import { EventStream } from 'kit'
+import { EventStream } from 'crayon-kit'
 import { 
   create, 
   RouterEventType, 

@@ -1,4 +1,4 @@
-import { URL, EventStream } from 'kit'
+import { URL, EventStream } from 'crayon-kit'
 
 export enum HistoryType {
     push = 'PUSH',
