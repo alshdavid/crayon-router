@@ -33,8 +33,8 @@ cd $TARGET_PATH
 # skip publishing it.
 alshx npm-version-bouncer ./package.json
 if [ $? = "0" ]; then
-  yarn clean
-  yarn build:prod
+  npm install
+  npm run build:prod
   npm publish
 else
   echo Skipped Publish

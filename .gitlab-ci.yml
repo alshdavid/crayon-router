@@ -23,6 +23,8 @@ stages:
   - install
   - build
   - test
+  - publish_kit
+  - publish_router
   - publish
   - docs
 
@@ -43,6 +45,24 @@ stages:
   script:
     - npm install -g concurrently
     - make build-prod
+    - make clean
+
+#
+# Kit
+#
+(Test) kit:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/kit && yarn test:cover
+
+(Publish) kit:
+  image: node:lts
+  stage: publish_kit
+  only:
+  - master
+  script:
+    - sh deploy.sh ./src/kit
 
 #
 # router
@@ -55,7 +75,7 @@ stages:
 
 (Publish) router:
   image: node:lts
-  stage: publish
+  stage: publish_router
   artifacts:
     paths:
       - badges/**
@@ -82,23 +102,6 @@ stages:
     - aws s3 cp --recursive ./badges s3://alshdavid-public/crayon/badges
     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
     - alshx hub-purge https://github.com/alshdavid/crayon
-
-#
-# Animate
-#
-(Test) kit:
-  image: node:lts
-  stage: test
-  script:
-    - cd ./src/kit && yarn test:cover
-
-(Publish) kit:
-  image: node:lts
-  stage: publish
-  only:
-  - master
-  script:
-    - sh deploy.sh ./src/kit
 
 #
 # Animate

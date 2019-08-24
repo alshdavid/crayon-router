@@ -1,6 +1,6 @@
 {
   "name": "crayon",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "",
   "repository": {
     "type": "git",
@@ -48,7 +48,7 @@
     }
   },
   "dependencies": {
-    "crayon-kit": "^1.0.0"
+    "crayon-kit": "^1.0.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",
