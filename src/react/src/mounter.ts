@@ -1,30 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Mounter, getOutlets } from 'crayon'
+import { Mounter, getRouteTargets } from 'crayon'
 import { Element } from 'kit'
 
 export class ReactMounter implements Mounter {
-    constructor(
-        public target = document.body,
-        public selector = 'router-view'
-    ) {}
+  constructor(
+    public target: HTMLElement,
+    public selector: string,
+  ) { }
 
-    async push(C: any) { 
-        const incoming = document.createElement('div')
-        Element.addClassNames(incoming, [this.selector])
-        ReactDOM.render(
-            React.createElement(C), 
-            incoming
-        )
-        this.target.appendChild(incoming)
-    }
+  async push(Component: () => JSX.Element): Promise<void> {
+      const incoming = document.createElement('div')
+      Element.addClassNames(incoming, [this.selector])
+      await this.renderUsingReactDOM(Component, incoming)
+      this.target.appendChild(incoming)
+      Element.waitForElements(incoming)
+  }
 
-    async shift() {
-        const { leaving } = getOutlets(this.selector)
-        if (!leaving) {
-            return
-        }
-        ReactDOM.unmountComponentAtNode(leaving)
-        this.target.removeChild(leaving)
+  async shift(): Promise<void> {
+    const { leaving } = getRouteTargets(this.selector)
+    if (!leaving) {
+      return
     }
+    ReactDOM.unmountComponentAtNode(leaving)
+    this.target.removeChild(leaving)
+  }
+
+  renderUsingReactDOM(
+    Component: () => JSX.Element, 
+    target: HTMLElement
+  ): Promise<void> {
+    return new Promise(res => 
+      ReactDOM.render(
+        React.createElement(Component),
+        target,
+        () => res()
+      ))
+  }
 }

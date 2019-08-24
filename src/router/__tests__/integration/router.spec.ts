@@ -1,11 +1,11 @@
 import { MockWindow } from '../mocks'
 import routerMockData from '../data/router.data'
+import { EventStream } from 'kit'
 import { 
   create, 
   RouterEventType, 
   handlerFunc, 
   SharedState, 
-  Beacon 
 } from '../../src'
 
 declare const global: any
@@ -52,7 +52,7 @@ it('Should cleanup shared state on router destroy', async () => {
   const window = new MockWindow() as any
   const history: any = {
     destroy,
-    onEvent: new Beacon()
+    onEvent: new EventStream.Beacon()
   }
   const sharedState = new SharedState(history)
   const app = create(routerName, window, sharedState)

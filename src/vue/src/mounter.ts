@@ -1,5 +1,5 @@
 import Vue, { VueConstructor } from 'vue';
-import { Mounter, getOutlets } from 'crayon'
+import { Mounter, getRouteTargets } from 'crayon'
 
 const isFunction = (value: any) => typeof value === 'function'
 
@@ -20,7 +20,7 @@ export class VueMounter implements Mounter {
     }
 
     async shift() {
-        const { leaving } = getOutlets(this.selector)
+        const { leaving } = getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

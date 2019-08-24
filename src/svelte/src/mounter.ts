@@ -1,4 +1,4 @@
-import { Mounter, getOutlets } from 'crayon'
+import { Mounter, getRouteTargets } from 'crayon'
 import { Element } from 'kit'
 
 export class SvelteMounter implements Mounter {
@@ -20,7 +20,7 @@ export class SvelteMounter implements Mounter {
     }
 
     async shift() {
-        const { leaving } = getOutlets(this.selector)
+        const { leaving } = getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

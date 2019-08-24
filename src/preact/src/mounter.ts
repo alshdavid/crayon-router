@@ -1,5 +1,5 @@
 import { render, h } from 'preact';
-import { Mounter, getOutlets } from 'crayon';
+import { Mounter, getRouteTargets } from 'crayon';
 import { Element } from 'kit'
 
 export class PeactMounter implements Mounter {
@@ -26,7 +26,7 @@ export class PeactMounter implements Mounter {
     }
 
     async shift() {
-        const { leaving } = getOutlets(this.selector)
+        const { leaving } = getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

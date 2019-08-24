@@ -18,17 +18,17 @@ export class Response {
         this.hasCompleted = true
     }
 
-    unmount(...args: any) {
+    public async unmount(...args: any): Promise<void> {
         console.log('Unmount action is not set')
         console.log(...args)
     }
 
-    mount(...args: any) {
+    public async mount(...args: any): Promise<void> {
         console.log('Mount action is not set')
         console.log(...args)
     }
 
-    redirect(path: string) {
+    public redirect(path: string): void {
         console.log('Redirect action is not set')
         console.log(path)
     }

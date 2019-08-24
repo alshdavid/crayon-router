@@ -63,7 +63,6 @@ export const setStyles = (element: HTMLElement, styles: CSSProperties) => {
     }
     (element as any).style[style] = (styles as any)[style];
   }
-  element.getBoundingClientRect()
 };
 
 export const setEvents = (element: HTMLElement, events: DOMEventMap) => {
@@ -73,7 +72,6 @@ export const setEvents = (element: HTMLElement, events: DOMEventMap) => {
     }
     (element as any)[eventName] = events[eventName];
   }
-  element.getBoundingClientRect()
 };
 
 export const addClassNames = (
@@ -83,7 +81,6 @@ export const addClassNames = (
     for (const className of classNames) {
         el.classList.add(className)
     }
-    waitForElements(el)
 }
 
 export const removeClassNames = (
@@ -93,7 +90,6 @@ export const removeClassNames = (
     for (const className of classNames) {
         el.classList.remove(className)
     }
-    waitForElements(el)
 }
 
 export const clearClassList = (

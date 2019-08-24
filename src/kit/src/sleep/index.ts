@@ -7,3 +7,11 @@ export const exec = <T = any>(
         res(val)
     }, duration)
 )
+
+export const duration = <T = any>(
+  duration: number = 0
+): Promise<T> => new Promise(res =>
+  setTimeout(() => {
+      res()
+  }, duration)
+)
