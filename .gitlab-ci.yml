@@ -2,6 +2,7 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - ./node_modules/
+    - ./src/kit/node_modules/
     - ./src/animate/node_modules/
     - ./src/preact/node_modules/
     - ./src/react/node_modules/
@@ -9,6 +10,7 @@ cache:
     - ./src/svelte/node_modules/
     - ./src/transition/node_modules/
     - ./src/vue/node_modules/
+    - ./src/kit/dist/
     - ./src/animate/dist/
     - ./src/preact/dist/
     - ./src/react/dist/
@@ -80,6 +82,15 @@ stages:
     - aws s3 cp --recursive ./badges s3://alshdavid-public/crayon/badges
     - aws cloudfront create-invalidation --distribution-id E2QHY39OWRUCEU --paths /\*
     - alshx hub-purge https://github.com/alshdavid/crayon
+
+#
+# Animate
+#
+(Test) kit:
+  image: node:lts
+  stage: test
+  script:
+    - cd ./src/kit && yarn test:cover
 
 #
 # Animate
