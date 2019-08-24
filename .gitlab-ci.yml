@@ -51,6 +51,7 @@ stages:
   image: node:lts
   stage: clean
   script:
+    - npm install -g concurrently
     - make clean
 
     #
