@@ -14,6 +14,7 @@ export class Router {
   private state: Record<string, any> = {}
   private $history: EventStream.Subscription
   private $reqs: EventStream.Subscription[] = []
+  public loads = 0
   
   constructor(
     public id: string,
@@ -129,7 +130,10 @@ export class Router {
     const req = this.locator.generateRequest(pattern, params)
 
     // Don't run this route if you're already on it.        
-    if (this.history.currentEvent) {
+    if (
+      this.history.currentEvent && 
+      this.loads !== 0
+    ) {
       const previousPattern = this.routeMap.findWithPathname(this.history.currentEvent.from)
       if (pattern === (previousPattern && previousPattern.pattern)) {
         this.emitEvent(RouterEventType.SameRouteAbort)
@@ -143,8 +147,8 @@ export class Router {
     // Run handlers and middleware. They will skip
     // if a the res object has run 'end()'
     this.emitEvent(RouterEventType.RunningHanlders)
-
     await this.runHandlers(handlers, req, res)
+    this.loads++
     this.isLoading = false
     this.currentRes = res
     this.emitEvent(RouterEventType.ProgressEnd)
