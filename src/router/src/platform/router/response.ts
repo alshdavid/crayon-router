@@ -18,12 +18,12 @@ export class Response {
         this.hasCompleted = true
     }
 
-    public async unmount(...args: any): Promise<void> {
+    public unmount(...args: any): void | Promise<void> {
         console.log('Unmount action is not set')
         console.log(...args)
     }
 
-    public async mount(...args: any): Promise<void> {
+    public mount(...args: any): void | Promise<void> {
         console.log('Mount action is not set')
         console.log(...args)
     }

@@ -1,6 +1,6 @@
 import "./styles.scss"
 import crayon from "crayon"
-import react from "crayon-react"
+import crayonReact from "crayon-react"
 import transition from "crayon-transition"
 import animate from "crayon-animate"
 import * as pages from "./pages"
@@ -10,8 +10,8 @@ const outlet = document.getElementById("router-outlet")
 const router = crayon.create()
 ctx.router = router
 
-router.use(react.router(outlet))
-router.use(react.withContext(AppContext, ctx))
+router.use(crayonReact.router(outlet))
+router.use(crayonReact.withContext(AppContext, ctx))
 router.use(transition.loader())
 router.use(
   animate.defaults({
@@ -26,12 +26,20 @@ router.use(
   ])
 )
 
-router.path("/", (req, res) => res.redirect("/home"))
+router.path("/", 
+  (req, res) => res.redirect("/home")
+)
 
-router.path("/home", (req, res) => res.mount(pages.Route))
+router.path("/home", 
+  (req, res) => res.mount(pages.Route)
+)
 
-router.path("/about", (req, res) => res.mount(pages.Route))
+router.path("/about", 
+  (req, res) => res.mount(pages.Route)
+)
 
-router.path("/more", (req, res) => res.mount(pages.More))
+router.path("/more", 
+  (req, res) => res.mount(pages.More)
+)
 
 router.load()
