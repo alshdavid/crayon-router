@@ -23,6 +23,7 @@ stages:
   - install
   - build
   - test
+  - clean
   - publish_kit
   - publish_router
   - publish
@@ -45,9 +46,14 @@ stages:
   script:
     - npm install -g concurrently
     - make build-prod
+
+(Clean) All:
+  image: node:lts
+  stage: clean
+  script:
     - make clean
 
-#
+    #
 # Kit
 #
 (Test) kit:
