@@ -1,6 +1,6 @@
 import { route } from './route'
 import crayon from 'crayon'
-import { MockDocument, MockWindow } from '../../router/src/tests/mocks'
+import { MockDocument, MockWindow } from '../../router/__tests__/mocks'
 import { defaults } from './defaults';
 import { routes } from './routes';
 
@@ -9,8 +9,7 @@ import { routes } from './routes';
 // coming from anywhere to source
 fit('Should give the enter animation', (done) => {
     const window = new MockWindow() as any
-    const document = new MockDocument() as any
-    const app = crayon.create('test-router', window ,document)
+    const app = crayon.create('test-router', window)
 
     // app.use(routes([
     //     { from: '/**', to:   '/a', name: 'enter' },

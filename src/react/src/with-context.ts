@@ -9,7 +9,7 @@ export const withContext = <T = any>(context: React.Context<any>, contextState?:
   return (req: Request, res: Response, state: Record<string, any>, app: Router) => {
     const mount = res.mount
     res.mount = (c: any) => {
-      mount(apply(c))
+      return mount(apply(c))
     }
   }
 }

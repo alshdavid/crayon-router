@@ -1,6 +1,6 @@
 {
   "name": "crayon",
-  "version": "3.0.5",
+  "version": "4.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,6 +12,7 @@
     "build": "webpack",
     "build:prod": "webpack --prod",
     "build:watch": "webpack --watch",
+    "build:stats": "webpack --prod --stats",
     "clean": "rm -rf dist && rm -rf coverage",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch --passWithNoTests",
@@ -24,12 +25,13 @@
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
     "webpack": "^4.39.2",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.7"
   },
-  "dependencies": {},
+  "dependencies": {
+    "typescript": "^3.5.3"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/**.{ts,js}",

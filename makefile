@@ -6,6 +6,7 @@ install-tools:
 
 clean:
 	concurrently \
+		"cd src/kit && yarn clean" \
 		"cd src/animate && yarn clean" \
 		"cd src/preact && yarn clean" \
 		"cd src/react && yarn clean" \
@@ -22,6 +23,7 @@ install:
 	yarn install
 
 build:
+	cd src/kit && yarn build
 	cd src/router && yarn build
 	concurrently \
 		"cd src/animate && yarn build" \
@@ -32,6 +34,7 @@ build:
 		"cd src/vue && yarn build"
 
 build-prod:
+	cd src/kit && yarn build:prod
 	cd src/router && yarn build:prod
 	concurrently \
 		"cd src/animate && yarn build:prod" \
@@ -42,8 +45,10 @@ build-prod:
 		"cd src/vue && yarn build:prod"
 
 dev:
+	cd src/kit && yarn build
 	cd src/router && yarn build
 	concurrently \
+		"cd src/kit && yarn build:watch" \
 		"cd src/router && yarn build:watch" \
 		"cd src/animate && yarn build:watch" \
 		"cd src/preact && yarn build:watch" \
@@ -53,6 +58,7 @@ dev:
 		"cd src/vue && yarn build:watch"
 
 test:
+	cd src/kit && yarn test
 	cd src/router && yarn test
 	cd src/animate && yarn test
 	cd src/preact && yarn test

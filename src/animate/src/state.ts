@@ -1,4 +1,4 @@
-import { normalise } from 'crayon'
+import { URL } from 'kit'
 import { AnimationRoute } from "./types";
 
 export class AnimationState {
@@ -17,10 +17,10 @@ export class AnimationState {
 
     putRoute(newRoute: AnimationRoute) {
         if (newRoute.from) {
-            newRoute.from = normalise(newRoute.from)
+            newRoute.from = URL.normalise(newRoute.from)
         }
         if (newRoute.to) {
-            newRoute.to = normalise(newRoute.to)
+            newRoute.to = URL.normalise(newRoute.to)
         }
         for (const i in this.routes) {
             if (

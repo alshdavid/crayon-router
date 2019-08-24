@@ -11,10 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "resolveJsonModule": true,
-    "lib": ["dom", "es2017"],
-    "paths": {
-      "~/*": ["src/*"]
-    }
+    "lib": ["dom", "es2017"]
   },
   "include": [
     "src/**/*.ts", 

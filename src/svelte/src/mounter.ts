@@ -1,6 +1,7 @@
-import { mountable, getOutlets, addClass } from 'crayon'
+import { Mounter, getRouteTargets } from 'crayon'
+import { Element } from 'kit'
 
-export class SvelteMounter implements mountable {
+export class SvelteMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view',
@@ -9,7 +10,7 @@ export class SvelteMounter implements mountable {
 
     async push(builder: any) { 
         const container = document.createElement('div')
-        addClass(container, this.selector)
+        Element.addClassNames(container, [this.selector])
         this.target.appendChild(container)
         const instance = builder(container)
         this.instances.push({
@@ -18,8 +19,8 @@ export class SvelteMounter implements mountable {
         })
     }
 
-    async pop() {
-        const { leaving } = getOutlets(this.selector)
+    async shift() {
+        const { leaving } = getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

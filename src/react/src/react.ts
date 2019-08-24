@@ -1,20 +1,28 @@
 import { handlerFunc } from 'crayon'
 import { mount } from 'crayon';
-import { ReactMounter } from './mounter';
+import { ReactState } from './state';
+import { AccessSafe } from 'kit'
 
-export const router = (target?: HTMLElement, className?: string): handlerFunc => (req, res, state) => {  
-    if (!state.react) {
-        state.react = {
-            mounter: new ReactMounter(target, className),
-        }
-    }
+export const router = (
+  target: HTMLElement = document.body, 
+  className: string = 'router-view'
+): handlerFunc => (req, res, state) => {
+  if (state.reactState === undefined) {
+    state.reactState = new ReactState(target, className)
+    console.log(state.reactState)
+  }
+  res.mount = (Component: any): Promise<any> => {
+    const animationName = AccessSafe.exec(
+      () => res.ctx.animation.name, undefined)
+    const animationDuration = AccessSafe.exec(
+      () => res.ctx.animation.duration, undefined)
 
-    res.mount = (Component: any): Promise<any> => {
-        return mount(
-            Component,
-            state.react.mounter,
-            res.ctx.animation && res.ctx.animation.name,
-            res.ctx.animation && res.ctx.animation.duration
-        )
-    }
+      console.log(state.reactState.mounter)
+    return mount(
+      Component,
+      state.reactState.mounter,
+      animationName,
+      animationDuration
+    )
+  }
 }

@@ -1,7 +1,8 @@
 import { render, h } from 'preact';
-import { mountable, getOutlets, addClass } from 'crayon';
+import { Mounter, getRouteTargets } from 'crayon';
+import { Element } from 'kit'
 
-export class PeactMounter implements mountable {
+export class PeactMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view'
@@ -16,7 +17,7 @@ export class PeactMounter implements mountable {
 
     async push(C: any) { 
         const incoming = document.createElement('div')
-        addClass(incoming, this.selector)
+        Element.addClassNames(incoming, [this.selector])
         render(
             (h as any)(C), 
             incoming
@@ -24,8 +25,8 @@ export class PeactMounter implements mountable {
         this.target.appendChild(incoming)
     }
 
-    async pop() {
-        const { leaving } = getOutlets(this.selector)
+    async shift() {
+        const { leaving } = getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

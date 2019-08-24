@@ -1,9 +1,9 @@
 import Vue, { VueConstructor } from 'vue';
-import { mountable, getOutlets } from 'crayon'
+import { Mounter, getRouteTargets } from 'crayon'
 
 const isFunction = (value: any) => typeof value === 'function'
 
-export class VueMounter implements mountable {
+export class VueMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view',
@@ -19,8 +19,8 @@ export class VueMounter implements mountable {
         this.target.appendChild(incoming)
     }
 
-    async pop() {
-        const { leaving } = getOutlets(this.selector)
+    async shift() {
+        const { leaving } = getRouteTargets(this.selector)
         if (!leaving) {
             return
         }
