@@ -1,5 +1,5 @@
-<img align="left" width="350px" src="https://cdn.davidalsh.com/crayon/logo.png">
-<img align="right" width="350px" src="https://cdn.davidalsh.com/crayon/crayon.gif">
+<img align="left" width="350px" src="http://cdn.davidalsh.com/crayon/logo.png">
+<img align="right" width="350px" src="http://cdn.davidalsh.com/crayon/crayon.gif">
 
 <br>
 <br>
