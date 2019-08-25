@@ -1,13 +1,13 @@
 const path = require('path');
 
 const modes = {
-  developtmen: 'development',
+  development: 'development',
   production: 'production'
 }
 
 const mode = process.argv.includes('--prod') 
   ? modes.production 
-  : modes.developtmen
+  : modes.development
 
 if (mode === 'production') {
     process.env.NODE_ENV="'production'"
