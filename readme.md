@@ -95,7 +95,7 @@ npm install --save crayon-react
 
 ```javascript
 import react from 'crayon-react'
-app.use(react.router()
+app.use(react.router())
 ```
 <br>
 <img width="190px" src="https://cdn.davidalsh.com/frameworks/preact.png">
@@ -107,7 +107,7 @@ npm install --save crayon-preact
 
 ```javascript
 import preact from 'crayon-preact'
-app.use(preact.router()
+app.use(preact.router())
 ```
 
 <br>
