@@ -1,6 +1,6 @@
 import { render, h } from 'preact';
 import { Mounter, getRouteTargets } from 'crayon';
-import { Element } from 'crayon-kit'
+import { element } from 'crayon-kit'
 
 export class PeactMounter implements Mounter {
     constructor(
@@ -17,7 +17,7 @@ export class PeactMounter implements Mounter {
 
     async push(C: any) { 
         const incoming = document.createElement('div')
-        Element.addClassNames(incoming, [this.selector])
+        element.addClassNames(incoming, [this.selector])
         render(
             (h as any)(C), 
             incoming

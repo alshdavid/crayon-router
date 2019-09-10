@@ -1,4 +1,4 @@
-import { Element, Sleep } from 'crayon-kit'
+import { element, sleep } from 'crayon-kit'
 import { getRouteTargets } from "./get-route-targets";
 import { Mounter } from './mounter';
 import { ClassNameStates } from './make-class-names';
@@ -9,7 +9,7 @@ const {
   clearClassList,
   setStyles,
   waitForElements
-} = Element
+} = element
 
 export const animatedMount = async (
   states: ClassNameStates,
@@ -35,7 +35,7 @@ export const animatedMount = async (
     addClassNames(entering, [states.firstEnter])
     addClassNames(entering, [states.enter])
     waitForElements(entering)
-    await Sleep.duration(duration)
+    await sleep.duration(duration)
     removeClassNames(entering, [states.firstEnter])
     removeClassNames(entering, [states.enter])
     addClassNames(entering, [states.enterDone])
@@ -55,7 +55,7 @@ export const animatedMount = async (
   waitForElements(leaving, entering)
 
   // Remove classes once duration is complete
-  await Sleep.duration(duration)
+  await sleep.duration(duration)
   removeClassNames(entering, [states.enter])
   addClassNames(entering, [states.enterDone])
   removeClassNames(routerOutlet, [states.isAnimating])

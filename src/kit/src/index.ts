@@ -1,40 +1,22 @@
-import * as fromEventStream from './event-stream'
-import { 
-    Subscription as OGSubscription,
-    Bundle as OGBundle,
-    Beacon as OGBeacon
-} from './event-stream'
-export const EventStream = fromEventStream
-export declare module EventStream {
-    export type Bundle = OGBundle
-    export type Beacon<T> = OGBeacon<T>
-    export type Subscription = OGSubscription
-}
+export * from './event-stream'
+export * from './check-type'
+export * from './element'
+export * from './gen-string'
+export * from './sleep'
+export * from './url'
 
-import * as fromAccessSafe from './access-safe'
-export const AccessSafe = fromAccessSafe
-
-import * as fromCheckType from './check-type'
-export const CheckType = fromCheckType
-
-import * as fromElement from './element'
-export const Element = fromElement
-
-import * as fromGenString from './gen-string'
-export const GenString = fromGenString
-
-import * as fromSleep from './sleep'
-export const Sleep = fromSleep
-
-import * as fromURL from './url'
-export const URL = fromURL
+import eventStream from './event-stream'
+import checkType from './check-type'
+import element from './element'
+import genString from './gen-string'
+import sleep from './sleep'
+import url from './url'
 
 export default {
-    AccessSafe,
-    EventStream,
-    CheckType,
-    Element,
-    GenString,
-    Sleep,
-    URL,
+    eventStream,
+    checkType,
+    element,
+    genString,
+    sleep,
+    url,
 }

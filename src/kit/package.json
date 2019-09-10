@@ -1,6 +1,6 @@
 {
   "name": "crayon-kit",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "webpack",
+    "build:watch:prod": "webpack --watch --prod",
     "build:prod": "webpack --prod",
     "build:watch": "webpack --watch",
     "build:stats": "webpack --prod --stats",

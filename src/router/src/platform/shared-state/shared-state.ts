@@ -1,10 +1,10 @@
-import { EventStream } from 'crayon-kit'
+import { eventStream } from 'crayon-kit'
 import { History } from '../history'
 import { Router, RouterEvent, RouterEventType } from "../router";
 
 export class SharedState {
   routers: Record<string, Router> = {}
-  events = new EventStream.Beacon<RouterEvent>()
+  events = new eventStream.Beacon<RouterEvent>()
 
   constructor(
     public history: History,

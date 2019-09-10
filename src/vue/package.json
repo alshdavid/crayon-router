@@ -1,6 +1,6 @@
 {
   "name": "crayon-vue",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "repository": {
     "type": "git",
@@ -14,6 +14,7 @@
     "build": "webpack",
     "build:prod": "webpack --prod",
     "build:watch": "webpack --watch",
+    "build:watch:prod": "webpack --watch --prod",
     "clean": "rm -rf dist && rm -rf coverage",
     "test": "jest --passWithNoTests",
     "test:cover": "jest --coverage --passWithNoTests",
@@ -46,12 +47,10 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "dependencies": {
-    "crayon-kit": "^1.0.0"
-  },
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "crayon": "*",
+    "crayon-kit": "*",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Mounter, getRouteTargets } from 'crayon'
-import { Element } from 'crayon-kit'
+import { element } from 'crayon-kit'
 
 export class ReactMounter implements Mounter {
   constructor(
@@ -11,10 +11,10 @@ export class ReactMounter implements Mounter {
 
   async push(Component: () => JSX.Element): Promise<void> {
       const incoming = document.createElement('div')
-      Element.addClassNames(incoming, [this.selector])
+      element.addClassNames(incoming, [this.selector])
       await this.renderUsingReactDOM(Component, incoming)
       this.target.appendChild(incoming)
-      Element.waitForElements(incoming)
+      element.waitForElements(incoming)
   }
 
   async shift(): Promise<void> {

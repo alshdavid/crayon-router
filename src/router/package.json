@@ -1,6 +1,6 @@
 {
   "name": "crayon",
-  "version": "4.1.1",
+  "version": "4.1.3",
   "description": "",
   "repository": {
     "type": "git",
@@ -15,6 +15,7 @@
     "build:prod": "webpack --prod",
     "build:stats": "webpack --prod --stats",
     "build:watch": "webpack --watch",
+    "build:watch:prod": "webpack --watch --prod",
     "clean": "rm -rf dist && rm -rf coverage",
     "test": "jest --passWithNoTests",
     "test:cover": "jest --coverage --passWithNoTests",
@@ -47,11 +48,9 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "dependencies": {
-    "crayon-kit": "^1.0.2"
-  },
   "devDependencies": {
     "@types/jest": "^24.0.13",
+    "crayon-kit": "*",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",

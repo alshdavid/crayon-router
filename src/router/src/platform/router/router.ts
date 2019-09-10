@@ -1,4 +1,4 @@
-import { URL, EventStream } from 'crayon-kit'
+import { url, eventStream } from 'crayon-kit'
 import { History, HistoryEvent } from '../history'
 import { RouteMap } from '../route-map';
 import { Locator } from '../locator'
@@ -12,8 +12,8 @@ export class Router {
   public currentReq: Request | undefined
   private isLoading = true
   private state: Record<string, any> = {}
-  private $history: EventStream.Subscription
-  private $reqs: EventStream.Subscription[] = []
+  private $history: eventStream.Subscription
+  private $reqs: eventStream.Subscription[] = []
   public loads = 0
   
   constructor(
@@ -21,7 +21,7 @@ export class Router {
     public locator: Locator,
     public routeMap: RouteMap,
     public history: History,
-    public events: EventStream.Beacon<RouterEvent>,
+    public events: eventStream.Beacon<RouterEvent>,
   ) { 
     this.$history = this.history.onEvent.subscribe(this.onHistoryEvent)
   }
@@ -74,7 +74,7 @@ export class Router {
 
   private useGroup(group: Group) {
     for (const route in group.routes) {
-      const path = URL.normalise(group.base + route)
+      const path = url.normalise(group.base + route)
       const handlers = [
         ...group.middleware,
         ...group.routes[route]
@@ -158,7 +158,7 @@ export class Router {
     req: Request, 
     res: Response, 
     key: string
-  ): EventStream.Subscription {
+  ): eventStream.Subscription {
     const onEvent = (event: HistoryEvent) => {
       const currentPattern = this.routeMap.findWithPathname(event.to)
       const previousPattern = this.routeMap.findWithPathname(event.from)
@@ -171,7 +171,7 @@ export class Router {
         res.runOnLeave()
         return
       }
-      const params = URL.matchPath(key, req.pathname)
+      const params = url.matchPath(key, req.pathname)
       const newRequest = this.locator.generateRequest(key, params!)
       Object.assign(req, newRequest)
       this.emitEvent(RouterEventType.ProgressEnd, {

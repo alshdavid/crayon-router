@@ -6,5 +6,18 @@ export * from './platform/route-map'
 export * from './platform/shared-state'
 export * from './api'
 
+
 import { create, group } from './api'
-export default { create, group }
+import { Router as OGRouter, Group as OGGroup } from './platform/router'
+
+export const crayon = {
+  create, 
+  group
+}
+
+export declare module crayon {
+  export type Router = OGRouter
+  export type Group = OGGroup
+}
+
+export default crayon

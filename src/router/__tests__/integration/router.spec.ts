@@ -1,6 +1,6 @@
 import { MockWindow } from '../mocks'
 import routerMockData from '../data/router.data'
-import { EventStream } from 'crayon-kit'
+import { eventStream } from 'crayon-kit'
 import { 
   create, 
   RouterEventType, 
@@ -52,7 +52,7 @@ it('Should cleanup shared state on router destroy', async () => {
   const window = new MockWindow() as any
   const history: any = {
     destroy,
-    onEvent: new EventStream.Beacon()
+    onEvent: new eventStream.Beacon()
   }
   const sharedState = new SharedState(history)
   const app = create(routerName, window, sharedState)

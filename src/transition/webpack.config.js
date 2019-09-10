@@ -45,6 +45,7 @@ module.exports = {
   },
   plugins: [...stats],
   externals: {
+    crayon: 'crayon',
     vue: {
       commonjs: "vue",
       commonjs2: "vue",

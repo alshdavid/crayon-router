@@ -1,4 +1,4 @@
-import { URL, EventStream } from 'crayon-kit'
+import { url, eventStream } from 'crayon-kit'
 
 export enum HistoryType {
     push = 'PUSH',
@@ -19,7 +19,7 @@ export interface HistoryEvent {
 export class History {
     entries: string[] = []
     events: HistoryEvent[] = []
-    onEvent = new EventStream.Beacon<HistoryEvent>()
+    onEvent = new eventStream.Beacon<HistoryEvent>()
     document: Document
 
     onPop = () => {
@@ -66,7 +66,7 @@ export class History {
     }
 
     push(path: string) {
-        path = URL.normalise(path)
+        path = url.normalise(path)
         this.window.history.pushState(null, this.document.title, path)
         const event = { type: HistoryType.push, from: this.currentRoute, to: path }
         this.entries.push(path)
@@ -79,7 +79,7 @@ export class History {
     }
 
     replace(path: string) {
-        path = URL.normalise(path)
+        path = url.normalise(path)
         this.window.history.replaceState(null, this.document.title, path)
         this.entries[this.entries.length - 1] = path
         this.onEvent.next({ type: HistoryType.replace, from: this.currentRoute, to: path })

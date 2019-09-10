@@ -1,15 +1,9 @@
-import * as genString from "../gen-string"
+import { genString } from "../gen-string"
 
 export type callback<T = any> = (value: T) => void
 
 export interface Subscription {
   unsubscribe: () => void
-}
-
-export namespace EventStream {
-  export interface Subscription {
-    unsubscribe: () => void
-  }
 }
 
 export class Beacon<T> {

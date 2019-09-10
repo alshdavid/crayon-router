@@ -1,1 +1,7 @@
-export * from './gen-string'
+import { ofLength } from './gen-string'
+
+export const genString = {
+  ofLength
+}
+
+export default genString

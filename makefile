@@ -57,6 +57,19 @@ dev:
 		"cd src/transition && yarn build:watch" \
 		"cd src/vue && yarn build:watch"
 
+dev-prod:
+	cd src/kit && yarn build
+	cd src/router && yarn build
+	concurrently \
+		"cd src/kit && yarn build:watch:prod" \
+		"cd src/router && yarn build:watch:prod" \
+		"cd src/animate && yarn build:watch:prod" \
+		"cd src/preact && yarn build:watch:prod" \
+		"cd src/react && yarn build:watch:prod" \
+		"cd src/svelte && yarn build:watch:prod" \
+		"cd src/transition && yarn build:watch:prod" \
+		"cd src/vue && yarn build:watch:prod"
+
 test:
 	cd src/kit && yarn test
 	cd src/router && yarn test

@@ -1,6 +1,6 @@
 {
   "name": "crayon-react",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "",
   "repository": {
     "type": "git",
@@ -14,6 +14,7 @@
     "build": "webpack",
     "build:prod": "webpack --prod",
     "build:watch": "webpack --watch",
+    "build:watch:prod": "webpack --watch --prod",
     "clean": "rm -rf dist && rm -rf coverage",
     "test": "jest --passWithNoTests",
     "test:cover": "jest --coverage --passWithNoTests",
@@ -46,14 +47,12 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "dependencies": {
-    "crayon-kit": "^1.0.0"
-  },
   "devDependencies": {
     "@types/jest": "^24.0.13",
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "crayon": "*",
+    "crayon-kit": "*",
     "jest": "^24.8.0",
     "react": "*",
     "react-dom": "*",

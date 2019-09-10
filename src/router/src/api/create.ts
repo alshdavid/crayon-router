@@ -1,4 +1,4 @@
-import { GenString } from 'crayon-kit' 
+import { genString } from 'crayon-kit' 
 import { History } from '../platform/history'
 import { Locator } from "../platform/locator";
 import { RouteMap } from "../platform/route-map";
@@ -11,7 +11,7 @@ import { Router, RouterEventType } from "../platform/router";
   the router and handles teardown
 */
 export const create = (
-  id = GenString.ofLength(10),
+  id = genString.ofLength(10),
   _window: Window = window,
   sharedState?: SharedState,
 ): Router => {

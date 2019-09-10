@@ -9,7 +9,7 @@ import { useActiveLink } from './use-active-link'
 import { withContext } from './with-context'
 
 
-export default { 
+export default {
     router,
     useRouter,
     useActiveLink,
