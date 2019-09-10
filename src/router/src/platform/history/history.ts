@@ -66,7 +66,7 @@ export class History {
     }
 
     push(path: string) {
-        path = url.normalise(path)
+        path = url.normalise(path, false)
         this.window.history.pushState(null, this.document.title, path)
         const event = { type: HistoryType.push, from: this.currentRoute, to: path }
         this.entries.push(path)
@@ -79,7 +79,7 @@ export class History {
     }
 
     replace(path: string) {
-        path = url.normalise(path)
+        path = url.normalise(path, false)
         this.window.history.replaceState(null, this.document.title, path)
         this.entries[this.entries.length - 1] = path
         this.onEvent.next({ type: HistoryType.replace, from: this.currentRoute, to: path })
