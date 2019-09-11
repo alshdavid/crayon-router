@@ -10,7 +10,7 @@ clean:
 		"cd src/animate && yarn clean" \
 		"cd src/preact && yarn clean" \
 		"cd src/react && yarn clean" \
-		"cd src/router && yarn clean" \
+		"cd src/crayon && yarn clean" \
 		"cd src/svelte && yarn clean" \
 		"cd src/transition && yarn clean" \
 		"cd src/vue && yarn clean"
@@ -24,7 +24,7 @@ install:
 
 build:
 	cd src/kit && yarn build
-	cd src/router && yarn build
+	cd src/crayon && yarn build
 	concurrently \
 		"cd src/animate && yarn build" \
 		"cd src/preact && yarn build" \
@@ -35,7 +35,7 @@ build:
 
 build-prod:
 	cd src/kit && yarn build:prod
-	cd src/router && yarn build:prod
+	cd src/crayon && yarn build:prod
 	concurrently \
 		"cd src/animate && yarn build:prod" \
 		"cd src/preact && yarn build:prod" \
@@ -46,10 +46,10 @@ build-prod:
 
 dev:
 	cd src/kit && yarn build
-	cd src/router && yarn build
+	cd src/crayon && yarn build
 	concurrently \
 		"cd src/kit && yarn build:watch" \
-		"cd src/router && yarn build:watch" \
+		"cd src/crayon && yarn build:watch" \
 		"cd src/animate && yarn build:watch" \
 		"cd src/preact && yarn build:watch" \
 		"cd src/react && yarn build:watch" \
@@ -59,10 +59,10 @@ dev:
 
 dev-prod:
 	cd src/kit && yarn build
-	cd src/router && yarn build
+	cd src/crayon && yarn build
 	concurrently \
 		"cd src/kit && yarn build:watch:prod" \
-		"cd src/router && yarn build:watch:prod" \
+		"cd src/crayon && yarn build:watch:prod" \
 		"cd src/animate && yarn build:watch:prod" \
 		"cd src/preact && yarn build:watch:prod" \
 		"cd src/react && yarn build:watch:prod" \
@@ -72,7 +72,7 @@ dev-prod:
 
 test:
 	cd src/kit && yarn test
-	cd src/router && yarn test
+	cd src/crayon && yarn test
 	cd src/animate && yarn test
 	cd src/preact && yarn test
 	cd src/react && yarn test

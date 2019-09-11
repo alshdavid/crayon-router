@@ -1,6 +1,6 @@
 import { route } from './route'
 import crayon from 'crayon'
-import { MockDocument, MockWindow } from '../../router/__tests__/mocks'
+import { MockDocument, MockWindow } from '../../crayon/__tests__/mocks'
 import { defaults } from './defaults';
 import { routes } from './routes';
 

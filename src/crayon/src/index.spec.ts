@@ -1,12 +1,12 @@
-import { MockWindow } from '../mocks'
-import routerMockData from '../data/router.data'
+import { MockWindow } from '../__tests__/mocks'
+import routerMockData from '../__tests__/data/router.data'
 import { eventStream } from 'crayon-kit'
 import { 
   create, 
   RouterEventType, 
   handlerFunc, 
   SharedState, 
-} from '../../src'
+} from './index'
 
 declare const global: any
 
