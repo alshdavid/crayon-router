@@ -6,7 +6,7 @@ cache:
     - ./src/animate/node_modules/
     - ./src/preact/node_modules/
     - ./src/react/node_modules/
-    - ./src/router/node_modules/
+    - ./src/crayon/node_modules/
     - ./src/svelte/node_modules/
     - ./src/transition/node_modules/
     - ./src/vue/node_modules/
@@ -14,7 +14,7 @@ cache:
     - ./src/animate/dist/
     - ./src/preact/dist/
     - ./src/react/dist/
-    - ./src/router/dist/
+    - ./src/crayon/dist/
     - ./src/svelte/dist/
     - ./src/transition/dist/
     - ./src/vue/dist/
@@ -25,7 +25,7 @@ stages:
   - test
   - clean
   - publish_kit
-  - publish_router
+  - publish_crayon
   - publish
   - docs
 
@@ -72,31 +72,31 @@ stages:
     - sh deploy.sh ./src/kit
 
 #
-# router
+# crayon
 #
-(Test) router:
+(Test) crayon:
   image: node:lts
   stage: test
   script:
-    - cd ./src/router && yarn test:cover
+    - cd ./src/crayon && yarn test:cover
 
-(Publish) router:
+(Publish) crayon:
   image: node:lts
-  stage: publish_router
+  stage: publish_crayon
   artifacts:
     paths:
       - badges/**
   only:
   - master
   script:
-    - sh deploy.sh ./src/router
-    - cd src/router
+    - sh deploy.sh ./src/crayon
+    - cd src/crayon
     - mkdir -p badges
     - export VERSION=$(node -e "console.log(require('./package.json').version)")
     - wget -O badges/version.svg https://img.shields.io/badge/version-${VERSION}-blue.svg
     - wget -O badges/size.svg https://img.shields.io/badge/size-6kb-green.svg
     - cd ../../
-    - cp -r src/router/badges .
+    - cp -r src/crayon/badges .
 
 (Generate) Docs:
   image: alshdavid/aws-cli
