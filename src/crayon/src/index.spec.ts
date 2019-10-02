@@ -1,19 +1,52 @@
 import { MockWindow } from '../__tests__/mocks'
 import routerMockData from '../__tests__/data/router.data'
-import { eventStream } from 'crayon-kit'
+import { eventStream, sleep } from 'crayon-kit'
 import { 
   create, 
   RouterEventType, 
   handlerFunc, 
   SharedState, 
+  History,
 } from './index'
 
 declare const global: any
 
+const ofType = (id: string, type: RouterEventType) => (event: RouterEvent) => event.id === id && event.type === type
+const ofTypeAndData = (id: string, type: RouterEventType, data: any) => (event: RouterEvent) => ofType(id, type) && event.data === data
+const loadComplete = (router: Router, id?: string) => router.events.first(ofType(id || router.id, RouterEventType.ProgressEnd))
+const navigate = (router: Router, path: string) => {
+  router.navigate(path)
+  return loadComplete(router)
+}
+
 // Mute output
 global.console.log = () => { }
 
-it('Should navigate to route', (done) => {
+it('Should ', async (done) => {
+  const window = new MockWindow() as any
+  const app = create('test-router', window)
+  let hasClicked = false
+
+  app.path('/browse/:cname', (req, res) => {
+    const sub = app.events.subscribe(async event => {
+      if (event.type !== RouterEventType.ProgressEnd) {
+        return
+      }
+      if (hasClicked == true) {
+        done()
+        return
+      }
+      hasClicked = true
+      await app.navigate('/browse/b')
+    })
+    res.onLeave(() => sub.unsubscribe())
+  })
+
+  await app.load()
+  await app.navigate('/browse/a')
+})
+
+it('Should navigate to route', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -26,12 +59,12 @@ it('Should navigate to route', (done) => {
     done()
   })
 
-  app.load()
+  await app.load()
 
-  setTimeout(() => app.navigate('/test'))
+  await app.navigate('/test')
 })
 
-it('Should unmount on router destroy', (done) => {
+it('Should unmount on router destroy', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -41,9 +74,9 @@ it('Should unmount on router destroy', (done) => {
     }
   })
 
-  app.load()
+  await app.load()
 
-  setTimeout(() => app.destroy(), 5)
+  app.destroy()
 })
 
 it('Should cleanup shared state on router destroy', async () => {
@@ -71,7 +104,7 @@ it('Should cleanup shared state on router destroy', async () => {
   app.destroy()
 })
 
-it('Should redirect to correct route', (done) => {
+it('Should redirect to correct route', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -85,10 +118,10 @@ it('Should redirect to correct route', (done) => {
     done()
   })
 
-  app.load()
+  await app.load()
 })
 
-it('Should route with params', (done) => {
+it('Should route with params', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -97,12 +130,12 @@ it('Should route with params', (done) => {
     done()
   })
 
-  app.load()
+  await app.load()
 
-  app.navigate('/test-value')
+  await app.navigate('/test-value')
 })
 
-it('Should not rerender route with params', (done) => {
+it('Should not rerender route with params', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
   let hits = 0
@@ -124,14 +157,14 @@ it('Should not rerender route with params', (done) => {
     hits++
   })
 
-  app.load()
+  await app.load()
 
-  setTimeout(() => app.navigate('/test-value'))
-  setTimeout(() => app.navigate('/test-value-2'), 5)
-  setTimeout(() => app.navigate('/test-value-3'), 10)
+  await app.navigate('/test-value')
+  await app.navigate('/test-value-2')
+  await app.navigate('/test-value-3')
 })
 
-it('Should route to wildcard route', (done) => {
+it('Should route to wildcard route', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -140,10 +173,10 @@ it('Should route to wildcard route', (done) => {
     done()
   })
 
-  app.load()
+  await app.load()
 })
 
-it('Should route to wildcard route if nothing more specific', (done) => {
+it('Should route to wildcard route if nothing more specific', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -156,12 +189,12 @@ it('Should route to wildcard route if nothing more specific', (done) => {
     console.error()
   })
 
-  app.load()
+  await app.load()
 
-  app.navigate('/test')
+  await app.navigate('/test')
 })
 
-it('Should skip wildcard route in favour of more specific params route', (done) => {
+it('Should skip wildcard route in favour of more specific params route', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -174,12 +207,12 @@ it('Should skip wildcard route in favour of more specific params route', (done) 
     console.error()
   })
 
-  app.load()
+  await app.load()
 
-  app.navigate('/test/hi')
+  await app.navigate('/test/hi')
 })
 
-it('Should route to wildcard route when route with params has nested route', (done) => {
+it('Should route to wildcard route when route with params has nested route', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -192,12 +225,12 @@ it('Should route to wildcard route when route with params has nested route', (do
     done()
   })
 
-  app.load()
+  await app.load()
 
-  app.navigate('/test/hi/hello')
+  await app.navigate('/test/hi/hello')
 })
 
-it('Should route to more specific route when overlaped with params', (done) => {
+it('Should route to more specific route when overlaped with params', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
 
@@ -210,135 +243,133 @@ it('Should route to more specific route when overlaped with params', (done) => {
     console.error()
   })
 
-  app.load()
+  await app.load()
 
-  app.navigate('/home')
+  await app.navigate('/home')
 })
 
-it('Should run callback in correct router', (done) => {
+it('Should run callback in correct router', async (done) => {
   const window = new MockWindow() as any
 
   // Router 1
   const app = create('test-router', window)
+
   app.path('/home', (req, res) => {
     done.fail('Should not run this callback')
   })
-  app.load()
+
+  await app.load()
 
   // Router 2
   const app2 = create('test-router-2', window)
+
   app2.path('/not-home', (req, res) => {
     expect(req.pathname).toBe('/not-home')
     done()
   })
-  app2.load()
+
+  await app2.load()
 
   // Navigate
-  app2.navigate('/not-home')
+  await app2.navigate('/not-home')
 })
 
-it('Should run callback in correct router', (done) => {
+import { Subject } from 'rxjs'
+import { RouterEvent, Router } from './platform/router'
+
+it('Should run callbacks in correct router', async (done) => {
+  const handlerSpy = jest.fn()
   const window = new MockWindow() as any
+  const history = new History(window)
+  const sharedState = new SharedState(history)
+  
+  const app = create('router-a', window, sharedState)
+  
+  void async function() {
+    await loadComplete(app)
 
-  const app = create('a', window)
-  const events: string[] = []
+    await navigate(app, '/test/root')
+    expect(handlerSpy).toHaveBeenNthCalledWith(1, '/test/root')
+    
+    await navigate(app, '/test/nested')
+    expect(handlerSpy).toHaveBeenNthCalledWith(2, '/:a/**')
+    expect(handlerSpy).toHaveBeenNthCalledWith(3, '/test/:b')
 
-  const complete = (v: string) => {
-    events.push(v)
-    if (events.length !== 5) {
-      return
-    }
-    expect(events).toEqual([
-      'a1', 'b1', 'a2', 'a1', 'b1'
-    ])
+    await navigate(app, '/test/root')
+    expect(handlerSpy).toHaveBeenNthCalledWith(4, '/test/root')
+
+    app.destroy()
     done()
-  }
+  }()
 
-  app.path('/:a/**', (req, res) => {
-    const app2 = create('b', window)
+  app.path('/test/root', () => handlerSpy('/test/root'))
 
-    app2.path('/test/:b', (req, res) => {
-      complete('b1')
+  app.path('/:a/**', async (req, res) => {  
+    handlerSpy('/:a/**')
+    const app2 = create('router-b', window, sharedState)
+    res.onLeave(() => app2.destroy())
+
+    app2.path('/test/:b', () => {
+      handlerSpy('/test/:b')
     })
-
-
-    res.onLeave(() => {
-      app2.destroy()
-    })
-
-    complete('a1')
 
     app2.load()
   })
 
-  app.path('/test/page-on-root', (req, res) => {
-    complete('a2')
-  })
 
-  app.load()
-
-  // Navigate
-  setTimeout(() => app.navigate('/test/page-on-nested'))
-  setTimeout(() => app.navigate('/test/page-on-root'), 10)
-  setTimeout(() => app.navigate('/test/page-on-nested'), 20)
+  await app.load()
 })
 
-it('Should destroy nested routers', (done) => {
+it('Should destroy nested routers', async (done) => {
+  const handlerSpy = jest.fn()
   const window = new MockWindow() as any
   const app = create('a', window)
-  const events: string[] = []
 
-  const complete = (str: string) => {
-    events.push(str)
-    if (events.length !== 7) {
-      return
-    }
-    expect(events).toEqual([
-      'a1', 'b1', 'c1', 'a2', 'a1', 'b1', 'c1'
-    ])
+  void async function test() {
+    await loadComplete(app)
+    
+    await navigate(app, '/a/b/c')
+    expect(handlerSpy).toHaveBeenNthCalledWith(1, '/:a/**')
+    expect(handlerSpy).toHaveBeenNthCalledWith(2, '/a/b/**')
+    expect(handlerSpy).toHaveBeenNthCalledWith(3, '/a/b/c')
+
+    await navigate(app, '/a/root')
+    expect(handlerSpy).toHaveBeenNthCalledWith(4, '/a/root')
+
+    await navigate(app, '/a/b/c')
+    expect(handlerSpy).toHaveBeenNthCalledWith(5, '/:a/**')
+    expect(handlerSpy).toHaveBeenNthCalledWith(6, '/a/b/**')
+    expect(handlerSpy).toHaveBeenNthCalledWith(7, '/a/b/c')
+
+    app.destroy()
     done()
-  }
+  }()
 
-  app.path('/:a/**', (req1, res1) => {
+  app.path('/a/root', () => handlerSpy('/a/root'))
+
+  app.path('/:a/**', async (req1, res1) => {
+    handlerSpy('/:a/**')
     const app2 = create('b', window)
-
-    app2.path('/a/b/**', (req2, res2) => {
-      const app3 = create('b', window)
-
-      app3.path('/a/b/c', (req3, res3) => {
-        complete('c1')
-      })
+    res1.onLeave(() => app2.destroy())
 
 
-      res2.onLeave(() => {
-        app3.destroy()
-      })
-      complete('b1')
-      app3.load()
+    app2.path('/a/b/**', async (req2, res2) => {
+      handlerSpy('/a/b/**')
+      const app3 = create('c', window)
+      res2.onLeave(() => app3.destroy())
+
+      app3.path('/a/b/c', () => handlerSpy('/a/b/c'))
+      await app3.load()
     })
 
-    res1.onLeave(() => {
-      app2.destroy()
-    })
-
-    complete('a1')
-    app2.load()
+    await app2.load()
   })
 
-  app.path('/a/root', (req, res) => {
-    complete('a2')
-  })
-
-  app.load()
-
-  // Navigate
-  setTimeout(() => app.navigate('/a/b/c'))
-  setTimeout(() => app.navigate('/a/root'), 10)
-  setTimeout(() => app.navigate('/a/b/c'), 20)
+  await app.load()
 })
 
 // Potentially brittle
-xit('Should create events in this order with two layers of nested routers', (done) => {
+xit('Should create events in this order with two layers of nested routers', async (done) => {
   const window = new MockWindow('/a/a/a') as any
   const empty: handlerFunc = (req, res) => { }
 

@@ -52,6 +52,7 @@
     "@types/jest": "^24.0.13",
     "crayon-kit": "*",
     "jest": "^24.8.0",
+    "rxjs": "^6.5.3",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
