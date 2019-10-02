@@ -2,6 +2,7 @@ import { MockWindow } from '../__tests__/mocks'
 import routerMockData from '../__tests__/data/router.data'
 import { eventStream, sleep } from 'crayon-kit'
 import { 
+  group,
   create, 
   RouterEventType, 
   handlerFunc, 
@@ -22,7 +23,101 @@ const navigate = (router: Router, path: string) => {
 // Mute output
 global.console.log = () => { }
 
-it('Should ', async (done) => {
+it('Should cancel route if there is a middleware redirecting', async (done) => {
+  const handlerSpy = jest.fn()
+  const window = new MockWindow() as any
+  const history = new History(window)
+  const sharedState = new SharedState(history)
+  const app = create('router-a', window, sharedState)
+  let hasAuthenticated = false
+
+  void async function() {
+    await loadComplete(app)
+
+    await navigate(app, '/secure')
+    expect(handlerSpy).toHaveBeenNthCalledWith(1, 'middleware - skip')
+    expect(handlerSpy).toHaveBeenNthCalledWith(2, '/public/login')
+
+    hasAuthenticated = true
+
+    await navigate(app, '/secure')
+    expect(handlerSpy).toHaveBeenNthCalledWith(3, '/secure')
+
+
+    done()
+  }()
+
+  const authMiddleware: handlerFunc = (req, res) => {
+    if (hasAuthenticated === false) {
+      handlerSpy('middleware - skip')
+      return res.redirect('/public/login')
+    }
+  }
+  
+  app.path('/public/login', () => {
+    handlerSpy('/public/login')
+  })
+
+  app.path('/secure', authMiddleware, () => {
+    handlerSpy('/secure')
+    if (hasAuthenticated === false) {
+      done.fail()
+    }
+  })
+
+  await app.load()
+})
+
+it('Should cancel route if there is a middleware redirecting group', async (done) => {
+  const handlerSpy = jest.fn()
+  const window = new MockWindow() as any
+  const history = new History(window)
+  const sharedState = new SharedState(history)
+  const app = create('router-a', window, sharedState)
+  let hasAuthenticated = false
+
+  void async function() {
+    await loadComplete(app)
+
+    await navigate(app, '/secure')
+    expect(handlerSpy).toHaveBeenNthCalledWith(1, 'middleware - skip')
+    expect(handlerSpy).toHaveBeenNthCalledWith(2, '/public/login')
+
+    hasAuthenticated = true
+
+    await navigate(app, '/secure')
+    expect(handlerSpy).toHaveBeenNthCalledWith(3, '/secure')
+
+    done()
+  }()
+
+  const authMiddleware: handlerFunc = (req, res) => {
+    if (hasAuthenticated === false) {
+      handlerSpy('middleware - skip')
+      return res.redirect('/public/login')
+    }
+  }
+
+  const publicGroup = group('/public')
+  const secureGroup = group('/secure')
+  
+  publicGroup.path('/login', () => {
+    handlerSpy('/public/login')
+  })
+
+  secureGroup.path('/', authMiddleware, () => {
+    handlerSpy('/secure')
+    if (hasAuthenticated === false) {
+      done.fail()
+    }
+  })
+
+  app.use(publicGroup)
+  app.use(secureGroup)
+  await app.load()
+})
+
+it('Should allow navigation after initial navigation', async (done) => {
   const window = new MockWindow() as any
   const app = create('test-router', window)
   let hasClicked = false

@@ -117,8 +117,10 @@ export class Router {
     this.isLoading = true
     const location = this.locator.getLocation()
     const res = new Response()
-    res.redirect = this.onRedirect
-
+    res.redirect = (path: string) => {
+      res.hasCompleted = true
+      this.onRedirect(path)
+    }
     const result = this.routeMap.findWithPathname(location.pathname)
     if (!result) {
       this.emitEvent(RouterEventType.NoHanlders)
