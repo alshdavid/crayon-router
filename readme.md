@@ -198,7 +198,7 @@ when dealing with nested routers and components that require preserved state
 For the sake of reducing external dependencies and package size, I am not using
 rxjs. This uses a portion of the rxjs API to enable dealing with event streams.
 
-In future, I intend to create a middleware that impliments rxjs, allowing you to pipe
+In future, I intend to create a middleware that implements rxjs, allowing you to pipe
 the stream into their operators/utilities (like .map() and .filter())
 
 ```jsx
