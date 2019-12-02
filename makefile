@@ -1,8 +1,11 @@
-default: install-tools clean install build-prod
+ARTIFACT_KIT="./src/kit/dist/index.js"
+ARTIFACT_CRAYON="./src/crayon/dist/index.js"
 
-install-tools:
-	command -v concurrently >/dev/null 2>&1 || { npm install -g concurrently >&2; }
-	command -v http-server >/dev/null 2>&1 || { npm install -g http-server >&2; }
+default: clean install build-prod
+
+clean-hard:
+	git clean -d -f
+	git clean -d -f -X
 
 clean:
 	concurrently \
@@ -13,16 +16,16 @@ clean:
 		"cd src/crayon && yarn clean" \
 		"cd src/svelte && yarn clean" \
 		"cd src/transition && yarn clean" \
-		"cd src/vue && yarn clean"
-	concurrently \
-		"find . -name node_modules -exec rm -r -f '{}' +" \
-		"find . -name dist -exec rm -r -f '{}' +" \
-		"find . -name build -exec rm -r -f '{}' +" 
+		"cd src/vue && yarn clean" \
+		"cd src && find . -name dist -exec rm -r -f '{}' +" \
+		"cd examples && find . -name dist -exec rm -r -f '{}' +" \
+		"cd examples && find . -name build -exec rm -r -f '{}' +" 
 
 install:
 	yarn install
 
 build:
+	make clean
 	cd src/kit && yarn build
 	cd src/crayon && yarn build
 	concurrently \
@@ -34,6 +37,7 @@ build:
 		"cd src/vue && yarn build"
 
 build-prod:
+	make clean
 	cd src/kit && yarn build:prod
 	cd src/crayon && yarn build:prod
 	concurrently \
@@ -45,30 +49,28 @@ build-prod:
 		"cd src/vue && yarn build:prod"
 
 dev:
-	cd src/kit && yarn build
-	cd src/crayon && yarn build
+	make clean
 	concurrently \
 		"cd src/kit && yarn build:watch" \
-		"cd src/crayon && yarn build:watch" \
-		"cd src/animate && yarn build:watch" \
-		"cd src/preact && yarn build:watch" \
-		"cd src/react && yarn build:watch" \
-		"cd src/svelte && yarn build:watch" \
-		"cd src/transition && yarn build:watch" \
-		"cd src/vue && yarn build:watch"
+		"wait-on ${ARTIFACT_KIT} && cd src/crayon && yarn build:watch" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/animate && yarn build:watch" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/preact && yarn build:watch" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/react && yarn build:watch" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/svelte && yarn build:watch" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/transition && yarn build:watch" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/vue && yarn build:watch"
 
 dev-prod:
-	cd src/kit && yarn build
-	cd src/crayon && yarn build
+	make clean
 	concurrently \
 		"cd src/kit && yarn build:watch:prod" \
-		"cd src/crayon && yarn build:watch:prod" \
-		"cd src/animate && yarn build:watch:prod" \
-		"cd src/preact && yarn build:watch:prod" \
-		"cd src/react && yarn build:watch:prod" \
-		"cd src/svelte && yarn build:watch:prod" \
-		"cd src/transition && yarn build:watch:prod" \
-		"cd src/vue && yarn build:watch:prod"
+		"wait-on ${ARTIFACT_KIT} && cd src/crayon && yarn build:watch:prod" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/animate && yarn build:watch:prod" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/preact && yarn build:watch:prod" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/react && yarn build:watch:prod" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/svelte && yarn build:watch:prod" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/transition && yarn build:watch:prod" \
+		"wait-on ${ARTIFACT_CRAYON} && cd src/vue && yarn build:watch:prod"
 
 test:
 	cd src/kit && yarn test

@@ -1,15 +1,7 @@
-import { element, sleep } from 'crayon-kit'
+import { element } from 'crayon-kit'
 import { getRouteTargets } from "./get-route-targets";
 import { Mounter } from './mounter';
 import { ClassNameStates } from './make-class-names';
-
-const {
-  addClassNames,
-  removeClassNames,
-  clearClassList,
-  setStyles,
-  waitForElements,
-} = element
 
 export const staticMount = async (
   states: ClassNameStates,
@@ -21,12 +13,12 @@ export const staticMount = async (
   const { leaving, entering } = getRouteTargets(mounter.selector)
 
   // Add classes to entering element
-  addClassNames(entering, [name])
-  waitForElements(entering)
+  element.addClassNames(entering, [name])
+  element.waitForElements(entering)
 
   // First load
   if (leaving === undefined) {
-    addClassNames(entering, [states.enterDone])
+    element.addClassNames(entering, [states.enterDone])
     return
   }
   

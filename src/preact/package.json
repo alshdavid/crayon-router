@@ -1,6 +1,6 @@
 {
   "name": "crayon-preact",
-  "version": "2.0.5",
+  "version": "3.0.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -48,20 +48,20 @@
     }
   },
   "devDependencies": {
-    "@types/jest": "^24.0.13",
+    "@types/jest": "^24.0.23",
     "crayon": "*",
     "crayon-kit": "*",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "preact": "*",
-    "ts-jest": "^24.0.2",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
-    "webpack": "^4.39.2",
-    "webpack-bundle-analyzer": "^3.4.1",
-    "webpack-cli": "^3.3.7"
+    "ts-jest": "^24.2.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
-    "crayon": "^2.3.0",
-    "preact": "^8.4.2"
+    "crayon": "^4.1.6",
+    "preact": "^10.0.5"
   }
 }

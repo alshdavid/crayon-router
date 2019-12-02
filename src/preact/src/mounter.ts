@@ -2,7 +2,7 @@ import { render, h } from 'preact';
 import { Mounter, getRouteTargets } from 'crayon';
 import { element } from 'crayon-kit'
 
-export class PeactMounter implements Mounter {
+export class PreactMounter implements Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view'
@@ -30,10 +30,8 @@ export class PeactMounter implements Mounter {
         if (!leaving) {
             return
         }
-        render(
-            null, 
-            leaving
-        )
+        render(null, leaving)
+        element.waitForElements(leaving)
         this.target.removeChild(leaving)
     }
 }

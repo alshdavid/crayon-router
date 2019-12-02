@@ -7,5 +7,25 @@
     "./examples/svelte/*",
     "./examples/vue/*",
     "./sandbox"
-  ]
+  ],
+  "scripts": {
+    "pre-commit": "lint-staged"
+  },
+  "pre-commit": "pre-commit",
+  "lint-staged": {
+    "*.{json}": [
+      "sort-package-json",
+      "sort-package-json src/*/package.json",
+      "sort-package-json examples/*/*/package.json",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "http-server": "^0.12.0",
+    "lint-staged": "^9.5.0",
+    "pre-commit": "^1.2.2",
+    "sort-package-json": "^1.27.0",
+    "wait-on": "^3.3.0"
+  }
 }

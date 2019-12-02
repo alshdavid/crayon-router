@@ -48,18 +48,26 @@ export class Router {
     }
   }
 
-  public async navigate(path: string) {
+  public async navigate(path: string): Promise<void> {
     if (this.isLoading) {
       return
     }
+    const waitFor = this.events.first(
+      event => event.type === RouterEventType.ProgressEnd
+    )
     this.history.push(path)
+    await waitFor
   }
 
   public async back() {
     if (this.isLoading) {
       return
     }
+    const waitFor = this.events.first(
+      event => event.type === RouterEventType.ProgressEnd
+    )
     this.history.pop()
+    await waitFor
   }
 
   public load() {
@@ -173,7 +181,8 @@ export class Router {
         res.runOnLeave()
         return
       }
-      const params = url.matchPath(key, req.pathname)
+      const location = this.locator.getLocation()
+      const params = url.matchPath(key, location.pathname)
       const newRequest = this.locator.generateRequest(key, params!)
       Object.assign(req, newRequest)
       this.emitEvent(RouterEventType.ProgressEnd, {
@@ -186,5 +195,3 @@ export class Router {
     return this.history.onEvent.subscribe(onEvent)
   }
 }
-
-

@@ -232,6 +232,7 @@ it('Should route with params', async (done) => {
 
 it('Should not rerender route with params', async (done) => {
   const window = new MockWindow() as any
+
   const app = create('test-router', window)
   let hits = 0
   let events = 0
@@ -253,7 +254,7 @@ it('Should not rerender route with params', async (done) => {
   })
 
   await app.load()
-
+  
   await app.navigate('/test-value')
   await app.navigate('/test-value-2')
   await app.navigate('/test-value-3')
