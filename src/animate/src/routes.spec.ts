@@ -1,5 +1,5 @@
 import { routes } from './routes'
-import { Response } from 'crayon'
+import crayon from 'crayon'
 import { MockRouter, MockRequest } from './mocks/mocks';
 
 it('Should give the right animation name and duration', () => {
@@ -8,7 +8,7 @@ it('Should give the right animation name and duration', () => {
     ])
     const router = new MockRouter('/a', '/b') as any
     const req = new MockRequest() as any
-    const res = new Response()
+    const res = new crayon.Response()
     middleware(req, res, router.state, router)
 
     expect(res.ctx.animation.name).toBe('test-animation')
@@ -20,7 +20,7 @@ it('Should give the right animation name and duration', () => {
     ])
     const router = new MockRouter('/a', '/b') as any
     const req = new MockRequest() as any
-    const res = new Response()
+    const res = new crayon.Response()
     middleware(req, res, router.state, router)
 
     expect(res.ctx.animation.name).toBe('test-animation')
@@ -32,7 +32,7 @@ it('Should give the right animation name and duration', () => {
     ])
     const router = new MockRouter('/a/test', '/b') as any
     const req = new MockRequest() as any
-    const res = new Response()
+    const res = new crayon.Response()
     middleware(req, res, router.state, router)
 
     expect(res.ctx.animation.name).toBe('test-animation')
@@ -44,7 +44,7 @@ it('Should give the right animation name and duration', () => {
     ])
     const router = new MockRouter('/a', '/b/c') as any
     const req = new MockRequest() as any
-    const res = new Response()
+    const res = new crayon.Response()
     middleware(req, res, router.state, router)
 
     expect(res.ctx.animation.name).toBe('test-animation')

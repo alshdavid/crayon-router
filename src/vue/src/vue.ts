@@ -1,8 +1,7 @@
-import { handlerFunc } from "crayon";
-import { mount } from 'crayon'
+import crayon from "crayon";
 import { VueMounter } from "./mounter";
 
-export const router = (target?: HTMLElement): handlerFunc => (req, res, state) => {
+export const router = (target?: HTMLElement): crayon.handlerFunc => (req, res, state) => {
     if (!state.vue) {
         state.vue = {
             mounter: new VueMounter(target),
@@ -12,7 +11,7 @@ export const router = (target?: HTMLElement): handlerFunc => (req, res, state) =
     res.mount = async (component: any, props?: any) => {
         const { createInstance } = state.vue.mounter
         const instance = await createInstance(component, props)
-        return mount(
+        return crayon.mount(
             instance,
             state.vue.mounter,
             res.ctx.animation && res.ctx.animation.name,

@@ -1,7 +1,7 @@
-import { Mounter, getRouteTargets } from 'crayon'
+import crayon from 'crayon'
 import { element } from 'crayon-kit'
 
-export class SvelteMounter implements Mounter {
+export class SvelteMounter implements crayon.Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view',
@@ -20,7 +20,7 @@ export class SvelteMounter implements Mounter {
     }
 
     async shift() {
-        const { leaving } = getRouteTargets(this.selector)
+        const { leaving } = crayon.getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

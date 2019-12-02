@@ -1,8 +1,8 @@
-import { handlerFunc } from 'crayon'
+import crayon from 'crayon'
 import { AnimationOptions } from './types';
 import { getAnimationState } from './state';
 
-export const defaults = (options: AnimationOptions): handlerFunc => (
+export const defaults = (options: AnimationOptions): crayon.handlerFunc => (
     req,
     res,
     state,

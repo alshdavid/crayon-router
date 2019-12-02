@@ -1,11 +1,11 @@
-import { handlerFunc } from "crayon";
+import crayon from "crayon";
 import * as fromSlide from "./slide";
 import * as fromFade from "./fade";
 import * as fromPop from "./pop";
 import * as fromPush from './push'
 import { root } from "./body";
 
-export const loader = (seletor = '.router-view'): handlerFunc => {
+export const loader = (seletor = '.router-view'): crayon.handlerFunc => {
     const s = document.createElement('style')
     s.innerHTML += root(seletor)
     s.innerHTML += fromPop.pop(seletor)

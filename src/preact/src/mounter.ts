@@ -1,8 +1,8 @@
 import { render, h } from 'preact';
-import { Mounter, getRouteTargets } from 'crayon';
+import crayon from 'crayon';
 import { element } from 'crayon-kit'
 
-export class PreactMounter implements Mounter {
+export class PreactMounter implements crayon.Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view'
@@ -26,7 +26,7 @@ export class PreactMounter implements Mounter {
     }
 
     async shift() {
-        const { leaving } = getRouteTargets(this.selector)
+        const { leaving } = crayon.getRouteTargets(this.selector)
         if (!leaving) {
             return
         }
