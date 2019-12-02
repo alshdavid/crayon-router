@@ -1,4 +1,9 @@
-export * from './svelte'
-
 import { router } from './svelte'
-export default { router }
+import { withContext } from './with-context'
+
+export const svelteCrayon = {
+    router,
+    withContext,
+}
+
+export default svelteCrayon
