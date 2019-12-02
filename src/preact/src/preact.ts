@@ -1,22 +1,25 @@
 import { handlerFunc } from 'crayon'
 import { mount } from 'crayon';
-import { PeactMounter } from './mounter';
+import { PreactMounter } from './mounter';
 
-export const router = (target?: HTMLElement, className?: string): handlerFunc => (req, res, state) => {  
-    if (!state.react) {
-        state.react = {
-            mounter: new PeactMounter(target, className),
+export const router = (
+    target?: HTMLElement, 
+    className?: string
+): handlerFunc => (req, res, state) => {  
+    if (!state.preact) {
+        state.preact = {
+            mounter: new PreactMounter(target, className),
         }
     }
 
     res.unmount = () => {
-        return state.react.mounter.unmount()
+        return state.preact.mounter.unmount()
     }
 
     res.mount = (Component: any): Promise<any> => {
         return mount(
             Component,
-            state.react.mounter,
+            state.preact.mounter,
             res.ctx.animation && res.ctx.animation.name,
             res.ctx.animation && res.ctx.animation.duration
         )

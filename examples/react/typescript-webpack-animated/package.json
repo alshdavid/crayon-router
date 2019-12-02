@@ -1,25 +1,25 @@
 {
   "name": "react-typescript-webpack-animated",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "start": "run-p watch serve",
-    "watch": "webpack --watch",
-    "serve": "http-server -p 8080 -s public",
     "build": "webpack",
     "build:prod": "webpack --prod",
-    "clean": "rm -rf public/app node_modules"
+    "clean": "rm -rf public/app node_modules",
+    "serve": "http-server -p 8080 -s public",
+    "start": "run-p watch serve",
+    "watch": "webpack --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "crayon": "*",
-    "crayon-react": "*",    
-    "crayon-transition": "*",
     "crayon-animate": "*",
+    "crayon-react": "*",
+    "crayon-transition": "*",
     "react": "*",
     "react-dom": "*"
   },

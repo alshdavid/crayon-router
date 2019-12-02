@@ -1,7 +1,20 @@
 {
   "name": "crayon-svelte-animatied-example",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "autobuild": "rollup -c -w",
+    "build": "rollup -c",
+    "dev": "run-p start:dev autobuild",
+    "start": "sirv public -s",
+    "start:dev": "sirv public -s --dev"
+  },
+  "dependencies": {
+    "crayon": "*",
+    "crayon-animate": "*",
+    "crayon-svelte": "*",
+    "crayon-transition": "*"
+  },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
     "rollup": "^1.10.1",
@@ -12,18 +25,5 @@
     "rollup-plugin-terser": "^4.0.4",
     "sirv-cli": "^0.4.0",
     "svelte": "^3.0.0"
-  },
-  "scripts": {
-    "build": "rollup -c",
-    "autobuild": "rollup -c -w",
-    "dev": "run-p start:dev autobuild",
-    "start": "sirv public -s",
-    "start:dev": "sirv public -s --dev"
-  },
-  "dependencies": {
-    "crayon": "*",
-    "crayon-animate": "*",
-    "crayon-svelte": "*",
-    "crayon-transition": "*"
   }
 }
