@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Mounter, getRouteTargets } from 'crayon'
+import crayon from 'crayon'
 import { element } from 'crayon-kit'
 
-export class ReactMounter implements Mounter {
+export class ReactMounter implements crayon.Mounter {
   constructor(
     public target: HTMLElement,
     public selector: string,
@@ -18,7 +18,7 @@ export class ReactMounter implements Mounter {
   }
 
   async shift(): Promise<void> {
-    const { leaving } = getRouteTargets(this.selector)
+    const { leaving } = crayon.getRouteTargets(this.selector)
     if (!leaving) {
       return
     }

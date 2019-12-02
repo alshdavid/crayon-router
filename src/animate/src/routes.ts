@@ -1,10 +1,10 @@
-import { handlerFunc } from "crayon";
+import crayon from "crayon";
 import { AnimationRoute } from "./types";
 import { getAnimationState } from "./state";
 
 export const routes = (
     routes:  AnimationRoute[]
-): handlerFunc => (
+): crayon.handlerFunc => (
     req, res, state, app
 ) => {
     const animationState = getAnimationState(state)

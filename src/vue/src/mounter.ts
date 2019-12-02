@@ -1,9 +1,9 @@
 import Vue, { VueConstructor } from 'vue';
-import { Mounter, getRouteTargets } from 'crayon'
+import crayon from 'crayon'
 
 const isFunction = (value: any) => typeof value === 'function'
 
-export class VueMounter implements Mounter {
+export class VueMounter implements crayon.Mounter {
     constructor(
         public target = document.body,
         public selector = 'router-view',
@@ -20,7 +20,7 @@ export class VueMounter implements Mounter {
     }
 
     async shift() {
-        const { leaving } = getRouteTargets(this.selector)
+        const { leaving } = crayon.getRouteTargets(this.selector)
         if (!leaving) {
             return
         }

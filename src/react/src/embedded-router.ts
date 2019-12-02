@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { router } from './react'
-import crayon, { Router } from "crayon";
+import crayon from "crayon";
 import { genString } from "crayon-kit";
 
 export interface EmbeddedRouterProps {
-  children: (router: Router, selector: string) => void | Promise<void>
+  children: (router: crayon.Router, selector: string) => void | Promise<void>
   name?: string
   className?: string
 }

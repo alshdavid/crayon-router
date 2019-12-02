@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
-import { Router } from 'crayon'
+import crayon from 'crayon'
 
-export const useActiveLink = (path: string, nav: Router) => {
+export const useActiveLink = (path: string, nav: crayon.Router) => {
     const [ isActive, setIsActive ] = useState('')
 
     const cb = useCallback(() => {

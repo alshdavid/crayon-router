@@ -1,11 +1,11 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { router } from './preact'
-import crayon, { Router } from "crayon";
+import crayon from "crayon";
 import { genString } from "crayon-kit";
 
 export interface EmbeddedRouterProps {
-  children: (router: Router, selector: string) => void | Promise<void>
+  children: (router: crayon.Router, selector: string) => void | Promise<void>
   name?: string
   className?: string
 }

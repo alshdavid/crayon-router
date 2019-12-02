@@ -1,11 +1,10 @@
-import { handlerFunc } from 'crayon'
-import { mount } from 'crayon';
+import crayon from 'crayon'
 import { PreactMounter } from './mounter';
 
 export const router = (
     target?: HTMLElement, 
     className?: string
-): handlerFunc => (req, res, state) => {  
+): crayon.handlerFunc => (req, res, state) => {  
     if (!state.preact) {
         state.preact = {
             mounter: new PreactMounter(target, className),
@@ -17,7 +16,7 @@ export const router = (
     }
 
     res.mount = (Component: any): Promise<any> => {
-        return mount(
+        return crayon.mount(
             Component,
             state.preact.mounter,
             res.ctx.animation && res.ctx.animation.name,

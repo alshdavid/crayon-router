@@ -1,5 +1,5 @@
 import { h, Context } from 'preact'
-import { Request, Response } from 'crayon';
+import crayon from 'crayon';
 
 export const withContext = <T = any>(context: Context<T>, contextState: T) => {
   const options = { value: contextState, children: undefined }
@@ -7,7 +7,7 @@ export const withContext = <T = any>(context: Context<T>, contextState: T) => {
     h(context.Provider, options, 
       h(Component, null))
 
-  return (req: Request, res: Response) => {
+  return (req: crayon.Request, res: crayon.Response) => {
     const OGmount = res.mount
     res.mount = (
       Component: () => h.JSX.Element
