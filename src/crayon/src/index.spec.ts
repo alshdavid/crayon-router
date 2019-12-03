@@ -3,18 +3,12 @@ import routerMockData from '../__tests__/data/router.data'
 import { eventStream } from 'crayon-kit'
 import crayon from './index'
 
-declare const global: any
-
 const ofType = (id: string, type: crayon.RouterEventType) => (event: RouterEvent) => event.id === id && event.type === type
-const ofTypeAndData = (id: string, type: crayon.RouterEventType, data: any) => (event: RouterEvent) => ofType(id, type) && event.data === data
 const loadComplete = (router: Router, id?: string) => router.events.first(ofType(id || router.id, crayon.RouterEventType.ProgressEnd))
 const navigate = (router: Router, path: string) => {
   router.navigate(path)
   return loadComplete(router)
 }
-
-// Mute output
-global.console.log = () => { }
 
 it('Should cancel route if there is a middleware redirecting', async (done) => {
   const handlerSpy = jest.fn()
@@ -40,10 +34,10 @@ it('Should cancel route if there is a middleware redirecting', async (done) => {
     done()
   }()
 
-  const authMiddleware: crayon.handlerFunc = (req, res) => {
+  const authMiddleware: crayon.handlerFunc = ctx => {
     if (hasAuthenticated === false) {
       handlerSpy('middleware - skip')
-      return res.redirect('/public/login')
+      return ctx.redirect('/public/login')
     }
   }
   
@@ -84,10 +78,10 @@ it('Should cancel route if there is a middleware redirecting group', async (done
     done()
   }()
 
-  const authMiddleware: crayon.handlerFunc = (req, res) => {
+  const authMiddleware: crayon.handlerFunc = ctx => {
     if (hasAuthenticated === false) {
       handlerSpy('middleware - skip')
-      return res.redirect('/public/login')
+      return ctx.redirect('/public/login')
     }
   }
 
@@ -115,7 +109,7 @@ it('Should allow navigation after initial navigation', async (done) => {
   const app = crayon.create('test-router', window)
   let hasClicked = false
 
-  app.path('/browse/:cname', (req, res) => {
+  app.path('/browse/:cname', ctx => {
     const sub = app.events.subscribe(async event => {
       if (event.type !== crayon.RouterEventType.ProgressEnd) {
         return
@@ -127,7 +121,7 @@ it('Should allow navigation after initial navigation', async (done) => {
       hasClicked = true
       await app.navigate('/browse/b')
     })
-    res.onLeave(() => sub.unsubscribe())
+    ctx.onLeave(() => sub.unsubscribe())
   })
 
   await app.load()
@@ -138,12 +132,12 @@ it('Should navigate to route', async (done) => {
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/', (req, res) => {
-    expect(req.pathname).toBe('')
+  app.path('/', ctx => {
+    expect(ctx.pathname).toBe('')
   })
 
-  app.path('/test', (req, res) => {
-    expect(req.pathname).toBe('/test')
+  app.path('/test', ctx => {
+    expect(ctx.pathname).toBe('/test')
     done()
   })
 
@@ -156,8 +150,8 @@ it('Should unmount on router destroy', async (done) => {
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/', (req, res) => {
-    res.unmount = () => {
+  app.path('/', ctx => {
+    ctx.unmount = () => {
       done()
     }
   })
@@ -196,13 +190,13 @@ it('Should redirect to correct route', async (done) => {
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/', (req, res) => {
-    expect(req.pathname).toBe('')
-    return res.redirect('/test')
+  app.path('/', ctx => {
+    expect(ctx.pathname).toBe('')
+    return ctx.redirect('/test')
   })
 
-  app.path('/test', (req, res) => {
-    expect(req.pathname).toBe('/test')
+  app.path('/test', ctx => {
+    expect(ctx.pathname).toBe('/test')
     done()
   })
 
@@ -213,8 +207,8 @@ it('Should route with params', async (done) => {
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/:id', (req, res) => {
-    expect(req.params.id).toBe('test-value')
+  app.path('/:id', ctx => {
+    expect(ctx.params.id).toBe('test-value')
     done()
   })
 
@@ -242,7 +236,7 @@ it('Should not rerender route with params', async (done) => {
     done()
   })
 
-  app.path('/:id', (req, res) => {
+  app.path('/:id', ctx => {
     hits++
   })
 
@@ -257,8 +251,8 @@ it('Should route to wildcard route', async (done) => {
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/**', (req, res) => {
-    expect(req.pathname).toBe('')
+  app.path('/**', ctx => {
+    expect(ctx.pathname).toBe('')
     done()
   })
 
@@ -269,12 +263,12 @@ it('Should route to wildcard route if nothing more specific', async (done) => {
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/test', (req, res) => {
-    expect(req.pathname).toBe('/test')
+  app.path('/test', ctx => {
+    expect(ctx.pathname).toBe('/test')
     done()
   })
 
-  app.path('/test/**', (req, res) => {
+  app.path('/test/**', ctx => {
     console.error()
   })
 
@@ -287,12 +281,12 @@ it('Should skip wildcard route in favour of more specific params route', async (
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/test/:id', (req, res) => {
-    expect(req.pathname).toBe('/test/hi')
+  app.path('/test/:id', ctx => {
+    expect(ctx.pathname).toBe('/test/hi')
     done()
   })
 
-  app.path('/test/**', (req, res) => {
+  app.path('/test/**', ctx => {
     console.error()
   })
 
@@ -305,12 +299,12 @@ it('Should route to wildcard route when route with params has nested route', asy
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/test/:id', (req, res) => {
+  app.path('/test/:id', ctx => {
     done.fail('Should not have run this callback')
   })
 
-  app.path('/test/**', (req, res) => {
-    expect(req.pathname).toBe('/test/hi/hello')
+  app.path('/test/**', ctx => {
+    expect(ctx.pathname).toBe('/test/hi/hello')
     done()
   })
 
@@ -323,12 +317,12 @@ it('Should route to more specific route when overlaped with params', async (done
   const window = new MockWindow() as any
   const app = crayon.create('test-router', window)
 
-  app.path('/home', (req, res) => {
-    expect(req.pathname).toBe('/home')
+  app.path('/home', ctx => {
+    expect(ctx.pathname).toBe('/home')
     done()
   })
 
-  app.path('/:id', (req, res) => {
+  app.path('/:id', ctx => {
     console.error()
   })
 
@@ -343,7 +337,7 @@ it('Should run callback in correct router', async (done) => {
   // Router 1
   const app = crayon.create('test-router', window)
 
-  app.path('/home', (req, res) => {
+  app.path('/home', ctx => {
     done.fail('Should not run this callback')
   })
 
@@ -352,8 +346,8 @@ it('Should run callback in correct router', async (done) => {
   // Router 2
   const app2 = crayon.create('test-router-2', window)
 
-  app2.path('/not-home', (req, res) => {
-    expect(req.pathname).toBe('/not-home')
+  app2.path('/not-home', ctx => {
+    expect(ctx.pathname).toBe('/not-home')
     done()
   })
 
@@ -393,10 +387,10 @@ it('Should run callbacks in correct router', async (done) => {
 
   app.path('/test/root', () => handlerSpy('/test/root'))
 
-  app.path('/:a/**', async (req, res) => {  
+  app.path('/:a/**', async ctx => {  
     handlerSpy('/:a/**')
     const app2 = crayon.create('router-b', window, sharedState)
-    res.onLeave(() => app2.destroy())
+    ctx.onLeave(() => app2.destroy())
 
     app2.path('/test/:b', () => {
       handlerSpy('/test/:b')
@@ -436,16 +430,16 @@ it('Should destroy nested routers', async (done) => {
 
   app.path('/a/root', () => handlerSpy('/a/root'))
 
-  app.path('/:a/**', async (req1, res1) => {
+  app.path('/:a/**', async ctx1 => {
     handlerSpy('/:a/**')
     const app2 = crayon.create('b', window)
-    res1.onLeave(() => app2.destroy())
+    ctx1.onLeave(() => app2.destroy())
 
 
-    app2.path('/a/b/**', async (req2, res2) => {
+    app2.path('/a/b/**', async ctx2 => {
       handlerSpy('/a/b/**')
       const app3 = crayon.create('c', window)
-      res2.onLeave(() => app3.destroy())
+      ctx2.onLeave(() => app3.destroy())
 
       app3.path('/a/b/c', () => handlerSpy('/a/b/c'))
       await app3.load()
@@ -460,18 +454,18 @@ it('Should destroy nested routers', async (done) => {
 // Potentially brittle
 xit('Should create events in this order with two layers of nested routers', async (done) => {
   const window = new MockWindow('/a/a/a') as any
-  const empty: crayon.handlerFunc = (req, res) => { }
+  const empty: crayon.handlerFunc = ctx => { }
 
-  const pathA: crayon.handlerFunc = (req, res) => {
+  const pathA: crayon.handlerFunc = ctx => {
     const app = crayon.create('router-b', window)
-    res.onLeave(() => app.destroy())
+    ctx.onLeave(() => app.destroy())
     app.path('/a/a/**', pathB)
     app.load()
   }
 
-  const pathB: crayon.handlerFunc = (req, res) => {
+  const pathB: crayon.handlerFunc = ctx => {
     const app = crayon.create('router-c', window)
-    res.onLeave(() => app.destroy())
+    ctx.onLeave(() => app.destroy())
     app.path('/a/a/a', empty)
     app.load()
   }

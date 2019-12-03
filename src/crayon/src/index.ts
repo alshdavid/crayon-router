@@ -11,8 +11,7 @@ export const crayon = {
   mount: mount.mount,
   Router: router.Router,
   Group: router.Group,
-  Request: router.Request,
-  Response: router.Response,
+  Context: router.Context,
   SharedState: sharedState.SharedState,
   History: history.History,
   getRouteTargets: mount.getRouteTargets,
@@ -25,8 +24,7 @@ export default crayon
 export declare module crayon {
   export type Router = router.Router
   export type Group = router.Group
-  export type Request = router.Request
-  export type Response = router.Response
+  export type Context = router.Context
   export type RouterEvent = router.RouterEvent
   export type RouterEventType = router.RouterEventType
   export type handlerFunc = router.handlerFunc
@@ -35,7 +33,7 @@ export declare module crayon {
   export type History = history.History
   export type HistoryEvent = history.HistoryEvent
   export type HistoryType = history.HistoryType
-  export type Locator = locator.Locator
+  export type Location = locator.Location
   export type SharedState = sharedState.SharedState
 }
 
