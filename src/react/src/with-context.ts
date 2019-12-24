@@ -6,10 +6,10 @@ export const withContext = <T = any>(context: React.Context<any>, value?: T) => 
     React.createElement(context.Provider, { value }, 
       React.createElement(Component, null))
 
-  return (req: Request, res: crayon.Response) => {
-    const mount = res.mount
-    res.mount = (c: any) => {
-      return mount(apply(c))
+  return (ctx: crayon.Context) => {
+    const _mount = ctx.mount
+    ctx.mount = (c: any) => {
+      return _mount(apply(c))
     }
   }
 }

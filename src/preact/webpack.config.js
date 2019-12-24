@@ -46,40 +46,16 @@ module.exports = {
   plugins: [...stats],
   externals: {
     crayon: 'crayon',
-    vue: {
-      commonjs: "vue",
-      commonjs2: "vue",
-      umd: "vue",
-      amd: "vue",
-      root: "vue"
-    },
-    svelte: {
-      commonjs: "svelte",
-      commonjs2: "svelte",
-      umd: "svelte",
-      amd: "svelte",
-      root: "svelte"
-    },
-    preact: {
-      commonjs: "preact",
-      commonjs2: "preact",
-      umd: "preact",
-      amd: "Preact",
-      root: "Preact"
-    },
+    vue: 'vue',
+    svelte: 'svelte',
+    preact: 'preact',
+    'preact/hooks': 'preact/hooks',
     react: {
       commonjs: "react",
       commonjs2: "react",
       umd: "react",
       amd: "React",
       root: "React"
-    },
-    crayon: {
-      commonjs: "crayon",
-      commonjs2: "crayon",
-      umd: "crayon",
-      amd: "crayon",
-      root: "crayon"
     },
     'react-dom': {
       commonjs: "react-dom",

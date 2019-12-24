@@ -5,15 +5,15 @@ import { getAnimationState } from "./state";
 export const routes = (
     routes:  AnimationRoute[]
 ): crayon.handlerFunc => (
-    req, res, state, app
+    ctx, state, app
 ) => {
     const animationState = getAnimationState(state)
     for (const route of routes) {
         if (!route.from) {
-            route.from = req.routePattern
+            route.from = ctx.routePattern
         }
         if (!route.to) {
-            route.to = req.routePattern
+            route.to = ctx.routePattern
         }
     }
     animationState.putRoutes(routes)    
@@ -21,7 +21,7 @@ export const routes = (
     if (historyEvent === undefined) {
         return
     }
-    res.ctx.animation = animationState.calculate(
+    ctx.ctx.animation = animationState.calculate(
         historyEvent.from, 
         historyEvent.to
     )

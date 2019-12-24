@@ -3,8 +3,7 @@ import { AnimationOptions } from './types';
 import { getAnimationState } from './state';
 
 export const defaults = (options: AnimationOptions): crayon.handlerFunc => (
-    req,
-    res,
+    ctx,
     state,
     app
 ) => {
@@ -25,7 +24,7 @@ export const defaults = (options: AnimationOptions): crayon.handlerFunc => (
     if (historyEvent === undefined) {
         return
     }
-    res.ctx.animation = animationState.calculate(
+    ctx.ctx.animation = animationState.calculate(
         historyEvent.from, 
         historyEvent.to
     )
