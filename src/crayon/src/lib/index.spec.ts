@@ -1,5 +1,5 @@
-import { MockWindow } from '../__tests__/mocks'
-import routerMockData from '../__tests__/data/router.data'
+import { MockWindow } from '../../__tests__/mocks'
+import routerMockData from '../../__tests__/data/router.data'
 import { eventStream } from 'crayon-kit'
 import crayon from './index'
 
@@ -358,7 +358,7 @@ it('Should run callback in correct router', async (done) => {
 })
 
 import { Subject } from 'rxjs'
-import { RouterEvent, Router } from './platform/router'
+import { RouterEvent, Router } from '../platform/router'
 
 it('Should run callbacks in correct router', async (done) => {
   const handlerSpy = jest.fn()

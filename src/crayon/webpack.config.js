@@ -20,7 +20,7 @@ const stats = process.argv.includes("--stats")
   : []
 
 module.exports = {
-  entry: path.join(__dirname, "/src/index.ts"),
+  entry: path.join(__dirname, "/src/lib/index.ts"),
   mode,
   output: {
     filename: "index.js",

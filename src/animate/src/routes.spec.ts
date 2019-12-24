@@ -7,11 +7,11 @@ it('Should give the right animation name and duration', () => {
         { from: '/a', to: '/b', name: 'test-animation', duration: 5000 },
     ])
     const router = new MockRouter('/a', '/b') as any
-    const req = new MockRequest() as any
-    const res = new crayon.Response()
-    middleware(req, res, router.state, router)
+    const ctx = new crayon.Context()
+    
+    middleware(ctx, router.state, router)
 
-    expect(res.ctx.animation.name).toBe('test-animation')
+    expect(ctx.ctx.animation.name).toBe('test-animation')
 })
 
 it('Should give the right animation name and duration', () => {
@@ -19,11 +19,10 @@ it('Should give the right animation name and duration', () => {
         { from: '/**', to: '/**', name: 'test-animation', duration: 5000 },
     ])
     const router = new MockRouter('/a', '/b') as any
-    const req = new MockRequest() as any
-    const res = new crayon.Response()
-    middleware(req, res, router.state, router)
+    const ctx = new crayon.Context()
+    middleware(ctx, router.state, router)
 
-    expect(res.ctx.animation.name).toBe('test-animation')
+    expect(ctx.ctx.animation.name).toBe('test-animation')
 })
 
 it('Should give the right animation name and duration', () => {
@@ -32,10 +31,11 @@ it('Should give the right animation name and duration', () => {
     ])
     const router = new MockRouter('/a/test', '/b') as any
     const req = new MockRequest() as any
-    const res = new crayon.Response()
-    middleware(req, res, router.state, router)
+    const ctx = new crayon.Context()
 
-    expect(res.ctx.animation.name).toBe('test-animation')
+    middleware(ctx, router.state, router)
+
+    expect(ctx.ctx.animation.name).toBe('test-animation')
 })
 
 it('Should give the right animation name and duration', () => {
@@ -43,9 +43,8 @@ it('Should give the right animation name and duration', () => {
         { from: '/**', to: '/**', name: 'test-animation', duration: 5000 },
     ])
     const router = new MockRouter('/a', '/b/c') as any
-    const req = new MockRequest() as any
-    const res = new crayon.Response()
-    middleware(req, res, router.state, router)
+    const ctx = new crayon.Context()
+    middleware(ctx, router.state, router)
 
-    expect(res.ctx.animation.name).toBe('test-animation')
+    expect(ctx.ctx.animation.name).toBe('test-animation')
 })

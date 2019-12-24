@@ -11,8 +11,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "build:prod": "tsc",
+    "build": "webpack",
+    "build:prod": "webpack --prod",
     "build:stats": "webpack --prod --stats",
     "build:watch": "webpack --watch",
     "build:watch:prod": "webpack --watch --prod",
