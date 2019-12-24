@@ -24,7 +24,7 @@ module.exports = {
   mode,
   output: {
     filename: "index.js",
-    path: path.join(__dirname, "dist"),
+    path: path.join(__dirname, "dist/lib"),
     library: "",
     libraryTarget: "umd"
   },

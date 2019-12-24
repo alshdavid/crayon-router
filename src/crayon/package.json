@@ -8,8 +8,8 @@
   },
   "license": "ISC",
   "author": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "build": "webpack",
     "build:prod": "webpack --prod",
