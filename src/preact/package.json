@@ -11,8 +11,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack",
-    "build:prod": "webpack --prod",
+    "build": "tsc",
+    "build:prod": "tsc",
     "build:watch": "webpack --watch",
     "build:watch:prod": "webpack --watch --prod",
     "clean": "rm -rf dist && rm -rf coverage",
