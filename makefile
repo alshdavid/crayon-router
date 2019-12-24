@@ -1,7 +1,7 @@
 ARTIFACT_KIT="./src/kit/dist/index.js"
-ARTIFACT_CRAYON="./src/crayon/dist/index.js"
+ARTIFACT_CRAYON="./src/crayon/dist/lib/index.js"
 
-default: clean install build-prod
+default: clean install build-prod test
 
 clean-hard:
 	git clean -d -f
