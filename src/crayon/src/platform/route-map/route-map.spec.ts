@@ -77,8 +77,8 @@ it('Should find a route based on pathname', () => {
 
 it('Should find a route based on pathname', () => {
   const routeMap = new RouteMap()
-  const fn_a = () => 'a'
-  const fn_b = () => 'b'
+  const fn_a = () => { 'a' }
+  const fn_b = () => { 'b' }
 
   routeMap.add('/test/:id', fn_a)
   routeMap.add('/test/**', fn_b)

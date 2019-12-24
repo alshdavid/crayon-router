@@ -13,7 +13,7 @@ export const loader = (seletor = '.router-view'): crayon.handlerFunc => {
     s.innerHTML += fromSlide.slide(seletor)
     s.innerHTML += fromFade.fade(seletor)
     document.head.appendChild(s)
-    return (req, res, state) => null
+    return (req, res, state) => {}
 } 
 
 export const slideUp ='slide-up'

@@ -1,6 +1,6 @@
 import { genString } from 'crayon-kit' 
 import { History } from '../platform/history'
-import { Locator } from "../platform/locator";
+import { Location } from "../platform/locator";
 import { RouteMap } from "../platform/route-map";
 import { getSharedState, SharedState, setSharedState } from '../platform/shared-state';
 import { Router, RouterEventType } from "../platform/router";
@@ -29,7 +29,7 @@ export const create = (
   }
   const history = sharedState.history
   const routeMap = new RouteMap()
-  const locator = new Locator(_window)
+  const locator = new Location(_window)
   const router = new Router(
     id, 
     locator, 

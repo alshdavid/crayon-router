@@ -1,8 +1,8 @@
 import { url } from 'crayon-kit'
-import { Request } from '../router'
+import { Context } from '../router'
 
 // Locator is a wrapper on top of window.location
-export class Locator {
+export class Location {
   constructor(
     private window: Window = window
   ) {}
@@ -11,25 +11,23 @@ export class Locator {
     return { ...this.window.location }
   }
 
-  generateRequest(
-    pattern: string, 
-    params: Record<string, string>
-  ): Request {
-    const query = url.deserializeQuery(this.window.location.search)
-    return new Request(
-      pattern,
-      this.window.location.hash,
-      this.window.location.host,
-      this.window.location.hostname,
-      this.window.location.href,
-      this.window.location.origin,
-      this.window.location.pathname,
-      this.window.location.port,
-      this.window.location.protocol,
-      this.window.location.search,
-      { ...params },
-      query,
-    )
+  mergeContext(
+    ctx: Context,
+    routePattern: string, 
+    params: Record<string, string>,
+  ): void {
+    ctx.routePattern = routePattern
+    ctx.query = url.deserializeQuery(this.window.location.search)
+    ctx.hash = this.window.location.hash
+    ctx.host =  this.window.location.host,
+    ctx.hostname =  this.window.location.hostname,
+    ctx.href =  this.window.location.href,
+    ctx.origin =  this.window.location.origin,
+    ctx.pathname =  this.window.location.pathname,
+    ctx.port =  this.window.location.port,
+    ctx.protocol =  this.window.location.protocol,
+    ctx.search = this.window.location.search,
+    ctx.params = { ...params }
   }
 }
 

@@ -1,15 +1,13 @@
 import { url, eventStream } from 'crayon-kit'
 import { History, HistoryEvent } from '../history'
 import { RouteMap } from '../route-map';
-import { Locator } from '../locator'
+import { Location } from '../locator'
 import { handlerFunc, RouterEventType, RouterEvent } from './types'
-import { Request } from './request'
-import { Response } from './response'
+import { Context } from './context'
 import { Group } from "./group"
 
 export class Router {
-  public currentRes: Response | undefined
-  public currentReq: Request | undefined
+  public currentContext: Context | undefined
   private isLoading = true
   private state: Record<string, any> = {}
   private $history: eventStream.Subscription
@@ -18,7 +16,7 @@ export class Router {
   
   constructor(
     public id: string,
-    public locator: Locator,
+    public location: Location,
     public routeMap: RouteMap,
     public history: History,
     public events: eventStream.Beacon<RouterEvent>,
@@ -29,9 +27,9 @@ export class Router {
   public destroy() {
     this.$history.unsubscribe()
     this.$reqs.forEach(req => req.unsubscribe())
-    if (this.currentRes) {
-      this.currentRes.runOnLeave()
-      this.currentRes.unmount()
+    if (this.currentContext) {
+      this.currentContext.runOnLeave()
+      this.currentContext.unmount()
     }
     this.emitEvent(RouterEventType.Destroyed)
   }
@@ -93,7 +91,7 @@ export class Router {
 
   private emitEvent(type: RouterEventType, data?: any) {
     if (!data) {
-      data = this.locator.getLocation().pathname
+      data = this.location.getLocation().pathname
     }
     this.events.next({
       id: this.id, 
@@ -102,12 +100,12 @@ export class Router {
     })
   }
 
-  private async runHandlers(handlers: handlerFunc[], req: Request, res: Response) {
+  private async runHandlers(handlers: handlerFunc[], ctx: Context) {
     for (const handler of handlers) {
-      if (res.hasCompleted) {
+      if (ctx.hasCompleted) {
         break
       }
-      await handler(req, res, this.state, (this as any))
+      await handler(ctx, this.state, (this as any))
     }
   }
 
@@ -123,10 +121,10 @@ export class Router {
   private async digest() {
     this.emitEvent(RouterEventType.ProgressStart)
     this.isLoading = true
-    const location = this.locator.getLocation()
-    const res = new Response()
-    res.redirect = (path: string) => {
-      res.hasCompleted = true
+    const location = this.location.getLocation()
+    const ctx = new Context()
+    ctx.redirect = (path: string) => {
+      ctx.hasCompleted = true
       this.onRedirect(path)
     }
     const result = this.routeMap.findWithPathname(location.pathname)
@@ -137,7 +135,7 @@ export class Router {
       return
     }
     const { handlers, pattern, params } = result 
-    const req = this.locator.generateRequest(pattern, params)
+    this.location.mergeContext(ctx, pattern, params)
 
     // Don't run this route if you're already on it.        
     if (
@@ -152,21 +150,20 @@ export class Router {
     }
     // Watch for update and mutate the request untill you navigate
     // elsewhere. This adds a new subscirption and removes the previous
-    this.$reqs.push(this.onRequestUpdate(req, res, pattern))
+    this.$reqs.push(this.onRequestUpdate(ctx, pattern))
 
     // Run handlers and middleware. They will skip
     // if a the res object has run 'end()'
     this.emitEvent(RouterEventType.RunningHanlders)
-    await this.runHandlers(handlers, req, res)
+    await this.runHandlers(handlers, ctx)
     this.loads++
     this.isLoading = false
-    this.currentRes = res
+    this.currentContext = ctx
     this.emitEvent(RouterEventType.ProgressEnd)
   }
 
   private onRequestUpdate(
-    req: Request, 
-    res: Response, 
+    ctx: Context, 
     key: string
   ): eventStream.Subscription {
     const onEvent = (event: HistoryEvent) => {
@@ -178,15 +175,14 @@ export class Router {
       ) {
         this.$reqs[0].unsubscribe()
         this.$reqs.shift()
-        res.runOnLeave()
+        ctx.runOnLeave()
         return
       }
-      const location = this.locator.getLocation()
+      const location = this.location.getLocation()
       const params = url.matchPath(key, location.pathname)
-      const newRequest = this.locator.generateRequest(key, params!)
-      Object.assign(req, newRequest)
+      this.location.mergeContext(ctx, key, params!)
       this.emitEvent(RouterEventType.ProgressEnd, {
-        path: newRequest.pathname,
+        path: ctx.pathname,
         note: 'Router ended after same-route update',
         route: key
       })

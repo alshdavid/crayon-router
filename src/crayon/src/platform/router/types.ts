@@ -1,13 +1,11 @@
-import { Request } from './request'
-import { Response } from './response'
 import { Router } from './router';
+import { Context } from './context';
 
 export type handlerFunc = (
-    req: Request,
-    res: Response,
+    ctx: Context,
     state: Record<string, any>,
     app: Router
-) => void
+) => Promise<void> | void
 
 export enum RouterEventType {
     History = 'HISTORY_EVENT',

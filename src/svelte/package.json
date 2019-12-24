@@ -1,6 +1,6 @@
 {
   "name": "crayon-svelte",
-  "version": "2.1.0",
+  "version": "6.0.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "build:prod": "webpack --prod",
     "build:watch": "webpack --watch",
     "build:watch:prod": "webpack --watch --prod",
-    "clean": "rm -rf dist && rm -rf coverage",
+    "clean": "rm -r -f dist && rm -r -f coverage",
     "test": "jest --passWithNoTests",
     "test:cover": "jest --coverage --passWithNoTests",
     "test:watch": "jest --watch --passWithNoTests"
@@ -60,6 +60,6 @@
     "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
-    "crayon": "^4.1.6"
+    "crayon": "^6.0.0"
   }
 }
