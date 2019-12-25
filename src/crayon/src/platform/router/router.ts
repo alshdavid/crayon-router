@@ -129,7 +129,7 @@ export class Router {
     }
     const result = this.routeMap.findWithPathname(location.pathname)
     if (!result) {
-      this.emitEvent(RouterEventType.NoHanlders)
+      this.emitEvent(RouterEventType.NoHandlers)
       this.emitEvent(RouterEventType.ProgressEnd)
       this.isLoading = false
       return
@@ -154,11 +154,11 @@ export class Router {
 
     // Run handlers and middleware. They will skip
     // if a the res object has run 'end()'
-    this.emitEvent(RouterEventType.RunningHanlders)
+    this.currentContext = ctx
+    this.emitEvent(RouterEventType.RunningHandlers)
     await this.runHandlers(handlers, ctx)
     this.loads++
     this.isLoading = false
-    this.currentContext = ctx
     this.emitEvent(RouterEventType.ProgressEnd)
   }
 
