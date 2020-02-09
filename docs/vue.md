@@ -25,7 +25,7 @@ app.use(vue.router(target))
 ```html
 <template>
   <main>
-    <h1>{{ req.pathname }}</h1>
+    <h1>{{ ctx.pathname }}</h1>
     <div class="hello">
       <a @click="nav.navigate('/home')">Home</a>
       <a @click="nav.navigate('/about')">About</a>
@@ -53,14 +53,14 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', ctx => res.redirect('/home'))
+app.path('/', ctx => ctx.redirect('/home'))
 
 app.path('/home', ctx => {
-  return res.mount(() => HelloWorld, { nav: r, req })
+  return ctx.mount(() => HelloWorld, { nav: r, req })
 })
 
 app.path('/about', ctx => {
-  return res.mount(() => HelloWorld, { nav: r, req })
+  return ctx.mount(() => HelloWorld, { nav: r, req })
 })
 
 r.load()
@@ -82,7 +82,7 @@ const HomeAndAbout = (router, req, someService) => ({
     template:  
     /* html */
     `<div>
-        <h1>{{ req.pathname }}</h1>
+        <h1>{{ ctx.pathname }}</h1>
         <nav>
             <a @click="router.navigate('/home')">Home</a>
             <a @click="router.navigate('/about')">About</a>
@@ -98,14 +98,14 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', ctx => res.redirect('/home'))
+app.path('/', ctx => ctx.redirect('/home'))
 
 app.path('/home', ctx => {
-  return res.mount(HomeAndAbout(app, req, someService))
+  return ctx.mount(HomeAndAbout(app, req, someService))
 })
 
 app.path('/about', ctx => {
-  return res.mount(HomeAndAbout(app, req, someService))
+  return ctx.mount(HomeAndAbout(app, req, someService))
 })
 
 app.load()
@@ -120,7 +120,7 @@ app.load()
 ```html
 <template>
   <main>
-    <h1>{{ req.pathname }}</h1>
+    <h1>{{ ctx.pathname }}</h1>
     <div class="hello">
       <a @click="nav.navigate('/home')">Home</a>
       <a @click="nav.navigate('/about')">About</a>
@@ -153,14 +153,14 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', ctx => res.redirect('/home'))
+app.path('/', ctx => ctx.redirect('/home'))
 
 app.path('/home', ctx => {
-  return res.mount(() => HelloWorld, { nav: r, req })
+  return ctx.mount(() => HelloWorld, { nav: r, req })
 })
 
 app.path('/about', ctx => {
-  return res.mount(() => HelloWorld, { nav: r, req })
+  return ctx.mount(() => HelloWorld, { nav: r, req })
 })
 
 r.load()
@@ -204,7 +204,7 @@ const app = crayon.create()
 app.use(react.router())
 
 app.path('/', ctx => {
-  return res.mount(MyPage, { dep })
+  return ctx.mount(MyPage, { dep })
 })
 
 app.load()

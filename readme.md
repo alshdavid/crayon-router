@@ -41,15 +41,15 @@ const app = crayon.create()
 app.use(react.router())
 
 app.path('/', ctx => {
-    return res.mount(() => <h1>Hello World</h1>)
+    return ctx.mount(() => <h1>Hello World</h1>)
 })
 
 app.path('/users/:id', ctx => {
-    return res.mount(() => <div>Hi { req.params.id }!</div>)
+    return ctx.mount(() => <div>Hi { ctx.params.id }!</div>)
 })
 
 app.path('/**', ctx => {
-    return res.mount(() => <div>Not Found!</div>)
+    return ctx.mount(() => <div>Not Found!</div>)
 })
 
 app.load()
@@ -158,12 +158,12 @@ items.use(your.middleware())
 
 // This will be "/items"
 items.path('/', ctx =>
-    res.mount(views.ItemsView)
+    ctx.mount(views.ItemsView)
 )
 
 // This will be "/items/add"
 items.path('/add', ctx =>
-    res.mount(views.ItemsAddView)
+    ctx.mount(views.ItemsAddView)
 )
 
 app.use(items)
@@ -177,11 +177,11 @@ const items = crayon.group('/items', group => {
     group.use(your.middleware())
 
     group.path('/', ctx =>
-        res.mount(views.ItemsView)
+        ctx.mount(views.ItemsView)
     )
 
     group.path('/add', ctx =>
-        res.mount(views.ItemsAddView)
+        ctx.mount(views.ItemsAddView)
     )
 })
 
@@ -203,19 +203,19 @@ the stream into their operators/utilities (like .map() and .filter())
 
 ```jsx
 app.path('/users/:id', ctx => {
-    let id = req.params.id
+    let id = ctx.params.id
 
     // subscribe to the event steam and pull out the
     // "ProgressEnd" event
     const sub = app.events.subscribe(event => {
        if (event.type === RouterEventType.ProgressEnd) {
-           id = req.params.id
+           id = ctx.params.id
        }
     })
 
     // A callback the router fires when you
     // navigate away from this page
-    res.onLeave(() => sub.unsubscribe())
+    ctx.onLeave(() => sub.unsubscribe())
 })
 ```
 
@@ -297,8 +297,8 @@ app.use(animate.defaults({
     duration: 350
 }))
 
-app.path('/a', ctx => res.mount(() => <div>Route A</div>))
-app.path('/b', ctx => res.mount(() => <div>Route B</div>))
+app.path('/a', ctx => ctx.mount(() => <div>Route A</div>))
+app.path('/b', ctx => ctx.mount(() => <div>Route B</div>))
 
 // If you come from anywhere to /c slide-right
 // If you go to anywhere from /c slide-left
@@ -308,7 +308,7 @@ app.path('/c',
         { to:   '/**', name: 'slide-left' }
     ]),
     ctx => {
-        return res.mount(() => <div>Animated</div>)
+        return ctx.mount(() => <div>Animated</div>)
     }
 )
 ```
@@ -366,7 +366,7 @@ It's baked into modern browsers and available through module bundlers.
 ```javascript
 app.path('/', async ctx => {
     const HomeView = await import('./home-view')
-    res.mount(HomeView)
+    ctx.mount(HomeView)
 })
 ```
 
@@ -378,7 +378,7 @@ First create a group in a file
 // my-group.js
 export const myGroup = crayon.group('/my-group', myGroup => {
     myGroup.path('/',
-        ctx => res.mount(MyView)
+        ctx => ctx.mount(MyView)
     )
 })
 ```

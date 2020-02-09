@@ -18,7 +18,7 @@ const app = crayon.create('router-name')
 app.use(react.router(target))
 
 app.path('/', ctx => {
-    return res.mount(() => <div>Hello World</div>)
+    return ctx.mount(() => <div>Hello World</div>)
 })
 
 app.load()

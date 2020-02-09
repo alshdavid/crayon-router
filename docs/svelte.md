@@ -18,7 +18,7 @@ const app = crayon.create('router-name')
 app.use(svelte.router(target))
 
 app.path('/', ctx => {
-	return res.mount(Page)
+	return ctx.mount(Page)
 })
 
 app.load()
@@ -44,7 +44,7 @@ const app = crayon.create()
 app.use(svelte.router())
 
 app.path('/', ctx => {
-	return res.mount(MyView, { dep }))
+	return ctx.mount(MyView, { dep }))
 })
 
 app.load()
