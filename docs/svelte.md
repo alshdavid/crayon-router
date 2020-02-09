@@ -17,7 +17,7 @@ const app = crayon.create('router-name')
 
 app.use(svelte.router(target))
 
-app.path('/', (req, res) => {
+app.path('/', ctx => {
 	return res.mount(Page)
 })
 
@@ -43,7 +43,7 @@ import MyView from './MyView.svelte'
 const app = crayon.create()
 app.use(svelte.router())
 
-app.path('/', (req, res) => {
+app.path('/', ctx => {
 	return res.mount(MyView, { dep }))
 })
 

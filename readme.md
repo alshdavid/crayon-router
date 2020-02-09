@@ -40,15 +40,15 @@ const app = crayon.create()
 
 app.use(react.router())
 
-app.path('/', (req, res) => {
+app.path('/', ctx => {
     return res.mount(() => <h1>Hello World</h1>)
 })
 
-app.path('/users/:id', (req, res) => {
+app.path('/users/:id', ctx => {
     return res.mount(() => <div>Hi { req.params.id }!</div>)
 })
 
-app.path('/**', (req, res) => {
+app.path('/**', ctx => {
     return res.mount(() => <div>Not Found!</div>)
 })
 
@@ -157,12 +157,12 @@ const items = crayon.group('/items')
 items.use(your.middleware())
 
 // This will be "/items"
-items.path('/', (req, res) =>
+items.path('/', ctx =>
     res.mount(views.ItemsView)
 )
 
 // This will be "/items/add"
-items.path('/add', (req, res) =>
+items.path('/add', ctx =>
     res.mount(views.ItemsAddView)
 )
 
@@ -176,11 +176,11 @@ It also supplies an optional callback with the group object. This allows you to 
 const items = crayon.group('/items', group => {
     group.use(your.middleware())
 
-    group.path('/', (req, res) =>
+    group.path('/', ctx =>
         res.mount(views.ItemsView)
     )
 
-    group.path('/add', (req, res) =>
+    group.path('/add', ctx =>
         res.mount(views.ItemsAddView)
     )
 })
@@ -202,7 +202,7 @@ In future, I intend to create a middleware that implements rxjs, allowing you to
 the stream into their operators/utilities (like .map() and .filter())
 
 ```jsx
-app.path('/users/:id', (req, res) => {
+app.path('/users/:id', ctx => {
     let id = req.params.id
 
     // subscribe to the event steam and pull out the
@@ -297,8 +297,8 @@ app.use(animate.defaults({
     duration: 350
 }))
 
-app.path('/a', (req, res) => res.mount(() => <div>Route A</div>))
-app.path('/b', (req, res) => res.mount(() => <div>Route B</div>))
+app.path('/a', ctx => res.mount(() => <div>Route A</div>))
+app.path('/b', ctx => res.mount(() => <div>Route B</div>))
 
 // If you come from anywhere to /c slide-right
 // If you go to anywhere from /c slide-left
@@ -307,7 +307,7 @@ app.path('/c',
         { from: '/**', name: 'slide-right' },
         { to:   '/**', name: 'slide-left' }
     ]),
-    (req, res) => {
+    ctx => {
         return res.mount(() => <div>Animated</div>)
     }
 )
@@ -364,7 +364,7 @@ It's baked into modern browsers and available through module bundlers.
 #### Loading a route
 
 ```javascript
-app.path('/', async (req, res) => {
+app.path('/', async ctx => {
     const HomeView = await import('./home-view')
     res.mount(HomeView)
 })
@@ -378,7 +378,7 @@ First create a group in a file
 // my-group.js
 export const myGroup = crayon.group('/my-group', myGroup => {
     myGroup.path('/',
-        (req, res) => res.mount(MyView)
+        ctx => res.mount(MyView)
     )
 })
 ```
@@ -410,7 +410,7 @@ void async function main() {
     // This will wait until the user is on /my-group
     // before fetching and loading the routes into
     // the browser
-    app.path('/my-group', async (req, res) => {
+    app.path('/my-group', async ctx => {
         const { myGroup } = await import('./my-group')
         app.use(myGroup)
         app.load()

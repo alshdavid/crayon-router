@@ -52,8 +52,8 @@ app.use(animate.defaults({
     duration: 350
 }))
 
-app.path('/a', (req, res) => res.mount(() => <div>Route A</div>))
-app.path('/b', (req, res) => res.mount(() => <div>Route B</div>))
+app.path('/a', ctx => res.mount(() => <div>Route A</div>))
+app.path('/b', ctx => res.mount(() => <div>Route B</div>))
 
 // If you come from anywhere to /c slide-right
 // If you go to anywhere from /c slide-left
@@ -62,7 +62,7 @@ app.path('/c',
         { from: '/**', name: 'slide-right' },
         { to:   '/**', name: 'slide-left' }
     ]),
-    (req, res) => {
+    ctx => {
         return res.mount(() => <div>Animated</div>)
     }
 )

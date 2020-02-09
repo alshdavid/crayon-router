@@ -53,13 +53,13 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', (req, res) => res.redirect('/home'))
+app.path('/', ctx => res.redirect('/home'))
 
-app.path('/home', (req, res) => {
+app.path('/home', ctx => {
   return res.mount(() => HelloWorld, { nav: r, req })
 })
 
-app.path('/about', (req, res) => {
+app.path('/about', ctx => {
   return res.mount(() => HelloWorld, { nav: r, req })
 })
 
@@ -98,13 +98,13 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', (req, res) => res.redirect('/home'))
+app.path('/', ctx => res.redirect('/home'))
 
-app.path('/home', (req, res) => {
+app.path('/home', ctx => {
   return res.mount(HomeAndAbout(app, req, someService))
 })
 
-app.path('/about', (req, res) => {
+app.path('/about', ctx => {
   return res.mount(HomeAndAbout(app, req, someService))
 })
 
@@ -153,13 +153,13 @@ const app = crayon.create()
 
 app.use(vue.router())
 
-app.path('/', (req, res) => res.redirect('/home'))
+app.path('/', ctx => res.redirect('/home'))
 
-app.path('/home', (req, res) => {
+app.path('/home', ctx => {
   return res.mount(() => HelloWorld, { nav: r, req })
 })
 
-app.path('/about', (req, res) => {
+app.path('/about', ctx => {
   return res.mount(() => HelloWorld, { nav: r, req })
 })
 
@@ -203,7 +203,7 @@ const app = crayon.create()
 
 app.use(react.router())
 
-app.path('/', (req, res) => {
+app.path('/', ctx => {
   return res.mount(MyPage, { dep })
 })
 
