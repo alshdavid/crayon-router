@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "paths": {
       "crayon-kit": ["../kit/src/index"],
+      "crayon": ["../crayon/src/lib/index"]
     }
   }
 }
