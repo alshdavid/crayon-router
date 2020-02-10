@@ -1,0 +1,29 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/.gitignore": true,
+    "**/node_modules": true,
+    "**/.npmignore": true,
+    "**/tsconfig.json": true,
+    "**/tsconfig.build.json": true,
+    "**/webpack.config.js": true,
+    "**/.editorconfig": true,
+    "**/rollup.config.js": true,
+    "**/babel.config.js": true,
+    ".scripts": true,
+    ".vscode": true,
+    "yarn.lock": true,
+    ".github": true,
+    ".gitattributes": true,
+    ".gitlab-ci.yml": true,
+    "deploy.sh": true,
+    "license": true,
+    "CODE_OF_CONDUCT.md": true,
+    "node_modules": true,
+    "src/**/dist": true
+  }
+}
