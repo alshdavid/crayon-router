@@ -8,7 +8,7 @@ clean-hard:
 	git clean -d -f -X
 
 clean:
-	concurrently \
+	npx concurrently \
 		"cd src/kit && yarn clean" \
 		"cd src/animate && yarn clean" \
 		"cd src/preact && yarn clean" \
@@ -28,7 +28,7 @@ build:
 	make clean
 	cd src/kit && yarn build
 	cd src/crayon && yarn build
-	concurrently \
+	npx concurrently \
 		"cd src/animate && yarn build" \
 		"cd src/preact && yarn build" \
 		"cd src/react && yarn build" \
@@ -40,7 +40,7 @@ build-prod:
 	make clean
 	cd src/kit && yarn build:prod
 	cd src/crayon && yarn build:prod
-	concurrently \
+	npx concurrently \
 		"cd src/animate && yarn build:prod" \
 		"cd src/preact && yarn build:prod" \
 		"cd src/react && yarn build:prod" \
@@ -50,7 +50,7 @@ build-prod:
 
 dev:
 	make clean
-	concurrently \
+	npx concurrently \
 		"cd src/kit && yarn build:watch" \
 		"wait-on ${ARTIFACT_KIT} && cd src/crayon && yarn build:watch" \
 		"wait-on ${ARTIFACT_CRAYON} && cd src/animate && yarn build:watch" \
@@ -62,7 +62,7 @@ dev:
 
 dev-prod:
 	make clean
-	concurrently \
+	npx concurrently \
 		"cd src/kit && yarn build:watch:prod" \
 		"wait-on ${ARTIFACT_KIT} && cd src/crayon && yarn build:watch:prod" \
 		"wait-on ${ARTIFACT_CRAYON} && cd src/animate && yarn build:watch:prod" \

@@ -1,23 +1,9 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "declaration": true,
-      "outDir": "./dist",
-      "strict": true,
-      "moduleResolution": "node",
-      "inlineSourceMap": true,
-      "baseUrl": "./",
-      "lib": [
-          "dom",
-          "es2017"
-      ],
-      "esModuleInterop": true,
-      "experimentalDecorators": true
-  },
-  "include": ["src"],
-  "exclude": [
-      "node_modules", 
-      "**.tests.ts"
-  ]
+    "baseUrl": "./",
+    "paths": {
+      "crayon-kit": ["../kit/src/index"],
+    }
+  }
 }

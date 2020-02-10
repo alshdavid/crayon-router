@@ -1,23 +1,9 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "preserveWatchOutput": true,
-    "target": "esnext",
-    "module": "es2015",
-    "declaration": true,
-    "outDir": "dist",
-    "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "rootDir": "./src",
-    "resolveJsonModule": true,
-    "lib": ["dom", "es2017"]
-  },
-  "exclude": [
-    "src/**/*.spec.ts", 
-    "node_modules", 
-    "dist",
-    "__tests__"
-  ]
+    "paths": {
+      "crayon-kit": ["../kit/src/index"],
+    }
+  }
 }
