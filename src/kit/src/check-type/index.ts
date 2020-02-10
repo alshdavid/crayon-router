@@ -1,7 +1,5 @@
-import { isArray } from './array'
+import * as arrays from './index.barrel'
 
-export const checkType = {
-  isArray,
-}
+export { arrays }
+export default arrays
 
-export default checkType

@@ -20,18 +20,17 @@ clean-hard:
 	git clean -d -f -X
 
 clean:
-	$(CONCURRENTLY) \
-		"$(KIT) clean" \
-		"$(ANIMATE) clean" \
-		"$(PREACT) clean" \
-		"$(REACT) clean" \
-		"$(CRAYON) clean" \
-		"$(SVELTE) clean" \
-		"$(TRANSITION) clean" \
-		"$(VUE) clean" \
-		"cd src && find . -name dist -exec rm -r -f '{}' +" \
-		"cd examples && find . -name dist -exec rm -r -f '{}' +" \
-		"cd examples && find . -name build -exec rm -r -f '{}' +" 
+	$(KIT) clean
+	$(ANIMATE) clean
+	$(PREACT) clean
+	$(REACT) clean
+	$(CRAYON) clean
+	$(SVELTE) clean
+	$(TRANSITION) clean
+	$(VUE) clean
+	cd src && find . -name dist -exec rm -r -f '{}' +
+	cd examples && find . -name dist -exec rm -r -f '{}' +
+	cd examples && find . -name build -exec rm -r -f '{}' +
 
 install:
 	yarn install
@@ -40,13 +39,12 @@ build:
 	make clean
 	$(KIT) build
 	$(CRAYON) build
-	$(CONCURRENTLY) \
-		"$(ANIMATE) build" \
-		"$(PREACT) build" \
-		"$(REACT) build" \
-		"$(SVELTE) build" \
-		"$(TRANSITION) build" \
-		"$(VUE) build"
+	$(ANIMATE) build
+	$(PREACT) build
+	$(REACT) build
+	$(SVELTE) build
+	$(TRANSITION) build
+	$(VUE) build
 
 dev:
 	make clean

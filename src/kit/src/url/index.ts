@@ -1,17 +1,5 @@
-import { 
-  normalise,
-  removeTrailingSlash,
-  hasTrailingSlash,
-  matchPath,
-  deserializeQuery,
-} from './url'
+import * as url from './index.barrel'
 
-export const url = {
-  normalise,
-  removeTrailingSlash,
-  hasTrailingSlash,
-  matchPath,
-  deserializeQuery,
-}
-
+export { url }
 export default url
+
