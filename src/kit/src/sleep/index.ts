@@ -1,8 +1,5 @@
-import { exec, duration } from './sleep'
+import * as sleep from './index.barrel'
 
-export const sleep = {
-  exec,
-  duration
-}
-
+export { sleep }
 export default sleep
+

@@ -1,7 +1,5 @@
-import { ofLength } from './gen-string'
+import * as genString from './index.barrel'
 
-export const genString = {
-  ofLength
-}
-
+export { genString }
 export default genString
+
