@@ -124,7 +124,7 @@ app.use(vue.router())
 ```
 
 <br>
-<img width="150px" src="https://cdn.davidalsh.com/frameworks/svelte.png">
+<img width="150px" src="https://svelte.dev/svelte-logo-horizontal.svg">
 <br>
 
 ```bash
