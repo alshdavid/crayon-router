@@ -6,7 +6,7 @@ import Base from './pages/Base.svelte';
 import More from './pages/More.svelte';
 
 const outlet = document.getElementById('app')
-const app = crayon.create() 
+const app = crayon.create()
 
 app.use(svelte.router(outlet))
 app.use(transition.loader())
@@ -15,23 +15,22 @@ app.use(animate.defaults({
     duration: 300
 }))
 app.use(animate.routes([
-    { from: '/**',   to: '/more', name: transition.slideLeft  },
-    { from: '/more', to: '/**',   name: transition.slideRight }
+    { from: '/**', to: '/more', name: transition.slideLeft },
+    { from: '/more', to: '/**', name: transition.slideRight }
 ]))
 
-app.path('/', (req, res) => res.redirect('/home'))
+app.path('/', (req, res) => req.redirect('/home'))
 
-app.path('/home', (req, res) => 
-    res.mount(Base, { req, nav: app })
+app.path('/home', (req, res) =>
+    req.mount(Base, { req, nav: app })
 )
 
 app.path('/about', (req, res) =>
-    res.mount(Base, { req, nav: app })
+    req.mount(Base, { req, nav: app })
 )
 
 app.path('/more', (req, res) =>
-    res.mount(More, { req, nav: app })
-) 
+    req.mount(More, { req, nav: app })
+)
 
 app.load()
-
