@@ -7,7 +7,7 @@ const modes = {
   production: "production"
 }
 
-const mode = process.argv.includes("--prod")
+const mode = process.argv.includes("production")
   ? modes.production
   : modes.development
 
@@ -25,7 +25,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.join(__dirname, "dist"),
-    library: "",
+    library: "crayon-kit",
     libraryTarget: "umd"
   },
   module: {

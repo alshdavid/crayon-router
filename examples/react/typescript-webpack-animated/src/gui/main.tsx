@@ -27,19 +27,19 @@ router.use(
 )
 
 router.path("/", 
-  (req, res) => res.redirect("/home")
+  (ctx) => ctx.redirect("/home")
 )
 
 router.path("/home", 
-  (req, res) => res.mount(pages.Route)
+  (ctx) => ctx.mount(pages.Route)
 )
 
 router.path("/about", 
-  (req, res) => res.mount(pages.Route)
+  (ctx) => ctx.mount(pages.Route)
 )
 
 router.path("/more", 
-  (req, res) => res.mount(pages.More)
+  (ctx) => ctx.mount(pages.More)
 )
 
 router.load()

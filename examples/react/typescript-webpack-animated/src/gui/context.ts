@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react'
-import { Router } from 'crayon';
+import crayon from 'crayon';
 
 export interface AppState {
-    router?: Router
+    router?: crayon.Router
 }
 
 export const ctx: AppState = {}

@@ -1,9 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot, Root } from 'react-dom/client';
 import crayon from 'crayon'
 import { element } from 'crayon-kit'
 
 export class ReactMounter implements crayon.Mounter {
+  #root: Root | undefined
+
   constructor(
     public target: HTMLElement,
     public selector: string,
@@ -12,7 +14,7 @@ export class ReactMounter implements crayon.Mounter {
   async push(Component: () => JSX.Element): Promise<void> {
       const incoming = document.createElement('div')
       element.addClassNames(incoming, [this.selector])
-      await this.renderUsingReactDOM(Component, incoming)
+      this.renderUsingReactDOM(Component, incoming)
       this.target.appendChild(incoming)
       element.waitForElements(incoming)
   }
@@ -22,19 +24,15 @@ export class ReactMounter implements crayon.Mounter {
     if (!leaving) {
       return
     }
-    ReactDOM.unmountComponentAtNode(leaving)
+    this.#root?.unmount()
     this.target.removeChild(leaving)
   }
 
   renderUsingReactDOM(
     Component: () => JSX.Element, 
     target: HTMLElement
-  ): Promise<void> {
-    return new Promise(res => 
-      ReactDOM.render(
-        React.createElement(Component),
-        target,
-        () => res()
-      ))
+  ): void {
+    this.#root = createRoot(target)
+    this.#root.render(React.createElement(Component))
   }
 }

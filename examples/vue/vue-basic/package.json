@@ -11,15 +11,15 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "core-js": "^2.6.5",
+    "core-js": "^3.29.1",
     "crayon": "*",
     "crayon-vue": "*",
-    "vue": "^2.6.10"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
-    "vue-template-compiler": "^2.5.21"
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "vue-template-compiler": "^2.7.14"
   },
   "postcss": {
     "plugins": {

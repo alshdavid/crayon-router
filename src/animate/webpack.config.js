@@ -25,7 +25,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.join(__dirname, "dist"),
-    library: "",
+    library: "crayon-animate",
     libraryTarget: "umd"
   },
   module: {

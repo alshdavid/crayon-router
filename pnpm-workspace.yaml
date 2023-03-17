@@ -1,0 +1,8 @@
+packages:
+  - ./src/*
+  - ./examples/preact/*
+  - ./examples/react/*
+  - ./examples/svelte/*
+  - ./examples/vue/*
+  - ./sandbox
+  

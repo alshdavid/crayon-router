@@ -1,4 +1,4 @@
-import Vue, { VueConstructor } from 'vue';
+// import Vue, { VueConstructor } from 'vue';
 import crayon from 'crayon'
 
 const isFunction = (value: any) => typeof value === 'function'
@@ -35,11 +35,12 @@ export class VueMounter implements crayon.Mounter {
         if (isFunction(component)) {
             component = await component()
         }
-        const Component: VueConstructor = Vue.extend(component)
-        const instance = new Component()
-        for (const key in props) {
-            instance.$props[key] = props[key]
-        }
-        return instance
+        // TODO: fix this
+        // const Component: VueConstructor = Vue.extends(component)
+        // const instance = new Component()
+        // for (const key in props) {
+        //     instance.$props[key] = props[key]
+        // }
+        // return instance
     }
 }

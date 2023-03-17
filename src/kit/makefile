@@ -4,10 +4,10 @@ clean:
 	rm -r -f dist && rm -r -f coverage
 
 build:
-	npx webpack --prod
+	npx webpack --mode production
 
 stats:
-	npx webpack --prod --stats
+	npx webpack --mode production --stats
 
 build-dev:
 	npx webpack
@@ -16,7 +16,7 @@ build-watch:
 	npx webpack --watch
 
 build-watch-prod:
-	npx webpack --watch --prod
+	npx webpack --watch --mode production
 
 test:
 	npx jest --passWithNoTests

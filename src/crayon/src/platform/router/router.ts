@@ -61,9 +61,12 @@ export class Router {
     if (this.isLoading) {
       return
     }
+    console.log(1)
     const waitFor = this.events.first(
       event => event.type === RouterEventType.ProgressEnd
     )
+    console.log(1)
+
     this.history.pop()
     await waitFor
   }

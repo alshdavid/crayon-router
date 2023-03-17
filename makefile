@@ -13,11 +13,30 @@ SVELTE := cd src/svelte && make
 VUE := cd src/vue && make
 TRANSITION := cd src/transition && make
 
+DIR_KIT := cd src/kit
+DIR_CRAYON := cd src/crayon
+DIR_ANIMATE := cd src/animate
+DIR_PREACT := cd src/preact
+DIR_REACT := cd src/react
+DIR_SVELTE := cd src/svelte
+DIR_VUE := cd src/vue
+DIR_TRANSITION := cd src/transition
+
 default: clean install build test
 
 clean-hard:
 	git clean -d -f
 	git clean -d -f -X
+
+upgrade:
+	$(DIR_KIT) && ncu -u
+	$(DIR_ANIMATE) && ncu -u
+	$(DIR_PREACT) && ncu -u
+	$(DIR_REACT) && ncu -u
+	$(DIR_CRAYON) && ncu -u
+	$(DIR_SVELTE) && ncu -u
+	$(DIR_TRANSITION) && ncu -u
+	$(DIR_VUE) && ncu -u
 
 clean:
 	$(KIT) clean

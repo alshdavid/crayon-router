@@ -3,6 +3,8 @@ import { useAppContext } from '~/gui/context'
 
 export const More = () => {
     const { router } = useAppContext()
+
+    console.log(router)
     return <div>
         <nav>
             <button 
