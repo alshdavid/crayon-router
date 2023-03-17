@@ -1,10 +1,10 @@
 import { url, eventStream } from 'crayon-kit'
-import { History, HistoryEvent } from '../history'
-import { RouteMap } from '../route-map';
-import { Location } from '../locator'
-import { handlerFunc, RouterEventType, RouterEvent } from './types'
-import { Context } from './context'
-import { Group } from "./group"
+import { History, HistoryEvent } from '../history/index.js'
+import { RouteMap } from '../route-map/index.js';
+import { Location } from '../locator/index.js'
+import { handlerFunc, RouterEventType, RouterEvent } from './types.js'
+import { Context } from './context.js'
+import { Group } from "./group.js"
 
 export class Router {
   public currentContext: Context | undefined

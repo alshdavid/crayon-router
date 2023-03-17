@@ -1,1 +1,1 @@
-export * from './history'
+export * from './history.js'

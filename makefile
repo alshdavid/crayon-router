@@ -4,25 +4,26 @@ WAIT_ON := npx wait-on
 ARTIFACT_KIT="./src/kit/dist/index.js"
 ARTIFACT_CRAYON="./src/crayon/dist/lib/index.js"
 
-KIT := cd src/kit && make
-CRAYON := cd src/crayon && make
-ANIMATE := cd src/animate && make
-PREACT := cd src/preact && make
-REACT := cd src/react && make
-SVELTE := cd src/svelte && make
-VUE := cd src/vue && make
-TRANSITION := cd src/transition && make
-
-DIR_KIT := cd src/kit
-DIR_CRAYON := cd src/crayon
 DIR_ANIMATE := cd src/animate
+DIR_CRAYON := cd src/crayon
+DIR_KIT := cd src/kit
 DIR_PREACT := cd src/preact
 DIR_REACT := cd src/react
 DIR_SVELTE := cd src/svelte
-DIR_VUE := cd src/vue
 DIR_TRANSITION := cd src/transition
+DIR_VUE := cd src/vue
 
-default: clean install build test
+ANIMATE := $(DIR_ANIMATE) && pnpm run
+CRAYON := $(DIR_CRAYON) && pnpm run
+KIT := $(DIR_KIT) && pnpm run
+PREACT := $(DIR_PREACT) && pnpm run
+REACT := $(DIR_REACT) && pnpm run
+SVELTE := $(DIR_SVELTE) && pnpm run
+TRANSITION := $(DIR_TRANSITION) && pnpm run
+VUE := $(DIR_VUE) && pnpm run
+
+
+default: clean build test
 
 clean-hard:
 	git clean -d -f
@@ -39,20 +40,17 @@ upgrade:
 	$(DIR_VUE) && ncu -u
 
 clean:
-	$(KIT) clean
 	$(ANIMATE) clean
+	$(CRAYON) clean
+	$(KIT) clean
 	$(PREACT) clean
 	$(REACT) clean
-	$(CRAYON) clean
 	$(SVELTE) clean
 	$(TRANSITION) clean
 	$(VUE) clean
 	cd src && find . -name dist -exec rm -r -f '{}' +
 	cd examples && find . -name dist -exec rm -r -f '{}' +
 	cd examples && find . -name build -exec rm -r -f '{}' +
-
-install:
-	yarn install
 
 build:
 	make clean

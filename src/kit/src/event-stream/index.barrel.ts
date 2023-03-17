@@ -1,1 +1,1 @@
-export * from './beacon'
+export * from './beacon.js'

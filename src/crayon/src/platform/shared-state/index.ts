@@ -1,1 +1,1 @@
-export * from './shared-state'
+export * from './shared-state.js'

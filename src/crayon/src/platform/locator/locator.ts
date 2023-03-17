@@ -1,5 +1,5 @@
 import { url } from 'crayon-kit'
-import { Context } from '../router'
+import { Context } from '../router/index.js'
 
 // Locator is a wrapper on top of window.location
 export class Location {

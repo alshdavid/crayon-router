@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "preserveWatchOutput": true,
-    "target": "es6",
-    "module": "es2015",
+    "target": "esnext",
+    "module": "esnext",
     "declaration": true,
     "outDir": "dist",
     "strict": true,

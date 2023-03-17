@@ -2,7 +2,7 @@
   "compilerOptions": {
     "preserveWatchOutput": true,
     "target": "esnext",
-    "module": "es2015",
+    "module": "esnext",
     "declaration": true,
     "outDir": "dist",
     "strict": true,
@@ -10,7 +10,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "rootDir": "./src",
     "resolveJsonModule": true,
     "lib": ["dom", "es2017"]
   },

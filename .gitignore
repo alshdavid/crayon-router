@@ -4,6 +4,7 @@ yarn.lock
 coverage
 sandbox
 builds
+.parcel-cache
 
 # Compiled source #
 ###################

@@ -1,6 +1,6 @@
 import crayon from "crayon";
-import { AnimationRoute } from "./types";
-import { getAnimationState } from "./state";
+import { AnimationRoute } from "./types.js";
+import { getAnimationState } from "./state.js";
 
 export const routes = (
     routes:  AnimationRoute[]

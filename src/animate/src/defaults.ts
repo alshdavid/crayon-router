@@ -1,6 +1,6 @@
 import crayon from 'crayon'
-import { AnimationOptions } from './types';
-import { getAnimationState } from './state';
+import { AnimationOptions } from './types.js';
+import { getAnimationState } from './state.js';
 
 export const defaults = (options: AnimationOptions): crayon.handlerFunc => (
     ctx,

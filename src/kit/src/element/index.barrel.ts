@@ -1,1 +1,1 @@
-export * from './element'
+export * from './element.js'

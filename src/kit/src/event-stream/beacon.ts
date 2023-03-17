@@ -1,4 +1,4 @@
-import { genString } from "../gen-string"
+import { genString } from "../gen-string/index.js"
 
 export type callback<T = any> = (value: T) => void
 

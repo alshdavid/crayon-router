@@ -1,9 +1,9 @@
 import { genString } from 'crayon-kit' 
-import { History } from '../platform/history'
-import { Location } from "../platform/locator";
-import { RouteMap } from "../platform/route-map";
-import { getSharedState, SharedState, setSharedState } from '../platform/shared-state';
-import { Router, RouterEventType } from "../platform/router";
+import { History } from '../platform/history/index.js'
+import { Location } from "../platform/locator/index.js";
+import { RouteMap } from "../platform/route-map/index.js";
+import { getSharedState, SharedState, setSharedState } from '../platform/shared-state/index.js';
+import { Router, RouterEventType } from "../platform/router/index.js";
 
 /*
   This is the entrypoint.

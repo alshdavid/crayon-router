@@ -1,7 +1,7 @@
 import { element } from 'crayon-kit'
-import { getRouteTargets } from "./get-route-targets";
-import { Mounter } from './mounter';
-import { ClassNameStates } from './make-class-names';
+import { getRouteTargets } from "./get-route-targets.js";
+import { Mounter } from './mounter.js';
+import { ClassNameStates } from './make-class-names.js';
 
 export const staticMount = async (
   states: ClassNameStates,

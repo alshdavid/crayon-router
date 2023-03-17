@@ -1,1 +1,1 @@
-export * from './gen-string'
+export * from './gen-string.js'

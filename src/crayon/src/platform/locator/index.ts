@@ -1,1 +1,1 @@
-export * from './locator'
+export * from './locator.js'

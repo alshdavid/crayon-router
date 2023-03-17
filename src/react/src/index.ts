@@ -1,7 +1,7 @@
-import { router } from './react'
-import { EmbeddedRouter } from './embedded-router'
-import { useActiveLink } from './use-active-link'
-import { withContext } from './with-context'
+import { router } from './react.js'
+import { EmbeddedRouter } from './embedded-router.js'
+import { useActiveLink } from './use-active-link.js'
+import { withContext } from './with-context.js'
 
 export const reactCrayon = {
     router,

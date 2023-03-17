@@ -1,5 +1,5 @@
 import { url } from 'crayon-kit'
-import { AnimationRoute } from "./types";
+import { AnimationRoute } from "./types.js";
 
 export class AnimationState {
     routes: AnimationRoute[] = []

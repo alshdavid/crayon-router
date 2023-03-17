@@ -1,4 +1,4 @@
-export * from './loader'
+export * from './loader.js'
 
 import { 
     loader,
@@ -15,7 +15,7 @@ import {
     popLeft,
     popRight,
     fade
-} from './loader'
+} from './loader.js'
 
 export default { 
     loader,

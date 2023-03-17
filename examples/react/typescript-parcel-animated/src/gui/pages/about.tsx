@@ -1,7 +1,7 @@
 import React from 'react'
-import { useAppContext } from '~/gui/context'
+import { useAppContext } from '../../gui/context'
 
-export const Route = () => {
+export const AboutPage = () => {
     const { router } = useAppContext()
     return <div>
         <nav>

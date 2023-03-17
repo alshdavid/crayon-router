@@ -1,4 +1,4 @@
-import { ReactMounter } from './mounter'
+import { ReactMounter } from './mounter.js'
 
 export class ReactState {
   public mounter: ReactMounter

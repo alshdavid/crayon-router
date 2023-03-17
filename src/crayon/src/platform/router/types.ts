@@ -1,5 +1,5 @@
-import { Router } from './router';
-import { Context } from './context';
+import { Router } from './router.js';
+import { Context } from './context.js';
 
 export type handlerFunc = (
     ctx: Context,

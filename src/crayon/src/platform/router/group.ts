@@ -1,4 +1,4 @@
-import { handlerFunc } from "./types";
+import { handlerFunc } from "./types.js";
 
 export class Group {
     middleware: handlerFunc[] = []

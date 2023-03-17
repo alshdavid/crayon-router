@@ -1,6 +1,6 @@
 import { eventStream } from 'crayon-kit'
-import { History } from '../history'
-import { Router, RouterEvent, RouterEventType } from "../router";
+import { History } from '../history/index.js'
+import { Router, RouterEvent, RouterEventType } from "../router/index.js";
 
 export class SharedState {
   routers: Record<string, Router> = {}

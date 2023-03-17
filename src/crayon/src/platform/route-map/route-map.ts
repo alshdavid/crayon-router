@@ -1,5 +1,5 @@
 import { url } from 'crayon-kit'
-import { handlerFunc } from '../router'
+import { handlerFunc } from '../router/index.js'
 
 export type ParamMap = Record<string, string>
 

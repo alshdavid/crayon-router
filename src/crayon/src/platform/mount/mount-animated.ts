@@ -1,7 +1,7 @@
 import { element, sleep } from 'crayon-kit'
-import { getRouteTargets } from "./get-route-targets";
-import { Mounter } from './mounter';
-import { ClassNameStates } from './make-class-names';
+import { getRouteTargets } from "./get-route-targets.js";
+import { Mounter } from './mounter.js';
+import { ClassNameStates } from './make-class-names.js';
 
 const {
   addClassNames,

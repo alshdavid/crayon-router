@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { router } from './react'
+import { router } from './react.js'
 import crayon from "crayon";
 import { genString } from "crayon-kit";
 

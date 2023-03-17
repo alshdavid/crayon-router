@@ -1,8 +1,8 @@
-import { ClassNameStates } from './make-class-names';
-import { hasAnimation } from './has-animation';
-import { Mounter } from './mounter';
-import { animatedMount } from './mount-animated';
-import { staticMount } from './mount-static';
+import { ClassNameStates } from './make-class-names.js';
+import { hasAnimation } from './has-animation.js';
+import { Mounter } from './mounter.js';
+import { animatedMount } from './mount-animated.js';
+import { staticMount } from './mount-static.js';
 
 /*
     The mount function will take a framework/library specific component

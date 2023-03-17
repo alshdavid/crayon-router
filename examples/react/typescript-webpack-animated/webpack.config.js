@@ -13,12 +13,19 @@ if (mode === 'production') {
     process.env.NODE_ENV="'production'"
 }
 
+const isModule = true
+
 module.exports = {
     entry: path.join(__dirname, '/src/gui/main.tsx'),
     mode,
+    ...(isModule ? {target: 'es2023' } : {}),
     output: {
         filename: 'dist/index.js',
-        path: path.join(__dirname, 'public')
+        path: path.join(__dirname, 'public'),
+        ...(isModule ? { module: true } : {}),
+    },
+    experiments: { 
+      ...(isModule ? { outputModule: true } : {}),
     },
     module: {
         rules: [
@@ -39,8 +46,5 @@ module.exports = {
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"],
-        alias: {
-          '~': path.resolve(__dirname, 'src')
-        }
     }
 };

@@ -1,5 +1,5 @@
 import crayon from 'crayon'
-import { ReactState } from './state';
+import { ReactState } from './state.js';
 
 export const router = (
   target: HTMLElement = document.body, 

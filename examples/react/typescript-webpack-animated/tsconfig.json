@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6", 
+    "target": "ESNext", 
     "module": "esnext",  
     "moduleResolution": "node",
     "baseUrl": "./",
@@ -12,11 +12,12 @@
     "strict": false,
     "esModuleInterop": true,
     "jsx": "react",
-    "experimentalDecorators": true,
-    "paths": {
-      "~/*": ["src/*"],
-    }
+    "experimentalDecorators": true
   },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+  ],
   "exclude": [
     "node_modules",
     "webpack.config.js"
