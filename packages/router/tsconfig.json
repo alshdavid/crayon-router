@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "preserveWatchOutput": true,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node16",
+    "declaration": true,
+    "strict": true,
+    "outDir": "dist/tests",
+    "lib": ["DOM", "ESNext"],
+    "types": ["@types/jest"]
+  },
+  "include": [
+    "src/**/*.ts", 
+  ],
+}

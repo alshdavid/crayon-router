@@ -19,33 +19,6 @@
     "test:cover": "jest --coverage --passWithNoTests",
     "test:watch": "jest --watch --passWithNoTests"
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/**.{ts,js}",
-      "!**/node_modules/**",
-      "!**/vendor/**",
-      "!**/index.{ts,js}"
-    ],
-    "coverageDirectory": "reports/coverage",
-    "globals": {
-      "window": {}
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "^~/(.*)$": "<rootDir>/src/$1"
-    },
-    "reporters": [
-      "default"
-    ],
-    "testRegex": ".*\\.spec\\.(jsx?|tsx?)$",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
-  },
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "crayon-kit": "*",

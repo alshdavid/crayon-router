@@ -6,7 +6,7 @@
     "declaration": true,
     "outDir": "dist",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",

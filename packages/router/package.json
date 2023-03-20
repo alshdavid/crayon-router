@@ -1,0 +1,40 @@
+{
+  "name": "@pico-router/core",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alshdavid-labs/pico-router/packages/router"
+  },
+  "license": "MIT",
+  "author": "David Alsh",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": ".*\\.spec\\.(jsx?)$",
+    "globals": {
+      "window": {}
+    }
+  },
+  "scripts": {
+    "build": "npm run build:types && npm run build:esm && npm run build:cjs",
+    "build:esm": "rm -rf dist/esm && npx tsc -p ./tsconfig.build.esm.json",
+    "build:cjs": "rm -rf dist/cjs && npx tsc -p ./tsconfig.build.cjs.json",
+    "build:types": "rm -rf dist/cjs && npx tsc -p ./tsconfig.build.types.json",
+    "clean": "rm -rf dist",
+    "test": "rm -rf dist/tests && npx tsc -p ./tsconfig.build.spec.json && jest --passWithNoTests; rm -rf dist/tests",
+    "test:cover": "jest --coverage --passWithNoTests",
+    "test:watch": "jest --watch --passWithNoTests"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.0.5",
+    "typescript": "^5.0.2"
+  }
+}

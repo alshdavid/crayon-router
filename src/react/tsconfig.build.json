@@ -5,7 +5,7 @@
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "inlineSourceMap": true,
     "baseUrl": "./",
     "lib": ["dom", "es2017"],

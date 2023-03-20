@@ -1,0 +1,5 @@
+dist/tests
+src
+*.log
+tsconfig.json
+tsconfig.spec.json
